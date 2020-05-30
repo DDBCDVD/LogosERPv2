@@ -1,0 +1,3 @@
+*.pyc
+/apps/migrations
+/apps/warehouse/migrations
