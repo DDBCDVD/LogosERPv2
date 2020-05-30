@@ -1,0 +1,68 @@
+{% extends "list_template.html" %}
+{% block buttons_create %}
+<div class="card-header">
+    <a href="{% url 'function_create_move_unit' %}" class="btn btn-outline-success btn-icon-split btn-lg">
+    <span class="text">Mover Unidad</span>
+    </a>
+    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+    <a href="{% url 'function_create_move_package' %}" class="btn btn-outline-success btn-icon-split btn-lg">
+    <span class="text">Mover Paquetes</span>
+    </a>
+    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+</div>
+{% endblock %}
+{% block table %}
+<thead>
+    <tr>
+        <td>Código</td>
+        <td>Origen</td>
+        <td>Destino</td>                    
+        <td>Item</td>
+        <td>Cantidad</td>
+
+        <td>Medida</td>
+        <td>Tipo</td>
+        <td>Notas</td>
+        <td>Descripción</td>                    
+        <td>Fecha</td>
+        <td>Acciones</td>
+    </tr>
+</thead>
+<tbody>
+    {% for move in object_list %}
+    <tr>
+        <td>{{move.code}}</td>
+        <td>{{move.location_id.name}}</td>
+        <td>{{move.location_dest_id.name}}</td>
+
+        {% if move.unit_id %}
+            <td>
+                <ul>{{move.unit_id.name}}</ul>
+                <ul>{{move.unit_id.code}}</ul>
+            </td>
+        {% endif %}                    
+        {% if move.package_id %}
+            <td>{{move.package_id.code}}</td>
+        {% endif %}
+        <td>{{move.quantity}}</td>
+
+        {% if move.unit_id %}
+            <td>{{move.unit_id.product_id.measure_id.abbreviation}}</td>
+        {% endif %}                     
+        {% if move.package_id %}
+            <td>{{move.package_id.product_id.measure_id.abbreviation}}</td>
+        {% endif %} 
+        <td>{{move.move_type}}</td>
+        <td>{{move.note}}</td>
+        <td>{{move.description}}</td>                    
+        <td>{{move.date}}</td>
+        <td>
+            <a href="{% url 'DetailStockMove' move.id %}" class="btn btn-info btn-circle btn-lg" >
+                <i class="fas fa-info-circle"></i>
+                </a> 
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "list_template.html" %}
+{% block buttons_create %}
+<div class="card-header">
+    <a href="{% url 'CreateProduct' %}" class="btn btn-outline-success btn-icon-split btn-lg">
+    <span class="text">Crear nuevo Producto</span>
+    </a>
+    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+</div>
+{% endblock %}
+{% block table %}
+<thead>
+    <tr>
+        <td>Código</td>
+        <td>Nombre</td>
+        <td>Unidad de Medida</td>
+        <td>Factor Cantidad</td>
+        <td>Active</td>
+        <td>Descripción</td>
+        <td>Fecha Creación</td>
+        <td>Acciones</td>
+    </tr>
+</thead>
+<tbody>
+    {% if object_list %}
+    {% for product in object_list %}
+    <tr>
+        <td>{{product.code}}</td>
+        <td>{{product.name}}</td>
+        <td>{{product.measure_id.name}}</td>
+        <td>{{product.measure_qty}}</td>
+        <td>{{product.active}}</td>
+        <td>{{product.description}}</td>
+        <td>{{product.date_created}}</td>
+        <td>
+            <a href="{% url 'EditProduct' product.id %}" class="btn btn-info btn-circle btn-lg" >
+                <i class="far fa-edit"></i>
+            </a>                            
+            <a href="{% url 'DetailProduct' product.id %}" class="btn btn-info btn-circle btn-lg" >
+                <i class="fas fa-info-circle"></i>
+            </a>   
+            <a href="{% url 'DeleteProduct' product.id %}" class="btn btn-danger btn-circle btn-lg">
+                <i class="fas fa-trash"></i>
+            </a>                                                         
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <h3 class="card-title">No hay Registros</h3>
+    {% endif %}
+</tbody>
+{% endblock %}

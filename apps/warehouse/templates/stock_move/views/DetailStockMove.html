@@ -1,0 +1,69 @@
+{% extends "detail_template.html" %}
+{% block button_back %}
+<div class="card-header ">
+    <a href="{% url 'ListStockMove' %}" class="btn btn-outline-primary btn-lg">
+    <span class="text">Volver</span>
+    </a>
+    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+</div>
+{% endblock %}
+{% block table %}
+<thead>
+    <tr>
+        <td>Código</td>
+        <td>Origen</td>
+        <td>Destino</td>
+        <td>Cantidad</td>
+        {% if object.unit_id %}
+
+            <td>Cantidad Origen</td>
+            <td>Saldo nuevo Origen</td>
+            <td>Cantidad previa Destino</td>
+            <td>Saldo nuevo Destino</td>
+            <td>Cantidad previa Unidad</td>
+            <td>Saldo total Unidad</td>
+            <td>Unidad de Producto</td>
+            <td>Código Unidad</td>
+        {% endif %}
+        {% if object.package_id %}
+            <td>Paquete</td>
+        {% endif %}
+        <td>Medida</td>
+        <td>Tipo</td>
+        <td>Notas</td>
+        <td>Descripción</td>                    
+        <td>Fecha</td>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>{{object.code}}</td>
+        <td>{{object.location_id.name}}</td>
+        <td>{{object.location_dest_id.name}}</td>                    
+        <td>{{object.quantity}}</td>
+        {% if object.unit_id %}
+            <td>{{object.prev_qty_origin}}</td>
+            <td>{{object.balance_origin}}</td>
+            <td>{{object.prev_qty_dest}}</td>
+            <td>{{object.balance_dest}}</td>
+            <td>{{object.prev_qty}}</td>
+            <td>{{object.balance}}</td>
+            <td>{{object.unit_id.name}}</td>
+            <td>{{object.unit_id.code}}</td>
+        {% endif %}
+        {% if object.package_id %}
+            <td>{{object.package_id.code}}</td>
+        {% endif %}
+        {% if object.unit_id %}
+            <td>{{object.unit_id.product_id.measure_id.abbreviation}}</td>
+        {% endif %}                     
+        {% if object.package_id %}
+            <td>{{move.package_id.product_id.measure_id.abbreviation}}</td>
+        {% endif %} 
+        <td>{{object.move_type}}</td>
+        <td>{{object.note}}</td>
+        <td>{{object.description}}</td>                    
+        <td>{{object.date}}</td>
+    </tr>
+</tbody>
+{% endblock %}

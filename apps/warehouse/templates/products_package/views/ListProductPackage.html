@@ -1,0 +1,60 @@
+{% extends "list_template.html" %}
+{% block buttons_create %}
+<div class="card-header">
+    <a href="{% url 'CreateProductPackage' %}" class="btn btn-outline-success btn-icon-split btn-lg">
+    <span class="text">Crear nuevo Paquete</span>
+    </a>
+    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+</div>
+{% endblock %}
+{% block table %}
+<thead>
+    <tr>
+        <td>Código</td>
+        <td>Producto</td>
+        <td>Cantidad de Unidades</td>
+        <td>Origen</td>
+        <td>Destino</td>
+        <td>Unidades Creadas??</td>
+        <td>Descripción</td>
+        <td>Fecha Creación</td>
+        <td>Acciones</td>
+    </tr>
+</thead>
+<tbody>
+    {% if object_list %}
+    {% for package in object_list %}
+    <tr>
+        <td>{{package.code}}</td>
+        <td>{{package.product_id.name}}</td>
+        <td>{{package.unit_qty}}</td>
+        <td>{{package.location_from_id.name}}</td>
+        <td>{{package.location_id.name}}</td>
+        <td>{{package.units_created}}</td>
+        <td>{{package.description}}</td>
+        <td>{{package.date_created}}</td>
+        <td>
+            <a href="{% url 'EditProductPackage' package.id %}" class="btn btn-info btn-circle btn-lg" >
+                <i class="far fa-edit"></i>
+            </a> 
+            <a href="{% url 'DetailProductPackage' package.id %}" class="btn btn-info btn-circle btn-lg" >
+                <i class="fas fa-info-circle"></i>
+            </a>                         
+            {% if not package.unit_qty %}
+                <a href="{% url 'DeleteProductPackage' package.id %}" class="btn btn-danger btn-circle btn-lg">
+                    <i class="fas fa-trash"></i>
+                </a>
+            {% endif %}                        
+            {% if package.unit_qty > 0 and not package.units_created %}
+                <a href="{% url 'create_unit_package' package.id %}" class="btn btn-success btn-circle btn-lg">
+                    <i class="fas fa-cubes"></i>
+                </a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <h1>No hay registros</h1>   
+    {% endif %}
+</tbody>
+{% endblock %}

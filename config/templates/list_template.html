@@ -1,0 +1,55 @@
+{% extends "pattern_template.html" %}
+{% block header %}
+    {% include "headers/list_detail_header.html" %}
+{% endblock %}
+    {% block content %}
+         <!-- Django Messages -->
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h5>{{ message }}</h5></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Card-header -->
+                        <div class="card">
+                            {% block buttons_create %}
+
+                            {% endblock %}
+                            <div class="card-body">
+                                <table id="FullTable1" class="table table-bordered table-hover">
+                                {% block table %}
+
+
+                                {% endblock %}
+                                </table>
+                            </div>
+                        <!-- /.card-body -->
+                        </div>
+                    </div>
+                <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+    {% endblock %}
+{% block javascript %}
+
+    {% include "js/list_detail_js.html" %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+

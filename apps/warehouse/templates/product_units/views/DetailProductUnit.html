@@ -1,0 +1,45 @@
+{% extends "detail_template.html" %}
+
+{% block button_back %}
+  <div class="card-header">
+    <a href="{% url 'ListProductUnit' %}" class="btn btn-outline-primary btn-lg">
+    <span class="text">Volver</span>
+    </a>
+    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+</div>  
+{% endblock %}  
+{% block table %}
+<thead>
+    <tr>
+        <td>Producto</td>
+        <td>Cantidad</td>
+        <td>Unidad de Medida</td>
+        {% if object.package_id %}
+            <td>Paquete</td>
+        {% endif %}
+        <td>Cantidad Fija</td>
+        <td>Descripcion</td>
+        <td>Fecha Creación</td>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>{{object.product_id.name}}</td>
+        <td>{{object.quantity}}</td>
+        <td>{{object.product_id.measure_id.abbreviation}}</td>
+        {% if object.package_id %}
+            <td>{{object.package_id.code}}</td>
+        {% endif %}
+        <td>{{object.fixed_ammount}}</td>
+        <td>{{object.description}}</td>
+        <td>{{object.date_created}}</td>
+    </tr>
+</tbody>
+
+{% endblock %}
+{% block lines %}
+
+    {% include "lines/move_lines.html" %} 
+         
+{% endblock %}
+

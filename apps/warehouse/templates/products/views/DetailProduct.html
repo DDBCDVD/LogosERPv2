@@ -1,0 +1,33 @@
+{% extends "detail_template.html" %}
+{% block button_back %}
+<div class="card-header ">
+    <a href="{% url 'ListProduct' %}" class="btn btn-outline-primary btn-lg">
+    <span class="text">Volver</span>
+    </a>
+</div>
+{% endblock %}
+
+{% block table %}
+<thead>
+    <tr>
+        <td>Nombre</td>
+        <td>Factor de Cantidad</td>
+        <td>Unidad de Medida</td>
+        <td>Fecha Creación</td>
+        <td>Descripción</td>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>{{object.name}}</td>
+        <td>{{object.measure_qty}}</td>
+        <td>{{object.measure_id.abbreviation}}</td>
+        <td>{{object.date_created}}</td>
+        <td>{{object.description}}</td>
+    </tr>
+</tbody>
+{% endblock %}
+
+{% block lines %}
+    {% include "lines/products_lines.html" %}              
+{% endblock %}
