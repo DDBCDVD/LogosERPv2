@@ -6,8 +6,7 @@ from django.dispatch import receiver
 
 class measurement_units(models.Model):
 
-
-    __AUTOCODE__ ='MSRE'
+    __AUTOCODE__ = 'MSRE'
 
     code = models.CharField(
         verbose_name="Código",
@@ -39,17 +38,16 @@ class measurement_units(models.Model):
         db_table = 'measurement_units'
         ordering = ['code']
 
-    @receiver(post_save, sender = 'warehouse.measurement_units')
-    def set_auto_code(
-        sender, instance, **kwargs):
+    @receiver(post_save, sender='warehouse.measurement_units')
+    def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
-            code = sender.objects.filter(id = instance.id).update(code = instance.__AUTOCODE__ + str(instance.id))
+            code = sender.objects.filter(id=instance.id).update(
+                code=instance.__AUTOCODE__ + str(instance.id))
 
 
 class products(models.Model):
 
-
-    __AUTOCODE__ ='PRD'
+    __AUTOCODE__ = 'PRD'
 
     code = models.CharField(
         verbose_name="Código",
@@ -84,11 +82,11 @@ class products(models.Model):
         db_table = 'products'
         ordering = ['code']
 
-    @receiver(post_save, sender = 'warehouse.products')
-    def set_auto_code(
-        sender, instance, **kwargs):
+    @receiver(post_save, sender='warehouse.products')
+    def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
-            code = sender.objects.filter(id = instance.id).update(code = instance.__AUTOCODE__ + str(instance.id))
+            code = sender.objects.filter(id=instance.id).update(
+                code=instance.__AUTOCODE__ + str(instance.id))
 
     # def save(self, instance, **kwargs):
     #     while kwargs.get('created') == False:
@@ -99,7 +97,6 @@ class products(models.Model):
 
 
 class stock_location(models.Model):
-
 
     __AUTOCODE__ = 'STCKLO'
 
@@ -145,15 +142,14 @@ class stock_location(models.Model):
         db_table = 'stock_location'
         ordering = ['code']
 
-    @receiver(post_save, sender = 'warehouse.stock_location')
-    def set_auto_code(
-        sender, instance, **kwargs):
+    @receiver(post_save, sender='warehouse.stock_location')
+    def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
-            code = sender.objects.filter(id = instance.id).update(code = instance.__AUTOCODE__ + str(instance.id))
+            code = sender.objects.filter(id=instance.id).update(
+                code=instance.__AUTOCODE__ + str(instance.id))
 
 
 class products_package(models.Model):
-
 
     __AUTOCODE__ = 'PCKG'
 
@@ -170,12 +166,12 @@ class products_package(models.Model):
         default=False)
     unit_qty = models.FloatField(
         verbose_name="Cantidad de Unidades",
-        
         default=0.0)
-    product_id = models.ForeignKey(products,
-        verbose_name="Producto",
+    product_id = models.ForeignKey(
+        products, verbose_name="Producto",
         on_delete=models.CASCADE)
-    location_id = models.ForeignKey(stock_location,
+    location_id = models.ForeignKey(
+        stock_location,
         verbose_name="Ubicación", null=True, blank=True,
         on_delete=models.CASCADE)
     fixed_ammount = models.BooleanField(
@@ -194,7 +190,7 @@ class products_package(models.Model):
             name_location = str(self.location_id.name)
         else:
             name_location = ''
-        return str(self.code  + ' ' +  name_location)
+        return str(self.code + ' ' + name_location)
 
     class Meta:
         verbose_name = 'Paquete de Productos'
@@ -202,15 +198,14 @@ class products_package(models.Model):
         db_table = 'products_package'
         ordering = ['code']
 
-    @receiver(post_save, sender = 'warehouse.products_package')
-    def set_auto_code(
-        sender, instance, **kwargs):
+    @receiver(post_save, sender='warehouse.products_package')
+    def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
-            code = sender.objects.filter(id = instance.id).update(code = instance.__AUTOCODE__ + str(instance.id))
+            code = sender.objects.filter(id=instance.id).update(
+                code=instance.__AUTOCODE__ + str(instance.id))
 
 
 class product_units(models.Model):
-
 
     __AUTOCODE__ = 'PRDUNT'
 
@@ -223,18 +218,21 @@ class product_units(models.Model):
         null=True, blank=True,
         verbose_name="Descripción")
     quantity = models.FloatField(
-        verbose_name="Cantidad", 
-         default=0.0)
+        verbose_name="Cantidad",
+        default=0.0)
     pieces = models.PositiveIntegerField(
         verbose_name="Piezas", default=0.0)
-    product_id = models.ForeignKey(products,
-        verbose_name="Producto",  on_delete=models.CASCADE)
+    product_id = models.ForeignKey(
+        products, verbose_name="Producto",
+        on_delete=models.CASCADE)
     measure = models.CharField(
         verbose_name="Medida", max_length=30)
-    package_id = models.ForeignKey(products_package,
+    package_id = models.ForeignKey(
+        products_package,
         null=True, blank=True, verbose_name="Paquete",
         on_delete=models.SET_NULL)
-    location_id = models.ForeignKey(stock_location,
+    location_id = models.ForeignKey(
+        stock_location,
         verbose_name="Ubicación", null=True,
         blank=True, on_delete=models.CASCADE)
     stock_ctrl = models.BooleanField(
@@ -249,7 +247,10 @@ class product_units(models.Model):
         auto_now_add=True)
 
     def __str__(self):
-        return str(self.name  + ' ' + self.code + ' ' +  str(self.quantity) + ' ' + self.product_id.measure_id.abbreviation)
+        return str(
+            self.name
+            + ' ' + self.code + ' ' + str(self.quantity) + ' '
+            + self.product_id.measure_id.abbreviation)
 
     class Meta:
         verbose_name = 'Unidad de Producto'
@@ -257,15 +258,14 @@ class product_units(models.Model):
         db_table = 'product_units'
         ordering = ['code']
 
-    @receiver(post_save, sender = 'warehouse.product_units')
-    def set_auto_code(
-        sender, instance, **kwargs):
+    @receiver(post_save, sender='warehouse.product_units')
+    def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
-            autocode = sender.objects.filter(id = instance.id).update(code = instance.__AUTOCODE__ + str(instance.id))
+            autocode = sender.objects.filter(id=instance.id).update(
+                code=instance.__AUTOCODE__ + str(instance.id))
 
 
 class stock_move(models.Model):
-
 
     __AUTOCODE__ = 'MOVE'
 
@@ -280,36 +280,36 @@ class stock_move(models.Model):
         verbose_name="Piezas",
         default=0.0)
     quantity = models.FloatField(
-        verbose_name="Cantidad", 
-         default=0.0)
+        verbose_name="Cantidad",
+        default=0.0)
     prev_qty = models.FloatField(
         verbose_name="Cantidad previa de la Unidad",
-         default=0.0)
+        default=0.0)
     balance = models.FloatField(
         verbose_name="Saldo total de la Unidad",
-         default=0.0)
+        default=0.0)
     prev_qty_origin = models.FloatField(
         null=True, blank=True,
         verbose_name="Cantidad previa en el origen",
-         default=0.0)
+        default=0.0)
     balance_origin = models.FloatField(
         null=True, blank=True,
         verbose_name="Saldo nuevo en el origen",
-         default=0.0)
+        default=0.0)
     prev_qty_dest = models.FloatField(
         null=True, blank=True,
         verbose_name="Cantidad previa en el Destino",
-         default=0.0)
+        default=0.0)
     balance_dest = models.FloatField(
         null=True, blank=True,
         verbose_name="Saldo nuevo en el Destino",
-         default=0.0)
-    unit_id = models.ForeignKey(product_units,
-        null=True, blank=True,
+        default=0.0)
+    unit_id = models.ForeignKey(
+        product_units, null=True, blank=True,
         verbose_name="Unidad de Producto",
         on_delete=models.CASCADE)
-    package_id = models.ForeignKey(products_package,
-        null=True, blank=True,
+    package_id = models.ForeignKey(
+        products_package, null=True, blank=True,
         verbose_name="Paquetes", on_delete=models.CASCADE)
     location_id = models.ForeignKey(
         stock_location, on_delete=models.CASCADE)
@@ -329,14 +329,14 @@ class stock_move(models.Model):
         db_table = 'stock_move'
         ordering = ['code']
 
-    @receiver(post_save, sender = 'warehouse.stock_move')
+    @receiver(post_save, sender='warehouse.stock_move')
     def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
-            code = sender.objects.filter(id = instance.id).update(code = instance.__AUTOCODE__ + str(instance.id))
+            code = sender.objects.filter(id=instance.id).update(
+                code=instance.__AUTOCODE__ + str(instance.id))
 
 
 class stock_control(models.Model):
-
 
     __AUTOCODE__ = 'STKCTRL'
 
@@ -346,12 +346,12 @@ class stock_control(models.Model):
     pieces = models.IntegerField(
         verbose_name="Piezas", default=0.0)
     quantity = models.FloatField(
-        verbose_name="Cantidad", 
-         default=0.0)
-    unit_id = models.ForeignKey(product_units,
-    null=True, blank=True,
-    verbose_name="Unidad de Producto",
-    on_delete=models.CASCADE)
+        verbose_name="Cantidad",
+        default=0.0)
+    unit_id = models.ForeignKey(
+        product_units, null=True, blank=True,
+        verbose_name="Unidad de Producto",
+        on_delete=models.CASCADE)
     location_id = models.ForeignKey(
         stock_location, on_delete=models.CASCADE)
     date = models.DateField(
@@ -366,7 +366,8 @@ class stock_control(models.Model):
         db_table = 'stock_control'
         ordering = ['code']
 
-    @receiver(post_save, sender = 'warehouse.stock_control')
+    @receiver(post_save, sender='warehouse.stock_control')
     def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
-            code = sender.objects.filter(id = instance.id).update(code = instance.__AUTOCODE__ + str(instance.id))
+            code = sender.objects.filter(id=instance.id).update(
+                code=instance.__AUTOCODE__ + str(instance.id))
