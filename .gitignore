@@ -1,3 +1,7 @@
 *.pyc
 /apps/migrations
 /apps/warehouse/migrations
+/home/daniel/instancias/desarrollo/proyectos/logos/apps/migrations
+/home/daniel/instancias/desarrollo/proyectos/logos/apps/__pycache__
+/home/daniel/instancias/desarrollo/proyectos/logos/apps/warehouse/__pycache__
+/home/daniel/instancias/desarrollo/proyectos/logos/apps/warehouse/migrations
