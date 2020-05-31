@@ -16,6 +16,7 @@ class measurement_units(models.Model):
         max_length=30,
         verbose_name="Nombre")
     description = models.TextField(
+        null=True, blank=True,
         verbose_name="Descripción")
     unit_qty = models.PositiveIntegerField(
         verbose_name="Factor de Medida",
@@ -177,9 +178,6 @@ class products_package(models.Model):
     location_id = models.ForeignKey(stock_location,
         verbose_name="Hacia", null=True, blank=True,
         on_delete=models.CASCADE)
-    location_from_id = models.ForeignKey(stock_location,
-        verbose_name="Desde", null=True, blank=True,
-        on_delete=models.CASCADE, related_name='+')
     fixed_ammount = models.BooleanField(
         verbose_name="Fijar Cantidad",
         default=False)
@@ -239,9 +237,6 @@ class product_units(models.Model):
     location_id = models.ForeignKey(stock_location,
         verbose_name="Hacia", null=True,
         blank=True, on_delete=models.CASCADE)
-    location_from_id = models.ForeignKey(stock_location,
-        verbose_name="Desde", null=True, blank=True,
-        on_delete=models.CASCADE, related_name='+')
     stock_ctrl = models.BooleanField(
         default=False)
     fixed_ammount = models.BooleanField(

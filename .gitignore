@@ -1,7 +1,42 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
 *.pyc
-/apps/migrations
-/apps/warehouse/migrations
-/home/daniel/instancias/desarrollo/proyectos/logos/apps/migrations
-/home/daniel/instancias/desarrollo/proyectos/logos/apps/__pycache__
-/home/daniel/instancias/desarrollo/proyectos/logos/apps/warehouse/__pycache__
-/home/daniel/instancias/desarrollo/proyectos/logos/apps/warehouse/migrations
+*.pyo
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.code-workspace
+apps/migrations
+apps/warehouse/migrations
