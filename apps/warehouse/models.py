@@ -143,7 +143,7 @@ class stock_location(models.Model):
         verbose_name = 'Ubicación'
         verbose_name_plural = 'Ubicaciones'
         db_table = 'stock_location'
-        ordering = ['code']
+        ordering = ['name']
 
     @receiver(post_save, sender = 'warehouse.stock_location')
     def set_auto_code(
@@ -170,7 +170,7 @@ class products_package(models.Model):
         default=False)
     unit_qty = models.FloatField(
         verbose_name="Cantidad de Unidades",
-        
+
         default=0.0)
     product_id = models.ForeignKey(products,
         verbose_name="Producto",
@@ -223,7 +223,7 @@ class product_units(models.Model):
         null=True, blank=True,
         verbose_name="Descripción")
     quantity = models.FloatField(
-        verbose_name="Cantidad", 
+        verbose_name="Cantidad",
          default=0.0)
     pieces = models.PositiveIntegerField(
         verbose_name="Piezas", default=0.0)
@@ -280,7 +280,7 @@ class stock_move(models.Model):
         verbose_name="Piezas",
         default=0.0)
     quantity = models.FloatField(
-        verbose_name="Cantidad", 
+        verbose_name="Cantidad",
          default=0.0)
     prev_qty = models.FloatField(
         verbose_name="Cantidad previa de la Unidad",
@@ -346,7 +346,7 @@ class stock_control(models.Model):
     pieces = models.IntegerField(
         verbose_name="Piezas", default=0.0)
     quantity = models.FloatField(
-        verbose_name="Cantidad", 
+        verbose_name="Cantidad",
          default=0.0)
     unit_id = models.ForeignKey(product_units,
     null=True, blank=True,
