@@ -15,8 +15,6 @@
         <td>Cantidad</td>
         <td>Producto</td>
         <td>Paquete</td>
-        <td>Origen</td>
-        <td>Destino</td>
         <td>Fijar Cantidad</td>
         <td>Descripción</td>
         <td>Fecha Creación</td>
@@ -35,8 +33,6 @@
             <a href="{% url 'DetailProduct' product_unit.product_id.id %}"> {{product_unit.product_id.name}}</a>
           </td>
         <td>{{product_unit.package_id.code}}</td>
-        <td>{{product_unit.location_from_id.name}}</td>
-        <td>{{product_unit.location_id.name}}</td>
         <td>{{product_unit.fixed_ammount}}</td>
         <td>{{product_unit.description}}</td>
         <td>{{product_unit.date_created}}</td>

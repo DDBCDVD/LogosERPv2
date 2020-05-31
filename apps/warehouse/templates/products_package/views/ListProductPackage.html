@@ -13,8 +13,6 @@
         <td>Código</td>
         <td>Producto</td>
         <td>Cantidad de Unidades</td>
-        <td>Origen</td>
-        <td>Destino</td>
         <td>Unidades Creadas??</td>
         <td>Descripción</td>
         <td>Fecha Creación</td>
@@ -22,14 +20,11 @@
     </tr>
 </thead>
 <tbody>
-    {% if object_list %}
     {% for package in object_list %}
     <tr>
         <td>{{package.code}}</td>
         <td>{{package.product_id.name}}</td>
         <td>{{package.unit_qty}}</td>
-        <td>{{package.location_from_id.name}}</td>
-        <td>{{package.location_id.name}}</td>
         <td>{{package.units_created}}</td>
         <td>{{package.description}}</td>
         <td>{{package.date_created}}</td>
@@ -53,8 +48,5 @@
         </td>
     </tr>
     {% endfor %}
-    {% else %}
-    <h1>No hay registros</h1>   
-    {% endif %}
 </tbody>
 {% endblock %}
