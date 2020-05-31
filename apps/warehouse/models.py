@@ -16,6 +16,7 @@ class measurement_units(models.Model):
         max_length=30,
         verbose_name="Nombre")
     description = models.TextField(
+        null=True, blank=True,
         verbose_name="Descripción")
     unit_qty = models.PositiveIntegerField(
         verbose_name="Factor de Medida",
