@@ -40,3 +40,4 @@ Thumbs.db
 *.code-workspace
 apps/migrations
 apps/warehouse/migrations
+.vscode/
