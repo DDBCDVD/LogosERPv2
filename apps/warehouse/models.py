@@ -176,7 +176,7 @@ class products_package(models.Model):
         verbose_name="Producto",
         on_delete=models.CASCADE)
     location_id = models.ForeignKey(stock_location,
-        verbose_name="Hacia", null=True, blank=True,
+        verbose_name="Ubicación", null=True, blank=True,
         on_delete=models.CASCADE)
     fixed_ammount = models.BooleanField(
         verbose_name="Fijar Cantidad",
@@ -235,7 +235,7 @@ class product_units(models.Model):
         null=True, blank=True, verbose_name="Paquete",
         on_delete=models.SET_NULL)
     location_id = models.ForeignKey(stock_location,
-        verbose_name="Hacia", null=True,
+        verbose_name="Ubicación", null=True,
         blank=True, on_delete=models.CASCADE)
     stock_ctrl = models.BooleanField(
         default=False)

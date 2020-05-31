@@ -5,7 +5,7 @@ from apps.warehouse import functions
 
 def validate_moves(request, move):
     '''
-    Diferentes validaciones previas a la creacion del movimiento
+    Diferentes validaciones previas a la creación del movimiento
     '''
     #~ Si ocurre algún error en las validaciones, on_error cambiará a True
     #~ La funcion devuelve el valor de on_error
@@ -24,7 +24,7 @@ def validate_moves(request, move):
     if move.location_dest_id == move.location_id:
         on_error = True
         messages.error(
-            request, 'La ubicacion Destino no puede ser la misma'
+            request, 'La ubicación Destino no puede ser la misma'
                      'que el Origen, por favor verifique las ubicaciones en el formulario.')
     validate_move = str(
     move.location_id.location_type + '-' + move.location_dest_id.location_type)
@@ -47,8 +47,8 @@ def validate_moves(request, move):
                 and move.location_id.location_type != 'Ingress':
                 on_error = True
                 location_error = 'No puede mover el paquete desde %s ' \
-                                 'porque el paquete no está en la ubicacion %s. ' \
-                                 'La ubicacion origen debe ser %s' \
+                                 'porque el paquete no está en la ubicación %s. ' \
+                                 'La ubicación origen debe ser %s' \
                                  %(move.location_id.name, 
                                    move.location_id.name, 
                                    move.package_id.location_id.name )
@@ -92,7 +92,7 @@ def validate_moves(request, move):
 
 def validate_stock_control(request, move):
     '''
-    Diferentes validaciones previas a la creacion del
+    Diferentes validaciones previas a la creación del
     Control de Stock
     '''
     #~ Si ocurre algún error en las validaciones, on_error cambiará a True
@@ -120,8 +120,8 @@ def validate_stock_control(request, move):
                         unit_id = unit_id.id, location_id = move.location_id)
                 if not stck_ctrl_origin:
                     on_error = True
-                    stock_control_error = 'No puede mover la unidad desde la ubicacion %s ' \
-                                          'porque la unidad no tienen Stock disponible en esa ubicacion. ' \
+                    stock_control_error = 'No puede mover la unidad desde la ubicación %s ' \
+                                          'porque la unidad no tienen Stock disponible en esa ubicación. ' \
                                           'Revise el Stock disponible y corrija. ' \
                                           %(move.location_id)
                     messages.error(request, stock_control_error)
@@ -147,7 +147,7 @@ def validate_stock_control(request, move):
                                     stock_control_data['dest_data'] = dest_data
                             if not functions.create_stock_control(request, stock_control_data, unit_id, move):
                                 messages.error(
-                                    request, 'Error en la creacion del Control de Stock')
+                                    request, 'Error en la creación del Control de Stock')
             else:
                 on_error = True
                 ingress_error = 'Esta unidad ya tuvo un ingreso, por favor corrija' 
@@ -155,5 +155,5 @@ def validate_stock_control(request, move):
         else:
             if not functions.create_stock_control(request, stock_control_data, unit_id, move):
                 messages.error(
-                    request, 'Error en la creacion del Control de Stock')
+                    request, 'Error en la creación del Control de Stock')
     return on_error

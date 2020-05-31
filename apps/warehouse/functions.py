@@ -15,7 +15,7 @@ def create_unit_package(request, pckg):
             fixed_ammount = pckg.fixed_ammount)
     pckg.units_created = True 
     pckg.save()
-    msg = '%s Units Created!' % pckg.unit_qty
+    msg = '%s Unidades Creadas' % pckg.unit_qty
     messages.success(request, msg)
     units_create = True
     return units_create
@@ -35,7 +35,7 @@ def create_pckg_stock_control(request, pckg):
             unit_id.first_move = True
             unit_id.save()
         stock_control_created = True
-        msg = 'Stock Controls created for %s units' %len(unit_ids)
+        msg = 'Controles de Stock creados para %s unidades' %len(unit_ids)
         messages.success(request, msg)
     return stock_control_created
 
@@ -128,7 +128,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
         unit_id.stock_ctrl = True
         unit_id.first_move = True
         unit_id.save()
-        msg = 'Control de Stock creaddo para la unidad %s' % unit_id.code
+        msg = 'Control de Stock creado para la unidad %s' % unit_id.code
         messages.success(request, msg)
         stock_control_created = True
 
@@ -179,7 +179,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                     quantity = move.quantity,
                     unit_id = unit_id,
                     location_id = move.location_dest_id)
-                msg = 'Internal move Created for %s unit' % unit_id.code
+                msg = 'Movimiento  interno creado para %s unidad' % unit_id.code
                 messages.success(request, msg)
                 stock_control_created = True 
 
@@ -206,7 +206,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                 dest_data.save()                
                 if origin_data.quantity == 0.0:
                     origin_data.delete()
-                msg = 'Internal move Created for %s unit' % unit_id.code                        
+                msg = 'Movimiento  interno creado para %s unidad' % unit_id.code                        
                 messages.success(request, msg)
                 stock_control_created = True
 
