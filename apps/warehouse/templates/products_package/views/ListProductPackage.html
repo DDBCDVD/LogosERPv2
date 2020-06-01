@@ -1,52 +1,64 @@
-{% extends "list_template.html" %}
-{% block buttons_create %}
+{% extends "list_template.html" %} {% block buttons_create %}
 <div class="card-header">
-    <a href="{% url 'CreateProductPackage' %}" class="btn btn-outline-success btn-icon-split btn-lg">
+  <a
+    href="{% url 'CreateProductPackage' %}"
+    class="btn btn-outline-success btn-icon-split btn-lg"
+  >
     <span class="text">Crear nuevo Paquete</span>
-    </a>
-    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+  </a>
+  <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
 </div>
-{% endblock %}
-{% block table %}
+{% endblock %} {% block table %}
 <thead>
-    <tr>
-        <td>Código</td>
-        <td>Producto</td>
-        <td>Cantidad de Unidades</td>
-        <td>Unidades Creadas??</td>
-        <td>Descripción</td>
-        <td>Fecha Creación</td>
-        <td>Acciones</td>
-    </tr>
+  <tr>
+    <td>Código</td>
+    <td>Producto</td>
+    <td>Piezas</td>
+    <td>Cantidad por Unidad</td>
+    <td>Medida</td>
+    <td>Unidades Creadas??</td>
+    <td>Acciones</td>
+  </tr>
 </thead>
 <tbody>
-    {% for package in object_list %}
-    <tr>
-        <td>{{package.code}}</td>
-        <td>{{package.product_id.name}}</td>
-        <td>{{package.unit_qty}}</td>
-        <td>{{package.units_created}}</td>
-        <td>{{package.description}}</td>
-        <td>{{package.date_created}}</td>
-        <td>
-            <a href="{% url 'EditProductPackage' package.id %}" class="btn btn-info btn-circle btn-lg" >
-                <i class="far fa-edit"></i>
-            </a> 
-            <a href="{% url 'DetailProductPackage' package.id %}" class="btn btn-info btn-circle btn-lg" >
-                <i class="fas fa-info-circle"></i>
-            </a>                         
-            {% if not package.unit_qty %}
-                <a href="{% url 'DeleteProductPackage' package.id %}" class="btn btn-danger btn-circle btn-lg">
-                    <i class="fas fa-trash"></i>
-                </a>
-            {% endif %}                        
-            {% if package.unit_qty > 0 and not package.units_created %}
-                <a href="{% url 'create_unit_package' package.id %}" class="btn btn-success btn-circle btn-lg">
-                    <i class="fas fa-cubes"></i>
-                </a>
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
+  {% for package in object_list %}
+  <tr>
+    <td>{{package.code}}</td>
+    <td>{{package.product_id.name}}</td>
+    <td>{{package.pieces}}</td>
+    <td>{{package.unit_qty}}</td>
+    <td>{{package.product_id.measure_id.abbreviation}}</td>
+    <td>{{package.units_created}}</td>
+    <td>
+      <a
+        href="{% url 'EditProductPackage' package.id %}"
+        class="btn btn-info btn-circle btn-lg"
+      >
+        <i class="far fa-edit"></i>
+      </a>
+      <a
+        href="{% url 'DetailProductPackage' package.id %}"
+        class="btn btn-info btn-circle btn-lg"
+      >
+        <i class="fas fa-info-circle"></i>
+      </a>
+      {% if not package.pieces %}
+      <a
+        href="{% url 'DeleteProductPackage' package.id %}"
+        class="btn btn-danger btn-circle btn-lg"
+      >
+        <i class="fas fa-trash"></i>
+      </a>
+      {% endif %} {% if package.pieces > 0 and not package.units_created %}
+      <a
+        href="{% url 'create_unit_package' package.id %}"
+        class="btn btn-success btn-circle btn-lg"
+      >
+        <i class="fas fa-cubes"></i>
+      </a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
 </tbody>
 {% endblock %}

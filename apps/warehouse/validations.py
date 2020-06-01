@@ -50,22 +50,22 @@ def validate_moves(request, move):
                            move.location_id.name),
         'error_package_qty': 'Para mover paquetes, debe mover '
                              'la cantidad total disponible del paquete. '
-                             'Actualmente el paquete tiene %s %s '
-                             'y usted intenta mover %s %s. Por favor corrija'
-                             % (move.package_id.unit_qty if move.package_id
-                                else None,
-                                item_move.product_id.measure_id.abbreviation,
-                                move.quantity,
-                                item_move.product_id.measure_id.abbreviation),
+                             'Actualmente el paquete tiene %s Piezas '
+                             'y usted intenta mover %s piezas. Por favor corrija'
+                             % (move.package_id.pieces if move.package_id
+                                else None, move.pieces),
         'fixed_ammount': 'Esta unidad debe moverse siempre '
                          'con la cantidad fija de %s %s'
-                         % (item_move.quantity,
+                         % (move.unit_id.quantity if move.unit_id
+                            else None,
                             item_move.product_id.measure_id.abbreviation),
         'error_quantity': 'No hay %s %s disponible. '
                           'La cantidad disponibile de %s es de %s %s'
-                          % (move.quantity,
+                          % (move.quantity if move.unit_id
+                             else None,
                              item_move.product_id.measure_id.abbreviation,
-                             item_move.code, move.unit_id.quantity,
+                             item_move.code, move.quantity if move.unit_id
+                             else None,
                              item_move.product_id.measure_id.abbreviation),
     }
 
@@ -95,8 +95,8 @@ def validate_moves(request, move):
             messages.error(request, msg_validate['origin_error'])
             return on_error
 
-        if move.package_id.unit_qty:
-            if move.package_id.unit_qty != move.quantity:
+        if move.package_id.pieces:
+            if move.package_id.pieces != move.pieces:
                 on_error = True
                 messages.error(request, msg_validate['error_package_qty'])
                 return on_error
@@ -141,10 +141,10 @@ def validate_stock_control(request, move):
     '''
     unit_list = []
     if move.unit_id:
-        measure = unit_id.product_id.measure_id.abbreviation
+        measure = move.unit_id.product_id.measure_id.abbreviation
         unit_list.append(move.unit_id)
     if move.package_id:
-        measure = package_id.product_id.measure_id.abbreviation
+        measure = move.package_id.product_id.measure_id.abbreviation
         unit_ids = product_units.objects.filter(package_id=move.package_id)
         for unit_id in unit_ids:
             unit_list.append(unit_id)

@@ -18,14 +18,12 @@ class products_form(forms.ModelForm):
             'name',
             'active',
             'measure_id',
-            'measure_qty',
             'description',
             ]
         labels = {
             'name': 'Nombre',
             'description': 'Descripcion',
             'measure_id': 'Unidad de Medida',
-            'measure_qty': 'Cantidad del Producto',
             'active': 'Activo  ?',
         }
         widgets = {
@@ -34,8 +32,6 @@ class products_form(forms.ModelForm):
             'active': forms.CheckboxInput(),
             'measure_id': forms.Select(
                 attrs={'class':'form-control select2'}),
-            'measure_qty': forms.NumberInput(
-                attrs={'class':'form-control'}),
             'description': forms.Textarea(
                 attrs={'class':'form-control', 'placeholder':"Añadir Descripción"}),
 
@@ -124,11 +120,14 @@ class products_package_form(forms.ModelForm):
             'description',
             'product_id',
             'location_id',
+            'fixed_ammount',
+
             ]
         labels = {
             'description': 'Descripción',
             'product_id': 'Producto',
             'location_id': 'Ubicación',
+            'fixed_ammount': 'Cantidad fija por Unidad',
         }
         widgets = {
             'description': forms.Textarea(
@@ -139,6 +138,7 @@ class products_package_form(forms.ModelForm):
                 attrs={'class': 'form-control select2'}),
             'location_id': forms.Select(
                 attrs={'class': 'form-control select2'}),
+            'fixed_ammount': forms.CheckboxInput(),
         }
 
 
@@ -161,16 +161,13 @@ class measurement_units_form(forms.ModelForm):
         }
         widgets = {
             'name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Nombre unidad de Medida'}),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Nombre unidad de Medida'}),
             'unit_qty': forms.NumberInput(
-                attrs={
-                    'class': 'form-control'}),
+                attrs={'class': 'form-control'}),
             'abbreviation': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Kg., Lt, m2...'}),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Kg., Lt, m2...'}),
             'description': forms.Textarea(
                 attrs={'class': 'form-control',
                        'placeholder': 'Añadir Descripción'}),
@@ -184,7 +181,7 @@ class move_package_form(forms.ModelForm):
 
         fields = [
             'note',
-            'quantity',
+            'pieces',
             'package_id',
             'location_id',
             'location_dest_id',
@@ -193,7 +190,7 @@ class move_package_form(forms.ModelForm):
 
         labels = {
             'note': 'Notas',
-            'quantity': 'Cantidad',
+            'pieces': 'Piezas',
             'package_id': 'Paquete',
             'location_id': 'Origen',
             'location_dest_id': ' Destino',
@@ -203,7 +200,7 @@ class move_package_form(forms.ModelForm):
         widgets = {
             'note': forms.TextInput(
                 attrs={'class': 'form-control'}),
-            'quantity': forms.NumberInput(
+            'pieces': forms.NumberInput(
                 attrs={'class': 'form-control'}),
             'package_id': forms.Select(
                 attrs={'class': 'form-control select2'}),

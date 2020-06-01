@@ -1,58 +1,66 @@
-{% extends "list_template.html" %}
-{% block buttons_create %}
+{% extends "list_template.html" %} {% block buttons_create %}
 <div class="card-header">
-    <a href="{% url 'CreateProductUnit' %}" class="btn btn-outline-success btn-icon-split btn-lg">
+  <a
+    href="{% url 'CreateProductUnit' %}"
+    class="btn btn-outline-success btn-icon-split btn-lg"
+  >
     <span class="text">Nueva Unidad de Producto</span>
-    </a>
+  </a>
 </div>
-{% endblock %}
-{% block table %}
+{% endblock %} {% block table %}
 <thead>
-    <tr>
-        <td>Código</td>
-        <td>Nombre</td>
-        <td>Unidad de Medida</td>
-        <td>Cantidad</td>
-        <td>Producto</td>
-        <td>Paquete</td>
-        <td>Fijar Cantidad</td>
-        <td>Descripción</td>
-        <td>Fecha Creación</td>
-        <td>Acciones</td>
-    </tr>
+  <tr>
+    <td>Código</td>
+    <td>Nombre</td>
+    <td>Unidad de Medida</td>
+    <td>Cantidad</td>
+    <td>Producto</td>
+    <td>Paquete</td>
+    <td>Fijar Cantidad</td>
+    <td>Descripción</td>
+    <td>Fecha Creación</td>
+    <td>Acciones</td>
+  </tr>
 </thead>
 <tbody>
-    {% if object_list %}
-    {% for product_unit in object_list %}
-    <tr>
-        <td>{{product_unit.code}}</td>
-        <td>{{product_unit.name}}</td>
-        <td>{{product_unit.product_id.measure_id.abbreviation}}</td>
-        <td>{{product_unit.quantity}}</td>
-          <td>
-            <a href="{% url 'DetailProduct' product_unit.product_id.id %}"> {{product_unit.product_id.name}}</a>
-          </td>
-        <td>{{product_unit.package_id.code}}</td>
-        <td>{{product_unit.fixed_ammount}}</td>
-        <td>{{product_unit.description}}</td>
-        <td>{{product_unit.date_created}}</td>
-        <td>
-            <a href="{% url 'EditProductUnit' product_unit.id %}" class="btn btn-info btn-circle btn-lg" >
-                <i class="far fa-edit"></i>
-              </a>                         
-              <a href="{% url 'DetailProductUnit' product_unit.id %}" class="btn btn-info btn-circle btn-lg" >
-                <i class="fas fa-info-circle"></i>
-              </a> 
-            {% if not product_unit.quantity %}                        
-            <a href="{% url 'DeleteProductUnit' product_unit.id %}" class="btn btn-danger btn-circle btn-lg">
-                <i class="fas fa-trash"></i>
-              </a>
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-    {% else %}
-    <h1>No hay Registros</h1>
-    {% endif %}
+  {% for product_unit in object_list %}
+  <tr>
+    <td>{{product_unit.code}}</td>
+    <td>{{product_unit.name}}</td>
+    <td>{{product_unit.product_id.measure_id.abbreviation}}</td>
+    <td>{{product_unit.quantity}}</td>
+    <td>
+      <a href="{% url 'DetailProduct' product_unit.product_id.id %}">
+        {{product_unit.product_id.name}}</a
+      >
+    </td>
+    <td>{{product_unit.package_id.code}}</td>
+    <td>{{product_unit.fixed_ammount}}</td>
+    <td>{{product_unit.description}}</td>
+    <td>{{product_unit.date_created}}</td>
+    <td>
+      <a
+        href="{% url 'EditProductUnit' product_unit.id %}"
+        class="btn btn-info btn-circle btn-lg"
+      >
+        <i class="far fa-edit"></i>
+      </a>
+      <a
+        href="{% url 'DetailProductUnit' product_unit.id %}"
+        class="btn btn-info btn-circle btn-lg"
+      >
+        <i class="fas fa-info-circle"></i>
+      </a>
+      {% if not product_unit.quantity %}
+      <a
+        href="{% url 'DeleteProductUnit' product_unit.id %}"
+        class="btn btn-danger btn-circle btn-lg"
+      >
+        <i class="fas fa-trash"></i>
+      </a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
 </tbody>
-{% endblock %}            
+{% endblock %}
