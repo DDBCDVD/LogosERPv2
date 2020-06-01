@@ -351,8 +351,7 @@ class stock_control(models.Model):
     unit_id = models.ForeignKey(
         product_units, null=True, blank=True,
         verbose_name="Unidad de Producto",
-        on_delete=models.CASCADE)
-         default=0.0)
+        on_delete=models.CASCADE,default=0.0)
     unit_id = models.ForeignKey(product_units,
     null=True, blank=True,
     verbose_name="Unidad de Producto",
