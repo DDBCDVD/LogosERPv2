@@ -3,7 +3,8 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import DeleteView, DetailView
 #  from bootstrap_modal_forms.generic import BSModalCreateView
 from django.urls import reverse_lazy
 import apps.warehouse.validations as validations
@@ -34,7 +35,7 @@ def test(request):
     }
 
     return JsonResponse(data)
-    
+
 # class test_model(BSModalCreateView):
 
 # model = test_model
@@ -44,7 +45,7 @@ def test(request):
 # success_url =  reverse_lazy('dashboard')
 
 
-# -------------------------------PRODUCTS MODEL--------------------------------------------#
+# -------------------------------PRODUCTS MODEL-----------------------#
 
 # ------------------------VIEWS------------------------------#
 
@@ -74,7 +75,7 @@ class DetailProduct(DetailView):
             context['unit_ids'] = unit_ids
         if package_ids:
             context['package_ids'] = package_ids
-        return context    
+        return context
 
 
 # ------------------------FUNCTIONS------------------------------#
@@ -120,7 +121,7 @@ class DeleteProduct(DeleteView):
     success_url = reverse_lazy('ListProduct')
 
 
-# -------------------------------------------PRODUCT UNIT MODEL---------------------------------------------------------#
+# --------------------PRODUCT UNIT MODEL----------------------------#
 
 # ------------------------VIEWS------------------------------#
 
@@ -147,7 +148,8 @@ class DetailProductUnit(DetailView):
             context['move_ids'] = move_ids
         if unit_id.package_id:
             print(unit_id.package_id.code)
-            move_pckg_ids = stock_move.objects.filter(package_id=unit_id.package_id.id)
+            move_pckg_ids = stock_move.objects.filter(
+                package_id=unit_id.package_id.id)
             if move_pckg_ids:
                 context['move_pckg_ids'] = move_pckg_ids
                 context['pckg_moves'] = 'Movimientos del Paquete'
@@ -180,13 +182,14 @@ class DeleteProductUnit(DeleteView):
     success_url = reverse_lazy('ListProductUnit')
 
 
-# -------------------------------------------STOCK LOCATION MODEL----------------------------------------------------------#
+# --------------------STOCK LOCATION MODEL--------------------------#
 
 # ------------------------VIEWS------------------------------#
 class ListStockLocation(ListView):
     model = stock_location
     # paginate_by = 20
     template_name = 'stock_location/views/ListStockLocation.html'
+
 
 class DetailStockLocation(DetailView):
     model = stock_location
@@ -208,11 +211,13 @@ class DetailStockLocation(DetailView):
         return context
 # ------------------------FUNCTIONS------------------------------#
 
+
 class CreateStockLocation(CreateView):
     model = stock_location
-    form_class = stock_location_form
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
+
+
 class EditStockLocation(UpdateView):
     model = stock_location
     form_class = stock_location_form
@@ -227,7 +232,7 @@ class DeleteStockLocation(DeleteView):
     success_url = reverse_lazy('ListStockLocation')
 
 
-# -------------------------------------------PRODUCT PACKAGE MODEL----------------------------------------------------------#
+# -----------------------PRODUCT PACKAGE MODEL-----------------------#
 
 # ------------------------VIEWS------------------------------#
 class ListProductPackage(ListView):
@@ -298,14 +303,16 @@ def create_unit_package(request, pk):
                 if functions.create_pckg_stock_control(request, pckg):
                     return redirect('ListProductPackage')
                 else:
-                    messages.error(request, 'Error in the creation of the Stock Control')
+                    messages.error(
+                        request, 'Error in the creation of the Stock Control')
             else:
-                messages.success(request, 'There are no units to create')
+                messages.success(
+                    request, 'There are no units to create')
                 return redirect('ListProductPackage')
     return redirect('ListProductPackage')
 
 
-# -------------------------------------------MEASUREMENTS UNITS----------------------------------------------------------#
+# ------------------MEASUREMENTS UNITS-----------------------------#
 
 # ------------------------VIEWS------------------------------#
 class ListMeasurementUnit(ListView):
@@ -314,7 +321,7 @@ class ListMeasurementUnit(ListView):
     template_name = 'measurement_units/views/ListMeasurementUnit.html'
 
 
-# ------------------------FUNCTIONS------------------------------#
+# ----------------------------FUNCTIONS------------------------------#
 
 class CreateMeasurementUnit(CreateView):
     model = measurement_units
@@ -337,8 +344,8 @@ class DeleteMeasurementUnit(DeleteView):
     success_url = reverse_lazy('ListMeasurementUnit')
 
 
-# -------------------------------------------STOCK MOVE MODEL---------------------------------------------------------#
-# ---------------------------------------VIEWS-------------------------------------------#
+# ----------------------STOCK MOVE MODEL----------------------------#
+# --------------------------VIEWS-----------------------------------#
 
 
 class ListStockMove(ListView):
@@ -377,10 +384,12 @@ def function_create_move_unit(request):
             return redirect('ListStockMove')
     else:
         form = move_unit_form()
-    return render(request, 'stock_move/functions/function_create_move_unit.html',
-                  {"form": form,
-                   "heading": heading,
-                   "title": title})
+    return render(
+        request,
+        'stock_move/functions/function_create_move_unit.html',
+        {"form": form,
+         "heading": heading,
+         "title": title})
 
 
 def function_create_move_package(request):
@@ -399,14 +408,16 @@ def function_create_move_package(request):
             return redirect('ListStockMove')
     else:
         form = move_package_form()
-    return render(request, 'stock_move/functions/function_create_move_package.html',
-                  {"form": form,
-                   "heading": heading,
-                   "title": title})
+    return render(
+        request,
+        'stock_move/functions/function_create_move_package.html',
+        {"form": form,
+         "heading": heading,
+         "title": title})
 
 
-# -------------------------------------------STOCK CONTROL---------------------------------------------------------#
-# ---------------------------------------VIEWS-------------------------------------------#
+# ---------------------------STOCK CONTROL-------------------------#
+# -----------------------------VIEWS--------------------------------#
 
 
 class ListStockControl(ListView):
