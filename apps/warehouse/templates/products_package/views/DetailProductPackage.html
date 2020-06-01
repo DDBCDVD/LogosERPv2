@@ -1,37 +1,43 @@
-{% extends "detail_template.html" %}
-
-{% block button_back %}
-  <div class="card-header">
-    <a href="{% url 'ListProductPackage' %}" class="btn btn-outline-primary btn-lg">
+{% extends "detail_template.html" %} {% block button_back %}
+<div class="card-header">
+  <a
+    href="{% url 'ListProductPackage' %}"
+    class="btn btn-outline-primary btn-lg"
+  >
     <span class="text">Volver</span>
-    </a>
-</div>  
-{% endblock %}  
-
-{% block table %}
+  </a>
+</div>
+{% endblock %} {% block table %}
 <thead>
-    <tr>
-        <td>Producto</td>
-        <td>Cantidad</td>
-        <td>Unidad de Medida</td>
-        <td>Cantidad Fija</td>
-        <td>Fecha Creación</td>
-        <td>Descripcion</td>
-    </tr>
+  <tr>
+    <td>Producto</td>
+    <td>Cantidad</td>
+    <td>Unidad de Medida</td>
+    <td>Piezas</td>
+    <td>Cantidad por Unidad</td>
+    <td>Cantidad Fija</td>
+    <td>Fecha Creación</td>
+    <td>Descripcion</td>
+  </tr>
 </thead>
 <tbody>
-    <tr>
-        <td>{{object.product_id.name}}</td>
-        <td>{{object.unit_qty}}</td>
-        <td>{{object.product_id.measure_id.abbreviation}}</td>
-        <td>{{object.fixed_ammount}}</td>
-        <td>{{object.date_created}}</td>
-        <td>{{object.description}}</td>
-    </tr>
+  <tr>
+    <td>{{object.product_id.name}}</td>
+    <td>{{object.unit_qty}}</td>
+    <td>{{object.product_id.measure_id.abbreviation}}</td>
+    <td>{{object.pieces}}</td>
+    <td>{{object.unit_qty}}</td>
+    <td>{{object.fixed_ammount}}</td>
+    <td>{{object.date_created}}</td>
+    <td>{{object.description}}</td>
+  </tr>
 </tbody>
 {% endblock %}
-
-{% block lines %}
-    {% include "lines/move_lines.html" %}  
-    {% include "lines/product_packages_lines.html" %}          
-{% endblock %}
+<div>
+  {% block lines %}
+  <div>
+    {% include "lines/move_lines.html" %} {% include
+    "lines/product_packages_lines.html" %}
+  </div>
+  {% endblock %}
+</div>

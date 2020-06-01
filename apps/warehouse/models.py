@@ -64,9 +64,6 @@ class products(models.Model):
         measurement_units,
         verbose_name="Unidad de Medida",
         on_delete=models.CASCADE)
-    measure_qty = models.PositiveIntegerField(
-        verbose_name="Factor de Cantidad",
-        default=0.0)
     date_created = models.DateTimeField(
         auto_now=True,
         verbose_name="Fecha de Creación")
@@ -160,8 +157,7 @@ class products_package(models.Model):
         null=True, blank=True,
         verbose_name="Descripcion")
     pieces = models.PositiveIntegerField(
-        verbose_name="Piezas", null=True,
-        blank=True)
+        verbose_name="Piezas", default=0.0)
     units_created = models.BooleanField(
         default=False)
     unit_qty = models.FloatField(
@@ -219,7 +215,7 @@ class product_units(models.Model):
         verbose_name="Descripción")
     quantity = models.FloatField(
         verbose_name="Cantidad",
-         default=0.0)
+        default=0.0)
     pieces = models.PositiveIntegerField(
         verbose_name="Piezas", default=0.0)
     product_id = models.ForeignKey(
@@ -278,7 +274,7 @@ class stock_move(models.Model):
         verbose_name="Descripcion")
     pieces = models.IntegerField(
         verbose_name="Piezas",
-        default=0.0)
+        default=0)
     quantity = models.FloatField(
         verbose_name="Cantidad",
         default=0.0)
@@ -351,11 +347,11 @@ class stock_control(models.Model):
     unit_id = models.ForeignKey(
         product_units, null=True, blank=True,
         verbose_name="Unidad de Producto",
-        on_delete=models.CASCADE,default=0.0)
-    unit_id = models.ForeignKey(product_units,
-    null=True, blank=True,
-    verbose_name="Unidad de Producto",
-    on_delete=models.CASCADE)
+        on_delete=models.CASCADE, default=0.0)
+    unit_id = models.ForeignKey(
+        product_units, null=True, blank=True,
+        verbose_name="Unidad de Producto",
+        on_delete=models.CASCADE)
     location_id = models.ForeignKey(
         stock_location, on_delete=models.CASCADE)
     date = models.DateField(
