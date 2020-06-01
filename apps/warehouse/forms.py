@@ -1,10 +1,10 @@
 from django import forms
 # from bootstrap_modal_forms.forms import BSModalForm
-from apps.warehouse.models import products 
-from apps.warehouse.models import stock_location 
-from apps.warehouse.models import product_units 
-from apps.warehouse.models import products_package 
-from apps.warehouse.models import measurement_units 
+from apps.warehouse.models import products
+from apps.warehouse.models import stock_location
+from apps.warehouse.models import product_units
+from apps.warehouse.models import products_package
+from apps.warehouse.models import measurement_units
 from apps.warehouse.models import stock_move
 
 
@@ -38,11 +38,11 @@ class products_form(forms.ModelForm):
                 attrs={'class':'form-control'}),
             'description': forms.Textarea(
                 attrs={'class':'form-control', 'placeholder':"Añadir Descripción"}),
-            
+
         }
 
-class product_units_form(forms.ModelForm):
 
+class product_units_form(forms.ModelForm):
 
     class Meta:
         model = product_units
@@ -65,22 +65,25 @@ class product_units_form(forms.ModelForm):
         }
         widgets = {
             'name': forms.TextInput(
-                attrs={'class':'form-control', 'placeholder':"Nombre de la Unidad"}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': "Nombre de la Unidad"}),
             'description': forms.Textarea(
-                attrs={'class':'form-control', 'placeholder':"Añadir una Descripción"}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Añadir una Descripción'}),
             'product_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'package_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'location_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'fixed_ammount': forms.CheckboxInput(),
-            
+
         }
 
 
 class stock_location_form(forms.ModelForm):
-
 
     class Meta:
         model = stock_location
@@ -99,17 +102,20 @@ class stock_location_form(forms.ModelForm):
         }
         widgets = {
             'name': forms.TextInput(
-                attrs={'class':'form-control', 'placeholder':"Ubicación"}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Ubicación'}),
             'active': forms.CheckboxInput(),
             'location_type': forms.Select(
-                attrs={'class':'form-control'}),
+                attrs={'class': 'form-control'}),
             'description': forms.Textarea(
-                attrs={'class':'form-control', 'placeholder':"Añadir Descripción"}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Añadir Descripción'}),
         }
-        
-        
+
+
 class products_package_form(forms.ModelForm):
-    
 
     class Meta:
         model = products_package
@@ -126,16 +132,17 @@ class products_package_form(forms.ModelForm):
         }
         widgets = {
             'description': forms.Textarea(
-                attrs={'class':'form-control', 'placeholder':"Añadir Descripción"}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Añadir Descripción'}),
             'product_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'location_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
         }
 
 
 class measurement_units_form(forms.ModelForm):
-    
 
     class Meta:
         model = measurement_units
@@ -154,17 +161,23 @@ class measurement_units_form(forms.ModelForm):
         }
         widgets = {
             'name': forms.TextInput(
-                attrs={'class':'form-control', 'placeholder':"Nombre unidad de Medida"}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Nombre unidad de Medida'}),
             'unit_qty': forms.NumberInput(
-                attrs={'class':'form-control'}),
+                attrs={
+                    'class': 'form-control'}),
             'abbreviation': forms.TextInput(
-                attrs={'class':'form-control', 'placeholder':"Kg., Lt, m2..."}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Kg., Lt, m2...'}),
             'description': forms.Textarea(
-                attrs={'class':'form-control', 'placeholder':"Añadir Descripción"}),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Añadir Descripción'}),
         }
 
-class move_package_form(forms.ModelForm):
 
+class move_package_form(forms.ModelForm):
 
     class Meta:
         model = stock_move
@@ -189,20 +202,22 @@ class move_package_form(forms.ModelForm):
 
         widgets = {
             'note': forms.TextInput(
-                attrs={'class':'form-control'}),
+                attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(
-                attrs={'class':'form-control'}),
+                attrs={'class': 'form-control'}),
             'package_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'location_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'location_dest_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'description': forms.Textarea(
-                attrs={'class':'form-control', 'placeholder':"Agregue una Descripción"}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Agregue una Descripción'}),
         }
-        
-        
+
+
 class move_unit_form(forms.ModelForm):
 
     # def __init__(self, *args, **kwargs):
@@ -211,16 +226,15 @@ class move_unit_form(forms.ModelForm):
     #     #     field.widget.attrs['class'] = 'form-control'
     #         # field.widget.attrs['autocomplete'] = 'off'
     #     self.fields['note'].widget.attrs['autofocus'] = True
-    
+
     unit_id = forms.ModelChoiceField(
         product_units.objects.exclude(
-            quantity__lte = 0.000001, 
-            first_move = True)
+            quantity__lte=0.000001,
+            first_move=True)
         )
 
-
     class Meta:
-        model = stock_move            
+        model = stock_move
 
         fields = [
             'note',
@@ -242,15 +256,17 @@ class move_unit_form(forms.ModelForm):
 
         widgets = {
             'note': forms.TextInput(
-                attrs={'class':'form-control'}),
+                attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(
-                attrs={'class':'form-control'}),
+                attrs={'class': 'form-control'}),
             'unit_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'location_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'location_dest_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'description': forms.Textarea(
-                attrs={'class':'form-control', 'placeholder':"Agregue una Descripción"}),
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Agregue una Descripción'}),
         }
