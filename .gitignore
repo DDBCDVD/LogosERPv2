@@ -41,3 +41,4 @@ Thumbs.db
 apps/migrations
 apps/warehouse/migrations
 .vscode/
+.idea/

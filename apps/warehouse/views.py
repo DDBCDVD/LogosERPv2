@@ -16,13 +16,13 @@ from apps.warehouse.models import products_package
 from apps.warehouse.models import measurement_units
 from apps.warehouse.models import stock_move
 from apps.warehouse.models import stock_control
-from apps.warehouse.forms import products_form
-from apps.warehouse.forms import stock_location_form
-from apps.warehouse.forms import product_units_form
-from apps.warehouse.forms import products_package_form
-from apps.warehouse.forms import measurement_units_form
-from apps.warehouse.forms import move_package_form
-from apps.warehouse.forms import move_unit_form
+from apps.warehouse.forms import ProductsForm
+from apps.warehouse.forms import StockLocationForm
+from apps.warehouse.forms import ProductUnitsForm
+from apps.warehouse.forms import ProductsPackageForm
+from apps.warehouse.forms import MeasurementUnitsForm
+from apps.warehouse.forms import MovePackageForm
+from apps.warehouse.forms import MoveUnitForm
 
 
 def dashboard(request):
@@ -36,18 +36,10 @@ def test(request):
 
     return JsonResponse(data)
 
-# class test_model(BSModalCreateView):
-
-# model = test_model
-# form_class = test_form
-# template_name = 'test/functions/create_test.html'
-# success_message = 'Success: Book was created.'
-# success_url =  reverse_lazy('dashboard')
-
-
 # -------------------------------PRODUCTS MODEL-----------------------#
 
 # ------------------------VIEWS------------------------------#
+
 
 # @method_decorator(login_required, name='dispatch')
 class ListProduct(ListView):
@@ -82,8 +74,8 @@ class DetailProduct(DetailView):
 
 class CreateProduct(CreateView):
     model = products
-    addform = measurement_units_form
-    form_class = products_form
+    addform = MeasurementUnitsForm
+    form_class = ProductsForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
     creating = reverse_lazy('CreateProduct')
@@ -109,14 +101,14 @@ class CreateProduct(CreateView):
 
 class EditProduct(UpdateView):
     model = products
-    form_class = products_form
+    form_class = ProductsForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
 
 
 class DeleteProduct(DeleteView):
     model = products
-    form_class = products_form
+    form_class = ProductsForm
     template_name = 'products/functions/DeleteProduct.html'
     success_url = reverse_lazy('ListProduct')
 
@@ -162,22 +154,22 @@ class DetailProductUnit(DetailView):
 
 class CreateProductUnit(CreateView):
     model = product_units
-    addform = products_form
-    form_class = product_units_form
+    addform = ProductsForm
+    form_class = ProductUnitsForm
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
 
 class EditProductUnit(UpdateView):
     model = product_units
-    form_class = product_units_form
+    form_class = ProductUnitsForm
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
 
 class DeleteProductUnit(DeleteView):
     model = product_units
-    form_class = product_units_form
+    form_class = ProductUnitsForm
     template_name = 'product_units/functions/DeleteProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
@@ -214,20 +206,21 @@ class DetailStockLocation(DetailView):
 
 class CreateStockLocation(CreateView):
     model = stock_location
+    form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
 
 class EditStockLocation(UpdateView):
     model = stock_location
-    form_class = stock_location_form
+    form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
 
 class DeleteStockLocation(DeleteView):
     model = stock_location
-    form_class = stock_location_form
+    form_class = StockLocationForm
     template_name = 'stock_location/functions/DeleteStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
@@ -266,21 +259,21 @@ class DetailProductPackage(DetailView):
 
 class CreateProductPackage(CreateView):
     model = products_package
-    form_class = products_package_form
+    form_class = ProductsPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
 
 class EditProductPackage(UpdateView):
     model = products_package
-    form_class = products_package_form
+    form_class = ProductsPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
 
 class DeleteProductPackage(DeleteView):
     model = products_package
-    form_class = products_package_form
+    form_class = ProductsPackageForm
     template_name = 'products_package/functions/DeleteProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
@@ -325,21 +318,21 @@ class ListMeasurementUnit(ListView):
 
 class CreateMeasurementUnit(CreateView):
     model = measurement_units
-    form_class = measurement_units_form
+    form_class = MeasurementUnitsForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
 
 class EditMeasurementUnit(UpdateView):
     model = measurement_units
-    form_class = measurement_units_form
+    form_class = MeasurementUnitsForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
 
 class DeleteMeasurementUnit(DeleteView):
     model = measurement_units
-    form_class = measurement_units_form
+    form_class = MeasurementUnitsForm
     template_name = 'measurement_units/functions/DeleteMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
@@ -371,9 +364,9 @@ class DetailStockMove(DetailView):
 def function_create_move_unit(request):
     heading = 'Moviendo Unidad de Producto'
     title = 'Nuevo Movimiento'
-    form = move_unit_form()
+    form = MoveUnitForm()
     if request.method == "POST":
-        form = move_unit_form(request.POST)
+        form = MoveUnitForm(request.POST)
     if form.is_valid():
         move = form.save(commit=False)
         if validations.validate_moves(request, move):
@@ -383,7 +376,7 @@ def function_create_move_unit(request):
         if functions.create_stock_move(request, move):
             return redirect('ListStockMove')
     else:
-        form = move_unit_form()
+        form = MoveUnitForm()
     return render(
         request,
         'stock_move/functions/function_create_move_unit.html',
@@ -395,9 +388,9 @@ def function_create_move_unit(request):
 def function_create_move_package(request):
     heading = 'Moviendo Paquete de Productos'
     title = 'Nuevo Movimiento'
-    form = move_package_form()
+    form = MovePackageForm()
     if request.method == "POST":
-        form = move_package_form(request.POST)
+        form = MovePackageForm(request.POST)
     if form.is_valid():
         move = form.save(commit=False)
         if validations.validate_moves(request, move):
@@ -407,7 +400,7 @@ def function_create_move_package(request):
         if functions.create_stock_move(request, move):
             return redirect('ListStockMove')
     else:
-        form = move_package_form()
+        form = MovePackageForm()
     return render(
         request,
         'stock_move/functions/function_create_move_package.html',

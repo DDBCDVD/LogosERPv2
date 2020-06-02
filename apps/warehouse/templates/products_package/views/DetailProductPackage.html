@@ -33,11 +33,7 @@
   </tr>
 </tbody>
 {% endblock %}
-<div>
-  {% block lines %}
-  <div>
-    {% include "lines/move_lines.html" %} {% include
-    "lines/product_packages_lines.html" %}
-  </div>
-  {% endblock %}
-</div>
+{% block lines %}
+  {% include "lines/move_lines.html" %}
+  {% include "lines/product_packages_lines.html" %}
+{% endblock %}

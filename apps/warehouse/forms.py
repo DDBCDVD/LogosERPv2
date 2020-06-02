@@ -8,7 +8,7 @@ from apps.warehouse.models import measurement_units
 from apps.warehouse.models import stock_move
 
 
-class products_form(forms.ModelForm):
+class ProductsForm(forms.ModelForm):
 
 
     class Meta:
@@ -38,7 +38,7 @@ class products_form(forms.ModelForm):
         }
 
 
-class product_units_form(forms.ModelForm):
+class ProductUnitsForm(forms.ModelForm):
 
     class Meta:
         model = product_units
@@ -79,7 +79,7 @@ class product_units_form(forms.ModelForm):
         }
 
 
-class stock_location_form(forms.ModelForm):
+class StockLocationForm(forms.ModelForm):
 
     class Meta:
         model = stock_location
@@ -111,7 +111,7 @@ class stock_location_form(forms.ModelForm):
         }
 
 
-class products_package_form(forms.ModelForm):
+class ProductsPackageForm(forms.ModelForm):
 
     class Meta:
         model = products_package
@@ -121,6 +121,7 @@ class products_package_form(forms.ModelForm):
             'product_id',
             'location_id',
             'fixed_ammount',
+            'unit_qty',
 
             ]
         labels = {
@@ -128,6 +129,7 @@ class products_package_form(forms.ModelForm):
             'product_id': 'Producto',
             'location_id': 'Ubicación',
             'fixed_ammount': 'Cantidad fija por Unidad',
+            'unit_qty': 'Cantidad por Unidad',
         }
         widgets = {
             'description': forms.Textarea(
@@ -139,10 +141,12 @@ class products_package_form(forms.ModelForm):
             'location_id': forms.Select(
                 attrs={'class': 'form-control select2'}),
             'fixed_ammount': forms.CheckboxInput(),
+            'unit_qty': forms.NumberInput(
+                attrs={'class': 'form-control'}),
         }
 
 
-class measurement_units_form(forms.ModelForm):
+class MeasurementUnitsForm(forms.ModelForm):
 
     class Meta:
         model = measurement_units
@@ -152,7 +156,7 @@ class measurement_units_form(forms.ModelForm):
             'unit_qty',
             'abbreviation',
             'description',
-            ]
+        ]
         labels = {
             'name': 'Nombre',
             'unit_qty': 'Factor de la Unidad',
@@ -174,7 +178,7 @@ class measurement_units_form(forms.ModelForm):
         }
 
 
-class move_package_form(forms.ModelForm):
+class MovePackageForm(forms.ModelForm):
 
     class Meta:
         model = stock_move
@@ -215,7 +219,7 @@ class move_package_form(forms.ModelForm):
         }
 
 
-class move_unit_form(forms.ModelForm):
+class MoveUnitForm(forms.ModelForm):
 
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
