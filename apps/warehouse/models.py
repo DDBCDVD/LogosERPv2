@@ -161,7 +161,7 @@ class products_package(models.Model):
     units_created = models.BooleanField(
         default=False)
     unit_qty = models.FloatField(
-        verbose_name="Cantidad de Unidades",
+        verbose_name="Cantidad por Unidad",
         default=0.0)
     product_id = models.ForeignKey(
         products, verbose_name="Producto",
