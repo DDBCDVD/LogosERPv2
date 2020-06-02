@@ -207,9 +207,23 @@ class DeleteProductUnit(DeleteView):
 
 # ------------------------VIEWS------------------------------#
 class ListStockLocation(ListView):
+
     model = stock_location
-    # paginate_by = 20
     template_name = 'stock_location/views/ListStockLocation.html'
+    create_form = StockLocationForm
+    success_url = reverse_lazy('ListStockLocation')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['create_form'] = self.create_form
+        context['headmodal'] = 'Nueva Ubicación'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        create_form = self.create_form(request.POST)
+        if create_form.is_valid():
+            create_form.save()
+            return HttpResponseRedirect(self.success_url)
 
 
 class DetailStockLocation(DetailView):
@@ -258,9 +272,6 @@ class DeleteStockLocation(DeleteView):
 
 # ------------------------VIEWS------------------------------#
 class ListProductPackage(ListView):
-
-    model = products_package
-
 
     model = products_package
     template_name = 'products_package/views/ListProductPackage.html'

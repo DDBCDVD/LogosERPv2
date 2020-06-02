@@ -77,8 +77,8 @@ class StockLocationForm(forms.ModelForm):
 
         fields = [
             'name',
-            'active',
             'location_type',
+            'active',
             'description',
             ]
         labels = {
@@ -89,16 +89,14 @@ class StockLocationForm(forms.ModelForm):
         }
         widgets = {
             'name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Ubicación'}),
-            'active': forms.CheckboxInput(),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Ubicación'}),
             'location_type': forms.Select(
                 attrs={'class': 'form-control'}),
+                'active': forms.CheckboxInput(),
             'description': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Añadir Descripción'}),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Añadir Descripción'}),
         }
 
 
