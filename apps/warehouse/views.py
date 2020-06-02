@@ -16,11 +16,11 @@ from apps.warehouse.models import products_package
 from apps.warehouse.models import measurement_units
 from apps.warehouse.models import stock_move
 from apps.warehouse.models import stock_control
-from apps.warehouse.forms import ProductsForm
+from apps.warehouse.forms import ProductForm
 from apps.warehouse.forms import StockLocationForm
-from apps.warehouse.forms import ProductUnitsForm
-from apps.warehouse.forms import ProductsPackageForm
-from apps.warehouse.forms import MeasurementUnitsForm
+from apps.warehouse.forms import ProductUnitForm
+from apps.warehouse.forms import ProductPackageForm
+from apps.warehouse.forms import MeasurementUnitForm
 from apps.warehouse.forms import MovePackageForm
 from apps.warehouse.forms import MoveUnitForm
 
@@ -29,12 +29,15 @@ def dashboard(request):
     return render(request, "dashboard.html")
 
 
-def test(request):
-    data = {
-        'nombre': 'daniel'
-    }
+# def test(request):
+#     data = {
+#         'nombre': 'daniel'
+#     }
 
-    return JsonResponse(data)
+#     return JsonResponse(data)
+
+def test(request):
+    return render(request, "tests/test_modal.html")
 
 # -------------------------------PRODUCTS MODEL-----------------------#
 
@@ -45,8 +48,21 @@ def test(request):
 class ListProduct(ListView):
 
     model = products
-    paginate_by = 20
+    create_form = ProductForm
     template_name = 'products/views/ListProduct.html'
+    success_url = reverse_lazy('ListProduct')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['create_form'] = self.create_form
+        context['headmodal'] = 'Nuevo Producto'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        create_form = self.create_form(request.POST)
+        if create_form.is_valid():
+            create_form.save()
+            return HttpResponseRedirect(self.success_url)
 
 
 class DetailProduct(DetailView):
@@ -68,14 +84,13 @@ class DetailProduct(DetailView):
         if package_ids:
             context['package_ids'] = package_ids
         return context
-
-
 # ------------------------FUNCTIONS------------------------------#
+
 
 class CreateProduct(CreateView):
     model = products
-    addform = MeasurementUnitsForm
-    form_class = ProductsForm
+    addform = MeasurementUnitForm
+    form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
     creating = reverse_lazy('CreateProduct')
@@ -101,14 +116,14 @@ class CreateProduct(CreateView):
 
 class EditProduct(UpdateView):
     model = products
-    form_class = ProductsForm
+    form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
 
 
 class DeleteProduct(DeleteView):
     model = products
-    form_class = ProductsForm
+    form_class = ProductForm
     template_name = 'products/functions/DeleteProduct.html'
     success_url = reverse_lazy('ListProduct')
 
@@ -119,9 +134,23 @@ class DeleteProduct(DeleteView):
 
 
 class ListProductUnit(ListView):
+
     model = product_units
-    paginate_by = 20
+    create_form = ProductUnitForm
     template_name = 'product_units/views/ListProductUnit.html'
+    success_url = reverse_lazy('ListProductUnit')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['create_form'] = self.create_form
+        context['headmodal'] = 'Nueva Unidad de Producto'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        create_form = self.create_form(request.POST)
+        if create_form.is_valid():
+            create_form.save()
+            return HttpResponseRedirect(self.success_url)
 
 
 class DetailProductUnit(DetailView):
@@ -154,22 +183,22 @@ class DetailProductUnit(DetailView):
 
 class CreateProductUnit(CreateView):
     model = product_units
-    addform = ProductsForm
-    form_class = ProductUnitsForm
+    addform = ProductForm
+    form_class = ProductUnitForm
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
 
 class EditProductUnit(UpdateView):
     model = product_units
-    form_class = ProductUnitsForm
+    form_class = ProductUnitForm
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
 
 class DeleteProductUnit(DeleteView):
     model = product_units
-    form_class = ProductUnitsForm
+    form_class = ProductUnitForm
     template_name = 'product_units/functions/DeleteProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
@@ -178,9 +207,23 @@ class DeleteProductUnit(DeleteView):
 
 # ------------------------VIEWS------------------------------#
 class ListStockLocation(ListView):
+
     model = stock_location
-    # paginate_by = 20
     template_name = 'stock_location/views/ListStockLocation.html'
+    create_form = StockLocationForm
+    success_url = reverse_lazy('ListStockLocation')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['create_form'] = self.create_form
+        context['headmodal'] = 'Nueva Ubicación'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        create_form = self.create_form(request.POST)
+        if create_form.is_valid():
+            create_form.save()
+            return HttpResponseRedirect(self.success_url)
 
 
 class DetailStockLocation(DetailView):
@@ -229,9 +272,23 @@ class DeleteStockLocation(DeleteView):
 
 # ------------------------VIEWS------------------------------#
 class ListProductPackage(ListView):
+
     model = products_package
-    paginate_by = 20
     template_name = 'products_package/views/ListProductPackage.html'
+    create_form = ProductPackageForm
+    success_url = reverse_lazy('ListProductPackage')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['create_form'] = self.create_form
+        context['headmodal'] = 'Nuevo Paquete'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        create_form = self.create_form(request.POST)
+        if create_form.is_valid():
+            create_form.save()
+            return HttpResponseRedirect(self.success_url)
 
 
 class DetailProductPackage(DetailView):
@@ -259,21 +316,21 @@ class DetailProductPackage(DetailView):
 
 class CreateProductPackage(CreateView):
     model = products_package
-    form_class = ProductsPackageForm
+    form_class = ProductPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
 
 class EditProductPackage(UpdateView):
     model = products_package
-    form_class = ProductsPackageForm
+    form_class = ProductPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
 
 class DeleteProductPackage(DeleteView):
     model = products_package
-    form_class = ProductsPackageForm
+    form_class = ProductPackageForm
     template_name = 'products_package/functions/DeleteProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
@@ -309,30 +366,44 @@ def create_unit_package(request, pk):
 
 # ------------------------VIEWS------------------------------#
 class ListMeasurementUnit(ListView):
-    model = measurement_units
-    paginate_by = 20
-    template_name = 'measurement_units/views/ListMeasurementUnit.html'
 
+    model = measurement_units
+    template_name = 'measurement_units/views/ListMeasurementUnit.html'
+    create_form = MeasurementUnitForm
+    success_url = reverse_lazy('ListMeasurementUnit')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['create_form'] = self.create_form
+        context['headmodal'] = 'Nueva Unidad de Medida'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        create_form = self.create_form(request.POST)
+        if create_form.is_valid():
+            create_form.save()
+            return HttpResponseRedirect(self.success_url)
 
 # ----------------------------FUNCTIONS------------------------------#
 
+
 class CreateMeasurementUnit(CreateView):
     model = measurement_units
-    form_class = MeasurementUnitsForm
+    form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
 
 class EditMeasurementUnit(UpdateView):
     model = measurement_units
-    form_class = MeasurementUnitsForm
+    form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
 
 class DeleteMeasurementUnit(DeleteView):
     model = measurement_units
-    form_class = MeasurementUnitsForm
+    form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/DeleteMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 

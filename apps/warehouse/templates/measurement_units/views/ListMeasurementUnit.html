@@ -1,10 +1,7 @@
 {% extends "list_template.html" %}
 {% block buttons_create %}
 <div class="card-header">
-    <a href="{% url 'CreateMeasurementUnit' %}" class="btn btn-outline-success btn-icon-split btn-lg">
-    <span class="text">Crear nueva Medida</span>
-    </a>
-    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+    <button type="button" class="btn btn-outline-success btn-icon-split btn-lg" data-toggle="modal" data-target="#CreateModal">Crear nueva Medida</button>
 </div>
 {% endblock %}
 {% block table %}
@@ -32,7 +29,7 @@
         <td>
             <a href="{% url 'EditMeasurementUnit' measure.id %}" class="btn btn-info btn-circle btn-lg" >
                 <i class="far fa-edit"></i>
-            </a> 
+            </a>
             <a href="{% url 'DeleteMeasurementUnit' measure.id %}" class="btn btn-danger btn-circle btn-lg">
                 <i class="fas fa-trash"></i>
             </a>

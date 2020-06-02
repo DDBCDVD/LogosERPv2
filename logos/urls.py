@@ -28,5 +28,6 @@ from apps.warehouse.models import stock_control
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', warehouse_views.dashboard, name='dashboard'),
+    path('test/', warehouse_views.test, name='test'),
     path('warehouse/', include('apps.warehouse.urls')),
 ]

@@ -8,7 +8,7 @@ from apps.warehouse.models import measurement_units
 from apps.warehouse.models import stock_move
 
 
-class ProductsForm(forms.ModelForm):
+class ProductForm(forms.ModelForm):
 
 
     class Meta:
@@ -38,44 +38,35 @@ class ProductsForm(forms.ModelForm):
         }
 
 
-class ProductUnitsForm(forms.ModelForm):
+class ProductUnitForm(forms.ModelForm):
 
     class Meta:
         model = product_units
 
         fields = [
             'name',
-            'description',
             'product_id',
-            'package_id',
-            'location_id',
             'fixed_ammount',
+            'description',
             ]
         labels = {
             'name': 'Nombre',
-            'description': 'Descripcion',
             'product_id': 'Producto',
-            'package_id': 'Paquete',
-            'location_id': 'Ubicacion',
             'fixed_ammount': 'Cantidad Fija',
+            'description': 'Descripción',
         }
         widgets = {
             'name': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'placeholder': "Nombre de la Unidad"}),
+            'product_id': forms.Select(
+                attrs={'class': 'form-control select2'}),
+            'fixed_ammount': forms.CheckboxInput(),
             'description': forms.Textarea(
                 attrs={
                     'class': 'form-control',
                     'placeholder': 'Añadir una Descripción'}),
-            'product_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'package_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'location_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'fixed_ammount': forms.CheckboxInput(),
-
         }
 
 
@@ -86,8 +77,8 @@ class StockLocationForm(forms.ModelForm):
 
         fields = [
             'name',
-            'active',
             'location_type',
+            'active',
             'description',
             ]
         labels = {
@@ -98,55 +89,48 @@ class StockLocationForm(forms.ModelForm):
         }
         widgets = {
             'name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Ubicación'}),
-            'active': forms.CheckboxInput(),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Ubicación'}),
             'location_type': forms.Select(
                 attrs={'class': 'form-control'}),
+                'active': forms.CheckboxInput(),
             'description': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Añadir Descripción'}),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Añadir Descripción'}),
         }
 
 
-class ProductsPackageForm(forms.ModelForm):
+class ProductPackageForm(forms.ModelForm):
 
     class Meta:
         model = products_package
 
         fields = [
-            'description',
             'product_id',
-            'location_id',
-            'fixed_ammount',
             'unit_qty',
-
+            'fixed_ammount',
+            'description',
             ]
         labels = {
-            'description': 'Descripción',
+
             'product_id': 'Producto',
-            'location_id': 'Ubicación',
-            'fixed_ammount': 'Cantidad fija por Unidad',
             'unit_qty': 'Cantidad por Unidad',
+            'fixed_ammount': 'Cantidad fija por Unidad',
+            'description': 'Descripción',
         }
         widgets = {
-            'description': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Añadir Descripción'}),
             'product_id': forms.Select(
                 attrs={'class': 'form-control select2'}),
-            'location_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'fixed_ammount': forms.CheckboxInput(),
             'unit_qty': forms.NumberInput(
                 attrs={'class': 'form-control'}),
+            'fixed_ammount': forms.CheckboxInput(),
+            'description': forms.Textarea(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Añadir Descripción'}),
         }
 
 
-class MeasurementUnitsForm(forms.ModelForm):
+class MeasurementUnitForm(forms.ModelForm):
 
     class Meta:
         model = measurement_units
