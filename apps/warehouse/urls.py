@@ -63,6 +63,8 @@ urlpatterns = [
     #  -------------------------------------MEASUREMENT UNITS MODEL-----------------------------------------#
     path('ListMeasurementUnit/', warehouse_views.ListMeasurementUnit.as_view(
         extra_context={'heading': 'Unidades de Medida', 'title': 'Unidades de Medida'}, model=measurement_units), name='ListMeasurementUnit'),
+    path('CreateMeasurementUnit/', warehouse_views.CreateMeasurementUnit.as_view(
+        extra_context={'heading': 'Creando Unidad de Medida', 'title': 'Crear Unidad de Medida'}, model=measurement_units), name='CreateMeasurementUnit'),
     path('EditMeasurementUnit/<int:pk>/', warehouse_views.EditMeasurementUnit.as_view(
         extra_context={'heading': 'Editando Unidad de Medida', 'title': 'Editar Unidad de Medida'}, model=measurement_units), name='EditMeasurementUnit'),
     path('DeleteMeasurementUnit/<int:pk>/', warehouse_views.DeleteMeasurementUnit.as_view(model=measurement_units), name='DeleteMeasurementUnit'),

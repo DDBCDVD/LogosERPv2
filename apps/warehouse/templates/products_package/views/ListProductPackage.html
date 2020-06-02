@@ -1,8 +1,6 @@
 {% extends "list_template.html" %} {% block buttons_create %}
 <div class="card-header">
-  <a href="{% url 'CreateProductPackage' %}" class="btn btn-outline-success btn-icon-split btn-lg">
-    <span class="text">Crear nuevo Paquete</span>
-  </a>
+  <button type="button" class="btn btn-outline-success btn-icon-split btn-lg" data-toggle="modal" data-target="#CreateModal">Crear Nuevo Paquete</button>
 </div>
 {% endblock %}
 {% block table %}
