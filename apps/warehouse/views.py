@@ -29,12 +29,15 @@ def dashboard(request):
     return render(request, "dashboard.html")
 
 
-def test(request):
-    data = {
-        'nombre': 'daniel'
-    }
+# def test(request):
+#     data = {
+#         'nombre': 'daniel'
+#     }
 
-    return JsonResponse(data)
+#     return JsonResponse(data)
+
+def test(request):
+    return render(request, "tests/test_modal.html")
 
 # -------------------------------PRODUCTS MODEL-----------------------#
 
@@ -310,18 +313,23 @@ def create_unit_package(request, pk):
 # ------------------------VIEWS------------------------------#
 class ListMeasurementUnit(ListView):
     model = measurement_units
-    paginate_by = 20
     template_name = 'measurement_units/views/ListMeasurementUnit.html'
-
-
-# ----------------------------FUNCTIONS------------------------------#
-
-class CreateMeasurementUnit(CreateView):
-    model = measurement_units
-    form_class = MeasurementUnitsForm
-    template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
+    create_form = MeasurementUnitsForm
     success_url = reverse_lazy('ListMeasurementUnit')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['create_form'] = self.create_form
+        context['headmodal'] = 'Nueva Unidad de Medida'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        create_form = self.create_form(request.POST)
+        if create_form.is_valid():
+            create_form.save()
+            return HttpResponseRedirect(self.success_url)
+
+# ----------------------------FUNCTIONS------------------------------#
 
 class EditMeasurementUnit(UpdateView):
     model = measurement_units

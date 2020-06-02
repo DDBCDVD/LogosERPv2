@@ -31,7 +31,14 @@
             <!-- /.container-fluid -->
         </section>
     {% endblock %}
-{% block javascript %}
+
+{% block modals %}
+
+    {% include "modals/CreateModal.html" %}
+
+{% endblock %}
+
+    {% block javascript %}
 
     {% include "js/list_detail_js.html" %}
 
