@@ -22,7 +22,7 @@ urlpatterns = [
     path('EditProduct/<int:pk>/', warehouse_views.EditProduct.as_view(
         extra_context={'heading': 'Editando Producto', 'title': 'Editar Producto'}, model=products), name='EditProduct'),
     path('DeleteProduct/<int:pk>/', warehouse_views.DeleteProduct.as_view(
-        model=products, extra_context={'heading': 'Eliminar Producto', 'title': 'Eliminar Producto'}), name='DeleteProduct'),
+        extra_context={'heading': 'Eliminar Producto', 'title': 'Eliminar Producto'}, model=products), name='DeleteProduct'),
 
     #  ------------------------------------------PRODUCT UNIT MODEL--------------------------------------#
     path('ListProductUnit/', warehouse_views.ListProductUnit.as_view(
