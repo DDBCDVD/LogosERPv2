@@ -1,7 +1,9 @@
 {% extends "list_template.html" %}
 {% block buttons_create %}
 <div class="card-header">
-    <button type="button" class="btn btn-outline-success btn-icon-split btn-lg" data-toggle="modal" data-target="#CreateModal">Crear Nueva Ubicación</button>
+    <a href="{% url 'CreateStockLocation' %}" class="btn btn-outline-success btn-icon-split btn-lg">
+        <span class="text">Crear Nueva Ubicación</span>
+    </a>
 </div>
 {% endblock %}
 
