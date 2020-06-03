@@ -1,7 +1,9 @@
 {% extends "list_template.html" %}
 {% block buttons_create %}
 <div class="card-header">
-    <button type="button" class="btn btn-outline-success btn-icon-split btn-lg" data-toggle="modal" data-target="#CreateModal">Crear nueva Medida</button>
+    <a href="{% url 'CreateMeasurementUnit' %}" class="btn btn-outline-success btn-icon-split btn-lg">
+        <span class="text">Crear nueva Medida</span>
+    </a>
 </div>
 {% endblock %}
 {% block table %}
