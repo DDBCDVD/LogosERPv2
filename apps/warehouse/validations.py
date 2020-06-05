@@ -1,6 +1,6 @@
 from django.contrib import messages
-from apps.warehouse.models import product_units
-from apps.warehouse.models import stock_control
+from apps.warehouse.models import ProductUnit
+from apps.warehouse.models import StockControl
 from apps.warehouse import functions
 
 
@@ -145,13 +145,13 @@ def validate_stock_control(request, move):
         unit_list.append(move.unit_id)
     if move.package_id:
         measure = move.package_id.product_id.measure_id.abbreviation
-        unit_ids = product_units.objects.filter(package_id=move.package_id)
+        unit_ids = ProductUnit.objects.filter(package_id=move.package_id)
         for unit_id in unit_ids:
             unit_list.append(unit_id)
     for unit_id in unit_list:
         if unit_id.stock_ctrl:
             if move.location_id.location_type != 'Ingress':
-                stck_ctrl_origin = stock_control.objects.filter(
+                stck_ctrl_origin = StockControl.objects.filter(
                     unit_id=unit_id.id, location_id=move.location_id)
                 if not stck_ctrl_origin:
                     on_error = True
@@ -180,7 +180,7 @@ def validate_stock_control(request, move):
                                    origin_data.quantity)
                             messages.error(request, stock_control_error)
                         else:
-                            stck_ctrl_dest = stock_control.objects.filter(
+                            stck_ctrl_dest = StockControl.objects.filter(
                                 unit_id=unit_id.id,
                                 location_id=move.location_dest_id)
                             if stck_ctrl_dest:

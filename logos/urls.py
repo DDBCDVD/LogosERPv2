@@ -17,13 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from apps.warehouse import views as warehouse_views
-from apps.warehouse.models import products
-from apps.warehouse.models import stock_location
-from apps.warehouse.models import product_units
-from apps.warehouse.models import products_package
-from apps.warehouse.models import measurement_units
-from apps.warehouse.models import stock_move
-from apps.warehouse.models import stock_control
 
 urlpatterns = [
     path('admin/', admin.site.urls),

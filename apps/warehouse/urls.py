@@ -2,81 +2,81 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from apps.warehouse import views as warehouse_views
-from apps.warehouse.models import products
-from apps.warehouse.models import stock_location
-from apps.warehouse.models import product_units
-from apps.warehouse.models import products_package
-from apps.warehouse.models import measurement_units
-from apps.warehouse.models import stock_move
-from apps.warehouse.models import stock_control
+from apps.warehouse.models import Product
+from apps.warehouse.models import StockLocation
+from apps.warehouse.models import ProductUnit
+from apps.warehouse.models import ProductPackage
+from apps.warehouse.models import MeasurementUnit
+from apps.warehouse.models import StockMove
+from apps.warehouse.models import StockControl
 
 urlpatterns = [
 
     #  -----------------------------PRODUCTS MODEL--------------------#
     path('ListProduct/', warehouse_views.ListProduct.as_view(
-        extra_context={'heading': 'Productos', 'title': 'Productos'}, model=products), name='ListProduct'),
+        extra_context={'heading': 'Productos', 'title': 'Productos'}, model=Product), name='ListProduct'),
     path('DetailProduct/<int:pk>/', warehouse_views.DetailProduct.as_view(
-        extra_context={'title': 'Detalle Producto'}, model=products), name='DetailProduct'),
+        extra_context={'title': 'Detalle Producto'}, model=Product), name='DetailProduct'),
     path('CreateProduct/', warehouse_views.CreateProduct.as_view(
-            extra_context={'heading': 'Creando Producto', 'title': 'Crear Producto'}, model=products), name='CreateProduct'),
+            extra_context={'heading': 'Creando Producto', 'title': 'Crear Producto'}, model=Product), name='CreateProduct'),
     path('EditProduct/<int:pk>/', warehouse_views.EditProduct.as_view(
-        extra_context={'heading': 'Editando Producto', 'title': 'Editar Producto'}, model=products), name='EditProduct'),
+        extra_context={'heading': 'Editando Producto', 'title': 'Editar Producto'}, model=Product), name='EditProduct'),
     path('DeleteProduct/<int:pk>/', warehouse_views.DeleteProduct.as_view(
-        extra_context={'heading': 'Eliminar Producto', 'title': 'Eliminar Producto'}, model=products), name='DeleteProduct'),
+        extra_context={'heading': 'Eliminar Producto', 'title': 'Eliminar Producto'}, model=Product), name='DeleteProduct'),
 
     #  ------------------------------------------PRODUCT UNIT MODEL--------------------------------------#
     path('ListProductUnit/', warehouse_views.ListProductUnit.as_view(
-        extra_context={'heading': 'Unidades de Producto', 'title': 'Unidades de Producto'}, model=product_units), name='ListProductUnit'),
+        extra_context={'heading': 'Unidades de Producto', 'title': 'Unidades de Producto'}, model=ProductUnit), name='ListProductUnit'),
     path('DetailProductUnit/<int:pk>/', warehouse_views.DetailProductUnit.as_view(
-        extra_context={'title': 'Detalles'}, model=product_units), name='DetailProductUnit'),
+        extra_context={'title': 'Detalles'}, model=ProductUnit), name='DetailProductUnit'),
     path('CreateProductUnit/', warehouse_views.CreateProductUnit.as_view(
-        extra_context={'heading': 'Creando Unidad', 'title': 'Crear Unidad'}, model=product_units), name='CreateProductUnit'),
+        extra_context={'heading': 'Creando Unidad', 'title': 'Crear Unidad'}, model=ProductUnit), name='CreateProductUnit'),
     path('EditProductUnit/<int:pk>/', warehouse_views.EditProductUnit.as_view(
-        extra_context={'heading': 'Editando Unidad', 'title': 'Editar Unidad'}, model=product_units), name='EditProductUnit'),
-    path('DeleteProductUnit/<int:pk>/', warehouse_views.DeleteProductUnit.as_view(model=product_units), name='DeleteProductUnit'),
+        extra_context={'heading': 'Editando Unidad', 'title': 'Editar Unidad'}, model=ProductUnit), name='EditProductUnit'),
+    path('DeleteProductUnit/<int:pk>/', warehouse_views.DeleteProductUnit.as_view(model=ProductUnit), name='DeleteProductUnit'),
 
     #  -----------------------------------------STOCK LOCATION MODEL--------------------------------#
     path('ListStockLocation/', warehouse_views.ListStockLocation.as_view(
-        extra_context={'heading': 'Ubicaciones', 'title': 'Ubicaciones'}, model=stock_location), name='ListStockLocation'),
+        extra_context={'heading': 'Ubicaciones', 'title': 'Ubicaciones'}, model=StockLocation), name='ListStockLocation'),
     path('CreateStockLocation/', warehouse_views.CreateStockLocation.as_view(
-        extra_context={'heading': 'Creado Ubicación', 'title': 'Crear Ubicación'}, model=stock_location), name='CreateStockLocation'),
+        extra_context={'heading': 'Creado Ubicación', 'title': 'Crear Ubicación'}, model=StockLocation), name='CreateStockLocation'),
     path('EditStockLocation/<int:pk>/', warehouse_views.EditStockLocation.as_view(
-        extra_context={'heading': 'Editando Ubicación', 'title': 'Editar Ubicación'}, model=stock_location), name='EditStockLocation'),
+        extra_context={'heading': 'Editando Ubicación', 'title': 'Editar Ubicación'}, model=StockLocation), name='EditStockLocation'),
     path('DeleteStockLocation/<int:pk>/', warehouse_views.DeleteStockLocation.as_view(
-        model=stock_location), name='DeleteStockLocation'),
+        model=StockLocation), name='DeleteStockLocation'),
     path('DetailStockLocation/<int:pk>/', warehouse_views.DetailStockLocation.as_view(
-        extra_context={'title': 'Detalles'}, model=stock_location), name='DetailStockLocation'),
+        extra_context={'title': 'Detalles'}, model=StockLocation), name='DetailStockLocation'),
 
     #  -------------------------------------PRODUCTS PACKAGE MODEL-----------------------------------------#
     path('ListProductPackage/', warehouse_views.ListProductPackage.as_view(
-        extra_context={'heading': 'Paquetes', 'title': 'Paquetes de Productos'}, model=products_package), name='ListProductPackage'),
+        extra_context={'heading': 'Paquetes', 'title': 'Paquetes de Productos'}, model=ProductPackage), name='ListProductPackage'),
     path('DetailProductPackage/<pk>/', warehouse_views.DetailProductPackage.as_view(
-        extra_context={'heading': 'Detalle del Paquete', 'title': 'Detalle del Paquete'}, model=products_package), name='DetailProductPackage'),
+        extra_context={'heading': 'Detalle del Paquete', 'title': 'Detalle del Paquete'}, model=ProductPackage), name='DetailProductPackage'),
     path('CreateProductPackage/', warehouse_views.CreateProductPackage.as_view(
-        extra_context={'heading': 'Creando Paquetes', 'title': 'Crear Paquete'}, model=products_package), name='CreateProductPackage'),
+        extra_context={'heading': 'Creando Paquetes', 'title': 'Crear Paquete'}, model=ProductPackage), name='CreateProductPackage'),
     path('EditProductPackage/<int:pk>/', warehouse_views.EditProductPackage.as_view(
-        extra_context={'heading': 'Editando Paquete', 'title': 'Editar Paquete'}, model=products_package), name='EditProductPackage'),
+        extra_context={'heading': 'Editando Paquete', 'title': 'Editar Paquete'}, model=ProductPackage), name='EditProductPackage'),
     path('DeleteProductPackage/<int:pk>/', warehouse_views.DeleteProductPackage.as_view(
-        model=products_package), name='DeleteProductPackage'),
+        model=ProductPackage), name='DeleteProductPackage'),
     path('create_unit_package/<int:pk>/', warehouse_views.create_unit_package, name='create_unit_package'),
 
     #  -------------------------------------MEASUREMENT UNITS MODEL-----------------------------------------#
     path('ListMeasurementUnit/', warehouse_views.ListMeasurementUnit.as_view(
-        extra_context={'heading': 'Unidades de Medida', 'title': 'Unidades de Medida'}, model=measurement_units), name='ListMeasurementUnit'),
+        extra_context={'heading': 'Unidades de Medida', 'title': 'Unidades de Medida'}, model=MeasurementUnit), name='ListMeasurementUnit'),
     path('CreateMeasurementUnit/', warehouse_views.CreateMeasurementUnit.as_view(
-        extra_context={'heading': 'Creando Unidad de Medida', 'title': 'Crear Unidad de Medida'}, model=measurement_units), name='CreateMeasurementUnit'),
+        extra_context={'heading': 'Creando Unidad de Medida', 'title': 'Crear Unidad de Medida'}, model=MeasurementUnit), name='CreateMeasurementUnit'),
     path('EditMeasurementUnit/<int:pk>/', warehouse_views.EditMeasurementUnit.as_view(
-        extra_context={'heading': 'Editando Unidad de Medida', 'title': 'Editar Unidad de Medida'}, model=measurement_units), name='EditMeasurementUnit'),
-    path('DeleteMeasurementUnit/<int:pk>/', warehouse_views.DeleteMeasurementUnit.as_view(model=measurement_units), name='DeleteMeasurementUnit'),
+        extra_context={'heading': 'Editando Unidad de Medida', 'title': 'Editar Unidad de Medida'}, model=MeasurementUnit), name='EditMeasurementUnit'),
+    path('DeleteMeasurementUnit/<int:pk>/', warehouse_views.DeleteMeasurementUnit.as_view(model=MeasurementUnit), name='DeleteMeasurementUnit'),
 
     #  -------------------------------------STOCK MOVE MODEL-----------------------------------------#
     path('ListStockMove/', warehouse_views.ListStockMove.as_view(
-        extra_context={'heading': 'Movimientos de Stock', 'title': 'Movimientos de Stock'}, model=stock_move), name='ListStockMove'),
+        extra_context={'heading': 'Movimientos de Stock', 'title': 'Movimientos de Stock'}, model=StockMove), name='ListStockMove'),
     path('DetailStockMove/<pk>', warehouse_views.DetailStockMove.as_view(
-        extra_context={'title': 'Detalle'}, model=stock_move), name='DetailStockMove'),
+        extra_context={'title': 'Detalle'}, model=StockMove), name='DetailStockMove'),
     path('function_create_move_package/', warehouse_views.function_create_move_package, name='function_create_move_package'),
     path('function_create_move_unit/', warehouse_views.function_create_move_unit, name='function_create_move_unit'),
     #  -------------------------------------STOCK CONTROL MODEL-----------------------------------------#
     path('ListStockControl/', warehouse_views.ListStockControl.as_view(
-        extra_context={'heading': 'Controles de Stock', 'title': 'Control de Stock'}, model=stock_control), name='ListStockControl'),
+        extra_context={'heading': 'Controles de Stock', 'title': 'Control de Stock'}, model=StockControl), name='ListStockControl'),
 ]

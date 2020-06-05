@@ -1,13 +1,13 @@
 from django.contrib import messages
-from apps.warehouse.models import stock_control
-from apps.warehouse.models import product_units
-from apps.warehouse.models import products_package
+from apps.warehouse.models import StockControl
+from apps.warehouse.models import ProductUnit
+from apps.warehouse.models import ProductPackage
 
 
 def create_unit_package(request, pckg):
     units_create = False
     for qty in range(int(pckg.pieces)):
-        product_units.objects.create(
+        ProductUnit.objects.create(
             name=str(pckg.product_id.name + ' ' + pckg.code),
             measure=str(pckg.product_id.measure_id.name),
             product_id=pckg.product_id,
@@ -24,10 +24,10 @@ def create_unit_package(request, pckg):
 
 def create_pckg_stock_control(request, pckg):
     stock_control_created = False
-    unit_ids = product_units.objects.filter(package_id=pckg.id)
+    unit_ids = ProductUnit.objects.filter(package_id=pckg.id)
     if unit_ids:
         for unit_id in unit_ids:
-            stock_control.objects.create(
+            StockControl.objects.create(
                 quantity=int(pckg.unit_qty),
                 unit_id=unit_id,
                 location_id=pckg.location_id
@@ -54,12 +54,12 @@ def create_stock_move(request, move):
 
     if move.package_id:
         package_id = move.package_id.id
-        product_package = products_package.objects.get(id=package_id)
+        product_package = ProductPackage.objects.get(id=package_id)
         product_package.location_id_id = location_dest_id
         product_package.pieces = move.pieces
         product_package.first_move = True
         product_package.save()
-        unit_ids = product_units.objects.filter(package_id=package_id)
+        unit_ids = ProductUnit.objects.filter(package_id=package_id)
         if unit_ids:
             for unit_id in unit_ids:
                 unit_id.location_id_id = location_dest_id
@@ -72,7 +72,7 @@ def create_stock_move(request, move):
 
     if move.unit_id:
         unit_id = move.unit_id.id
-        product_unit = product_units.objects.get(id=unit_id)
+        product_unit = ProductUnit.objects.get(id=unit_id)
         product_unit.location_id_id = location_dest_id
         product_unit.location_from_id_id = location_id
         product_unit.save()
@@ -121,7 +121,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
             move.prev_qty_dest = unit_id.quantity
             move.balance_dest = move.unit_id.quantity + move.quantity
 
-            stock_control.objects.create(
+            StockControl.objects.create(
                     quantity=move.quantity,
                     unit_id=unit_id,
                     location_id=move.location_dest_id)
@@ -177,7 +177,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                     origin_data.save()
                     if origin_data.quantity == 0.0:
                         origin_data.delete()
-                    stock_control.objects.create(
+                    StockControl.objects.create(
                         quantity=move.quantity,
                         unit_id=unit_id,
                         location_id=move.location_dest_id)
@@ -237,7 +237,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
             if origin_data.quantity == 0.0:
                 origin_data.delete()
                 if unit_id.package_id:
-                    package_id = products_package.objects.get(
+                    package_id = ProductPackage.objects.get(
                         id=unit_id.package_id.id)
                     package_id.unit_qty = package_id.unit_qty - 1
                     package_id.save()
