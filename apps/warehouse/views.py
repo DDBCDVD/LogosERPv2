@@ -9,13 +9,13 @@ from django.views.generic import DeleteView, DetailView
 from django.urls import reverse_lazy
 import apps.warehouse.validations as validations
 import apps.warehouse.functions as functions
-from apps.warehouse.models import products
-from apps.warehouse.models import stock_location
-from apps.warehouse.models import product_units
-from apps.warehouse.models import products_package
-from apps.warehouse.models import measurement_units
-from apps.warehouse.models import stock_move
-from apps.warehouse.models import stock_control
+from apps.warehouse.models import Product
+from apps.warehouse.models import StockLocation
+from apps.warehouse.models import ProductUnit
+from apps.warehouse.models import ProductPackage
+from apps.warehouse.models import MeasurementUnit
+from apps.warehouse.models import StockMove
+from apps.warehouse.models import StockControl
 from apps.warehouse.forms import ProductForm
 from apps.warehouse.forms import StockLocationForm
 from apps.warehouse.forms import ProductUnitForm
@@ -47,7 +47,7 @@ def test(request):
 # @method_decorator(login_required, name='dispatch')
 class ListProduct(ListView):
 
-    model = products
+    model = Product
     create_form = ProductForm
     template_name = 'products/views/ListProduct.html'
     success_url = reverse_lazy('ListProduct')
@@ -66,15 +66,14 @@ class ListProduct(ListView):
 
 
 class DetailProduct(DetailView):
-    model = product_units
-    stock_move = stock_move
+    model = ProductUnit
     template_name = 'products/views/DetailProduct.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product_id = self.model.objects.get(pk=self.kwargs.get('pk'))
-        unit_ids = product_units.objects.filter(product_id=product_id)
-        package_ids = products_package.objects.filter(product_id=product_id)
+        unit_ids = ProductUnit.objects.filter(product_id=product_id)
+        package_ids = ProductPackage.objects.filter(product_id=product_id)
         heading = 'Detalle %s' % product_id.code
         context['heading'] = heading
         context['unit_lines'] = 'Unidades Asociadas'
@@ -88,7 +87,7 @@ class DetailProduct(DetailView):
 
 
 class CreateProduct(CreateView):
-    model = products
+    model = Product
     addform = MeasurementUnitForm
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
@@ -115,14 +114,14 @@ class CreateProduct(CreateView):
 
 
 class EditProduct(UpdateView):
-    model = products
+    model = Product
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
 
 
 class DeleteProduct(DeleteView):
-    model = products
+    model = Product
     form_class = ProductForm
     template_name = 'products/functions/DeleteProduct.html'
     success_url = reverse_lazy('ListProduct')
@@ -135,7 +134,7 @@ class DeleteProduct(DeleteView):
 
 class ListProductUnit(ListView):
 
-    model = product_units
+    model = ProductUnit
     create_form = ProductUnitForm
     template_name = 'product_units/views/ListProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
@@ -154,13 +153,13 @@ class ListProductUnit(ListView):
 
 
 class DetailProductUnit(DetailView):
-    model = product_units
+    model = ProductUnit
     template_name = 'product_units/views/DetailProductUnit.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         unit_id = self.model.objects.get(pk=self.kwargs.get('pk'))
-        move_ids = stock_move.objects.filter(unit_id=unit_id)
+        move_ids = StockMove.objects.filter(unit_id=unit_id)
         heading = 'Detalle %s' % unit_id.code
         context['heading'] = heading
         context['move_heading'] = 'Movimientos'
@@ -169,7 +168,7 @@ class DetailProductUnit(DetailView):
             context['move_ids'] = move_ids
         if unit_id.package_id:
             print(unit_id.package_id.code)
-            move_pckg_ids = stock_move.objects.filter(
+            move_pckg_ids = StockMove.objects.filter(
                 package_id=unit_id.package_id.id)
             if move_pckg_ids:
                 context['move_pckg_ids'] = move_pckg_ids
@@ -182,7 +181,7 @@ class DetailProductUnit(DetailView):
 # ------------------------FUNCTIONS------------------------------#
 
 class CreateProductUnit(CreateView):
-    model = product_units
+    model = ProductUnit
     addform = ProductForm
     form_class = ProductUnitForm
     template_name = 'product_units/functions/CreateProductUnit.html'
@@ -190,14 +189,14 @@ class CreateProductUnit(CreateView):
 
 
 class EditProductUnit(UpdateView):
-    model = product_units
+    model = ProductUnit
     form_class = ProductUnitForm
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
 
 class DeleteProductUnit(DeleteView):
-    model = product_units
+    model = ProductUnit
     form_class = ProductUnitForm
     template_name = 'product_units/functions/DeleteProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
@@ -208,7 +207,7 @@ class DeleteProductUnit(DeleteView):
 # ------------------------VIEWS------------------------------#
 class ListStockLocation(ListView):
 
-    model = stock_location
+    model = StockLocation
     template_name = 'stock_location/views/ListStockLocation.html'
     create_form = StockLocationForm
     success_url = reverse_lazy('ListStockLocation')
@@ -227,14 +226,14 @@ class ListStockLocation(ListView):
 
 
 class DetailStockLocation(DetailView):
-    model = stock_location
+    model = StockLocation
     template_name = 'stock_location/views/DetailStockLocation.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         location_id = self.model.objects.get(pk=self.kwargs.get('pk'))
         stkctrl_ids = stock_control.objects.filter(location_id=location_id)
-        pckg_ids = products_package.objects.filter(location_id=location_id)
+        pckg_ids = ProductPackage.objects.filter(location_id=location_id)
         heading = 'Detalle %s' % location_id.code
         context['heading'] = heading
         context['controls_lines'] = 'Stock en esta ubicación'
@@ -248,21 +247,21 @@ class DetailStockLocation(DetailView):
 
 
 class CreateStockLocation(CreateView):
-    model = stock_location
+    model = StockLocation
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
 
 class EditStockLocation(UpdateView):
-    model = stock_location
+    model = StockLocation
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
 
 class DeleteStockLocation(DeleteView):
-    model = stock_location
+    model = StockLocation
     form_class = StockLocationForm
     template_name = 'stock_location/functions/DeleteStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
@@ -273,7 +272,7 @@ class DeleteStockLocation(DeleteView):
 # ------------------------VIEWS------------------------------#
 class ListProductPackage(ListView):
 
-    model = products_package
+    model = ProductPackage
     template_name = 'products_package/views/ListProductPackage.html'
     create_form = ProductPackageForm
     success_url = reverse_lazy('ListProductPackage')
@@ -292,14 +291,14 @@ class ListProductPackage(ListView):
 
 
 class DetailProductPackage(DetailView):
-    model = products_package
+    model = ProductPackage
     template_name = 'products_package/views/DetailProductPackage.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         package_id = self.model.objects.get(pk=self.kwargs.get('pk'))
-        move_ids = stock_move.objects.filter(package_id=package_id.id)
-        unit_ids = product_units.objects.filter(package_id=package_id.id)
+        move_ids = StockMove.objects.filter(package_id=package_id.id)
+        unit_ids = ProductUnit.objects.filter(package_id=package_id.id)
 
         heading = 'Detalle %s' % package_id.code
         context['heading'] = heading
@@ -315,21 +314,21 @@ class DetailProductPackage(DetailView):
 # ------------------------FUNCTIONS------------------------------#
 
 class CreateProductPackage(CreateView):
-    model = products_package
+    model = ProductPackage
     form_class = ProductPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
 
 class EditProductPackage(UpdateView):
-    model = products_package
+    model = ProductPackage
     form_class = ProductPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
 
 class DeleteProductPackage(DeleteView):
-    model = products_package
+    model = ProductPackage
     form_class = ProductPackageForm
     template_name = 'products_package/functions/DeleteProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
@@ -340,7 +339,7 @@ def create_unit_package(request, pk):
     Create multiple product_unit from this package
 
     '''
-    package = products_package.objects.filter(id=pk)
+    package = ProductPackage.objects.filter(id=pk)
     for pckg in package:
         if pckg.units_created:
             messages.info(
@@ -367,7 +366,7 @@ def create_unit_package(request, pk):
 # ------------------------VIEWS------------------------------#
 class ListMeasurementUnit(ListView):
 
-    model = measurement_units
+    model = MeasurementUnit
     template_name = 'measurement_units/views/ListMeasurementUnit.html'
     create_form = MeasurementUnitForm
     success_url = reverse_lazy('ListMeasurementUnit')
@@ -388,21 +387,21 @@ class ListMeasurementUnit(ListView):
 
 
 class CreateMeasurementUnit(CreateView):
-    model = measurement_units
+    model = MeasurementUnit
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
 
 class EditMeasurementUnit(UpdateView):
-    model = measurement_units
+    model = MeasurementUnit
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
 
 class DeleteMeasurementUnit(DeleteView):
-    model = measurement_units
+    model = MeasurementUnit
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/DeleteMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
@@ -413,13 +412,13 @@ class DeleteMeasurementUnit(DeleteView):
 
 
 class ListStockMove(ListView):
-    model = stock_move
+    model = StockMove
     paginate_by = 20
     template_name = 'stock_move/views/ListStockMove.html'
 
 
 class DetailStockMove(DetailView):
-    model = stock_move
+    model = StockMove
     template_name = 'stock_move/views/DetailStockMove.html'
 
     def get_context_data(self, **kwargs):
@@ -485,6 +484,6 @@ def function_create_move_package(request):
 
 
 class ListStockControl(ListView):
-    stock_control_model = stock_control
+    model = StockControl
     paginate_by = 20
     template_name = 'stock_control/views/ListStockControl.html'

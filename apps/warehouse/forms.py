@@ -1,18 +1,17 @@
 from django import forms
 # from bootstrap_modal_forms.forms import BSModalForm
-from apps.warehouse.models import products
-from apps.warehouse.models import stock_location
-from apps.warehouse.models import product_units
-from apps.warehouse.models import products_package
-from apps.warehouse.models import measurement_units
-from apps.warehouse.models import stock_move
+from apps.warehouse.models import Product
+from apps.warehouse.models import StockLocation
+from apps.warehouse.models import ProductUnit
+from apps.warehouse.models import ProductPackage
+from apps.warehouse.models import MeasurementUnit
+from apps.warehouse.models import StockMove
 
 
 class ProductForm(forms.ModelForm):
 
-
     class Meta:
-        model = products
+        model = Product
 
         fields = [
             'name',
@@ -28,12 +27,14 @@ class ProductForm(forms.ModelForm):
         }
         widgets = {
             'name': forms.TextInput(
-                attrs={'class':'form-control', 'placeholder':"Nombre Producto"}),
+                attrs={'class': 'form-control',
+                       'placeholder': "Nombre Producto"}),
             'active': forms.CheckboxInput(),
             'measure_id': forms.Select(
-                attrs={'class':'form-control select2'}),
+                attrs={'class': 'form-control select2'}),
             'description': forms.Textarea(
-                attrs={'class':'form-control', 'placeholder':"Añadir Descripción"}),
+                attrs={'class': 'form-control',
+                       'placeholder': "Añadir Descripción"}),
 
         }
 
@@ -41,7 +42,7 @@ class ProductForm(forms.ModelForm):
 class ProductUnitForm(forms.ModelForm):
 
     class Meta:
-        model = product_units
+        model = ProductUnit
 
         fields = [
             'name',
@@ -73,7 +74,7 @@ class ProductUnitForm(forms.ModelForm):
 class StockLocationForm(forms.ModelForm):
 
     class Meta:
-        model = stock_location
+        model = StockLocation
 
         fields = [
             'name',
@@ -93,7 +94,7 @@ class StockLocationForm(forms.ModelForm):
                        'placeholder': 'Ubicación'}),
             'location_type': forms.Select(
                 attrs={'class': 'form-control'}),
-                'active': forms.CheckboxInput(),
+            'active': forms.CheckboxInput(),
             'description': forms.Textarea(
                 attrs={'class': 'form-control',
                        'placeholder': 'Añadir Descripción'}),
@@ -103,7 +104,7 @@ class StockLocationForm(forms.ModelForm):
 class ProductPackageForm(forms.ModelForm):
 
     class Meta:
-        model = products_package
+        model = ProductPackage
 
         fields = [
             'product_id',
@@ -133,7 +134,7 @@ class ProductPackageForm(forms.ModelForm):
 class MeasurementUnitForm(forms.ModelForm):
 
     class Meta:
-        model = measurement_units
+        model = MeasurementUnit
 
         fields = [
             'name',
@@ -165,7 +166,7 @@ class MeasurementUnitForm(forms.ModelForm):
 class MovePackageForm(forms.ModelForm):
 
     class Meta:
-        model = stock_move
+        model = StockMove
 
         fields = [
             'note',
@@ -213,13 +214,13 @@ class MoveUnitForm(forms.ModelForm):
     #     self.fields['note'].widget.attrs['autofocus'] = True
 
     unit_id = forms.ModelChoiceField(
-        product_units.objects.exclude(
+        ProductUnit.objects.exclude(
             quantity__lte=0.000001,
             first_move=True)
         )
 
     class Meta:
-        model = stock_move
+        model = StockMove
 
         fields = [
             'note',
