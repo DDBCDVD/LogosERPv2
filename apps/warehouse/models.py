@@ -2,6 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.forms import model_to_dict
 
 
 class MeasurementUnit(models.Model):
@@ -155,7 +156,7 @@ class ProductPackage(models.Model):
         max_length=100)
     description = models.TextField(
         null=True, blank=True,
-        verbose_name="Descripcion")
+        verbose_name="Descripción")
     pieces = models.PositiveIntegerField(
         verbose_name="Piezas", default=0.0)
     units_created = models.BooleanField(
@@ -271,7 +272,7 @@ class StockMove(models.Model):
     note = models.TextField(
         verbose_name="Notas")
     description = models.TextField(
-        verbose_name="Descripcion")
+        verbose_name="Descripción")
     pieces = models.IntegerField(
         verbose_name="Piezas",
         default=0)
@@ -318,6 +319,10 @@ class StockMove(models.Model):
 
     def __str__(self):
         return self.code
+
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item
 
     class Meta:
         verbose_name = 'Movimiento de Stock'

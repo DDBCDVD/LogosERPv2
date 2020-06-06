@@ -11,7 +11,14 @@
                     <form method="post">
                         {% csrf_token %}
                         <div class="row">
-                            <div class="col-md-5 col-md-offset-2">
+                            <div class="col-md-6 col-md-offset-2">
+                                <div class="form-group">
+                                    <label for="{{form.name.name}}">{{form.name.label}}</label>
+                                    {{form.name}}
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-md-offset-2"></div>
+                            <div class="col-md-6 col-md-offset-2">
                                 <div class="form-group">
                                     <label for="{{form.product_id.name}}">{{form.product_id.label}}</label>
                                     {{form.product_id}}
@@ -25,28 +32,14 @@
                                     <span class="text">Crear Producto</span>
                                 </a>
                             </div>
-                            <div class="col-md-4 col-md-offset-2"></div>
-                            <div class="col-md-4 col-md-offset-2">
-                                <div class="form-group">
-                                    <label for="{{form.name.name}}">{{form.name.label}}</label>
-                                    {{form.name}}
-                                </div>
-                            </div>
-                            <div class="button">
-                                <a href="{% url 'CreateProductPackage' %}" class="btn btn-success  btn-icon-split btn-sm">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-plus"></i>
-                                    </span>
-                                    <span class="text">Crear Paquete</span>
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-md-offset-2">
+                            <div class="col-md-6 col-md-offset-2">
                                 <div class="form-group">
                                     <label for="{{form.fixed_ammount.name}}">{{form.fixed_ammount.label}}</label>
                                     {{form.fixed_ammount}}
                                 </div>
                             </div>
-                            <div class="col-md-8 col-md-offset-2">
+                            <div class="col-md-2 col-md-offset-2"></div>
+                            <div class="col-md-6 col-md-offset-2">
                                 <div class="form-group">
                                     <label for="{{form.description.name}}">{{form.description.label}}</label>
                                     {{form.description}}

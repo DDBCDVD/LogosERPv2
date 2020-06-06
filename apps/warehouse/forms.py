@@ -10,6 +10,12 @@ from apps.warehouse.models import StockMove
 
 class ProductForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['name'].widget.attrs['autofocus'] = True
+
     class Meta:
         model = Product
 
@@ -19,12 +25,6 @@ class ProductForm(forms.ModelForm):
             'measure_id',
             'description',
             ]
-        labels = {
-            'name': 'Nombre',
-            'description': 'Descripcion',
-            'measure_id': 'Unidad de Medida',
-            'active': 'Activo  ?',
-        }
         widgets = {
             'name': forms.TextInput(
                 attrs={'class': 'form-control',
@@ -41,6 +41,12 @@ class ProductForm(forms.ModelForm):
 
 class ProductUnitForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['name'].widget.attrs['autofocus'] = True
+
     class Meta:
         model = ProductUnit
 
@@ -50,28 +56,26 @@ class ProductUnitForm(forms.ModelForm):
             'fixed_ammount',
             'description',
             ]
-        labels = {
-            'name': 'Nombre',
-            'product_id': 'Producto',
-            'fixed_ammount': 'Cantidad Fija',
-            'description': 'Descripción',
-        }
         widgets = {
             'name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': "Nombre de la Unidad"}),
+                attrs={'class': 'form-control',
+                       'placeholder': "Nombre de la Unidad"}),
             'product_id': forms.Select(
                 attrs={'class': 'form-control select2'}),
             'fixed_ammount': forms.CheckboxInput(),
             'description': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Añadir una Descripción'}),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Añadir una Descripción'}),
         }
 
 
 class StockLocationForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['name'].widget.attrs['autofocus'] = True
 
     class Meta:
         model = StockLocation
@@ -82,12 +86,6 @@ class StockLocationForm(forms.ModelForm):
             'active',
             'description',
             ]
-        labels = {
-            'name': 'Nombre',
-            'location_type': 'Tipo de Ubicación',
-            'active': 'Activo  ?',
-            'description': 'Descripción',
-        }
         widgets = {
             'name': forms.TextInput(
                 attrs={'class': 'form-control',
@@ -103,6 +101,12 @@ class StockLocationForm(forms.ModelForm):
 
 class ProductPackageForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['unit_qty'].widget.attrs['autofocus'] = True
+
     class Meta:
         model = ProductPackage
 
@@ -112,13 +116,6 @@ class ProductPackageForm(forms.ModelForm):
             'fixed_ammount',
             'description',
             ]
-        labels = {
-
-            'product_id': 'Producto',
-            'unit_qty': 'Cantidad por Unidad',
-            'fixed_ammount': 'Cantidad fija por Unidad',
-            'description': 'Descripción',
-        }
         widgets = {
             'product_id': forms.Select(
                 attrs={'class': 'form-control select2'}),
@@ -133,6 +130,13 @@ class ProductPackageForm(forms.ModelForm):
 
 class MeasurementUnitForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['name'].widget.attrs['autofocus'] = True
+
     class Meta:
         model = MeasurementUnit
 
@@ -142,28 +146,25 @@ class MeasurementUnitForm(forms.ModelForm):
             'abbreviation',
             'description',
         ]
-        labels = {
-            'name': 'Nombre',
-            'unit_qty': 'Factor de la Unidad',
-            'abbreviation': 'Abreviatura',
-            'description': 'Descripción',
-        }
         widgets = {
             'name': forms.TextInput(
-                attrs={'class': 'form-control',
-                       'placeholder': 'Nombre unidad de Medida'}),
-            'unit_qty': forms.NumberInput(
-                attrs={'class': 'form-control'}),
+                attrs={'placeholder': 'Nombre unidad de Medida'}),
+            'unit_qty': forms.NumberInput(),
             'abbreviation': forms.TextInput(
-                attrs={'class': 'form-control',
-                       'placeholder': 'Kg., Lt, m2...'}),
+                attrs={'placeholder': 'Kg., Lt, m2...'}),
             'description': forms.Textarea(
-                attrs={'class': 'form-control',
-                       'placeholder': 'Añadir Descripción'}),
+                attrs={'placeholder': 'Añadir Descripción'}),
         }
 
 
 class MovePackageForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['note'].widget.attrs['autofocus'] = True
 
     class Meta:
         model = StockMove
@@ -176,42 +177,25 @@ class MovePackageForm(forms.ModelForm):
             'location_dest_id',
             'description',
             ]
-
-        labels = {
-            'note': 'Notas',
-            'pieces': 'Piezas',
-            'package_id': 'Paquete',
-            'location_id': 'Origen',
-            'location_dest_id': ' Destino',
-            'description': 'Descripción',
-        }
-
         widgets = {
-            'note': forms.TextInput(
-                attrs={'class': 'form-control'}),
-            'pieces': forms.NumberInput(
-                attrs={'class': 'form-control'}),
-            'package_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'location_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'location_dest_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
+            'note': forms.TextInput(),
+            'pieces': forms.NumberInput(),
+            'package_id': forms.Select(),
+            'location_id': forms.Select(),
+            'location_dest_id': forms.Select(),
             'description': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Agregue una Descripción'}),
+                attrs={'placeholder': 'Agregue una Descripción'}),
         }
 
 
 class MoveUnitForm(forms.ModelForm):
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     # for field in self.visible_fields():
-    #     #     field.widget.attrs['class'] = 'form-control'
-    #         # field.widget.attrs['autocomplete'] = 'off'
-    #     self.fields['note'].widget.attrs['autofocus'] = True
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['note'].widget.attrs['autofocus'] = True
 
     unit_id = forms.ModelChoiceField(
         ProductUnit.objects.exclude(
@@ -230,29 +214,12 @@ class MoveUnitForm(forms.ModelForm):
             'location_dest_id',
             'description',
         ]
-
-        labels = {
-            'note': 'Notas',
-            'quantity': 'Cantidad',
-            'unit_id': 'Unidad de Producto',
-            'location_id': 'Origen',
-            'location_dest_id': 'Destino',
-            'description': 'Descripción',
-        }
-
         widgets = {
-            'note': forms.TextInput(
-                attrs={'class': 'form-control'}),
-            'quantity': forms.NumberInput(
-                attrs={'class': 'form-control'}),
-            'unit_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'location_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'location_dest_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
+            'note': forms.TextInput(),
+            'quantity': forms.NumberInput(),
+            'unit_id': forms.Select(),
+            'location_id': forms.Select(),
+            'location_dest_id': forms.Select(),
             'description': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Agregue una Descripción'}),
+                attrs={'placeholder': 'Agregue una Descripción'}),
         }
