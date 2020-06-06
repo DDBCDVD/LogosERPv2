@@ -1,0 +1,23 @@
+<script type="application/javascript">
+    $(function() {
+
+        $('.btnTest').on('click', function() {
+
+            alert('Funciona menor');
+            $.ajax({
+                url: '{% url "ListStockMove" %}',
+                type: 'POST',
+                data: {id:1},
+                datatype: 'json'
+            }).done(function (data){
+                console.log(data);
+            }).fail(function (jqXHR, TextStatus, errorThrown){
+                alert(TextStatus + ' ' + errorThrown);
+            }).always(function (data){
+
+            });
+
+        });
+
+    });
+</script>
