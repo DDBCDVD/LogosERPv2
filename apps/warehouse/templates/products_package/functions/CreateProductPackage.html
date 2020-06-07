@@ -9,6 +9,7 @@
         <div class="row">
           <form method="post">
             {% csrf_token %}
+            {% include "form_error.html" %}
             <div class="row">
               <div class="col-md-4 col-md-offset-2">
                 <div class="form-group">
@@ -46,9 +47,7 @@
               </div>
               <div class="col-md-8 col-md-offset-2">
                 <div class="form-group">
-                  <button type="submit" class="btn btn-outline-success btn-icon-split btn-lg">
-                    Guardar
-                  </button>
+                  <button type="submit" class="btn btn-outline-success btn-icon-split btn-lg">Guardar</button>
                 </div>
               </div>
             </div>

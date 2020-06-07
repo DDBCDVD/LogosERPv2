@@ -89,29 +89,9 @@ class DetailProduct(DetailView):
 
 class CreateProduct(CreateView):
     model = Product
-    addform = MeasurementUnitForm
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
-    creating = reverse_lazy('CreateProduct')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['headitem'] = 'Add Measure'
-        context['addform'] = self.addform()
-        context['model_data'] = self.model.objects.all()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        addform_data = self.addform(request.POST)
-        new_item = self.form_class(request.POST)
-        if addform_data.is_valid():
-            addform_data.save()
-            return HttpResponseRedirect(self.creating)
-        elif new_item.is_valid():
-            new_item.save()
-            return HttpResponseRedirect(self.success_url)
 
 
 class EditProduct(UpdateView):

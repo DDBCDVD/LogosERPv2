@@ -1,4 +1,6 @@
 {% extends "create_edit_template.html" %}
+{% load static %}
+    <!-- Sweet Alert2 -->
 {% block content %}
 <section class="content">
     <div class="container-fluid">
@@ -10,6 +12,7 @@
           <div class="row">
             <form method="post">
               {% csrf_token %}
+              {% include "form_error.html" %}
               <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                   <div class="form-group">
@@ -45,9 +48,7 @@
                 </div>
                 <div class="col-md-8 col-md-offset-2">
                   <div class="form-group">
-                    <button type="submit" class="btn btn-outline-success btn-icon-split btn-lg">
-                      Guardar
-                    </button>
+                      <button type="submit" class="btn btn-outline-success btn-icon-split btn-lg">Guardar</button>
                   </div>
                 </div>
               </div>
@@ -56,5 +57,5 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 {% endblock %}

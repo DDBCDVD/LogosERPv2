@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.db import models
 from django.db.models.signals import post_save
+from django.db.models.constraints import UniqueConstraint
 from django.dispatch import receiver
 from django.forms import model_to_dict
 
@@ -14,7 +15,7 @@ class MeasurementUnit(models.Model):
         max_length=100, unique=True)
     name = models.CharField(
         max_length=30,
-        verbose_name="Nombre")
+        verbose_name="Nombre", unique=True)
     description = models.TextField(
         null=True, blank=True,
         verbose_name="Descripción")
@@ -23,7 +24,7 @@ class MeasurementUnit(models.Model):
         default=0.0)
     abbreviation = models.CharField(
         verbose_name="Abbreviación",
-        max_length=5)
+        max_length=5, unique=True)
     date_created = models.DateTimeField(
         auto_now=True,
         verbose_name="Fecha de Creación")
@@ -38,6 +39,8 @@ class MeasurementUnit(models.Model):
         verbose_name_plural = 'Unidades de Medida'
         db_table = 'measurement_unit'
         ordering = ['code']
+        UniqueConstraint(
+            fields=['code', 'abbreviation'], name='unique_measure')
 
     @receiver(post_save, sender='warehouse.MeasurementUnit')
     def set_auto_code(sender, instance, **kwargs):
