@@ -26,10 +26,6 @@ from apps.warehouse.forms import MovePackageForm
 from apps.warehouse.forms import MoveUnitForm
 
 
-def dashboard(request):
-    return render(request, "dashboard.html")
-
-
 # def test(request):
 #     data = {
 #         'nombre': 'daniel'
@@ -97,13 +93,11 @@ class CreateProduct(CreateView):
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
-    creating = reverse_lazy('CreateProduct')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'
         context['success_url'] = self.success_url
-        context['creating'] = self.creating
         return context
 
     def post(self, request, *args, **kwargs):
@@ -123,13 +117,11 @@ class EditProduct(UpdateView):
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
-    creating = reverse_lazy('CreateProduct')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'edit'
         context['success_url'] = self.success_url
-        context['creating'] = self.creating
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -220,6 +212,23 @@ class CreateProductUnit(CreateView):
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
 
 class EditProductUnit(UpdateView):
     model = ProductUnit
@@ -289,13 +298,11 @@ class CreateStockLocation(CreateView):
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
-    creating = reverse_lazy('CreateStockLocation')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'
         context['success_url'] = self.success_url
-        context['creating'] = self.creating
         return context
 
     def post(self, request, *args, **kwargs):
@@ -316,13 +323,11 @@ class EditStockLocation(UpdateView):
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
-    creating = reverse_lazy('CreateStockLocation')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'edit'
         context['success_url'] = self.success_url
-        context['creating'] = self.creating
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -405,6 +410,23 @@ class CreateProductPackage(CreateView):
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
 
 class EditProductPackage(UpdateView):
     model = ProductPackage
@@ -481,13 +503,11 @@ class CreateMeasurementUnit(CreateView):
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
-    creating = reverse_lazy('CreateMeasurementUnit')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'
         context['success_url'] = self.success_url
-        context['creating'] = self.creating
         return context
 
     def post(self, request, *args, **kwargs):
@@ -507,13 +527,11 @@ class EditMeasurementUnit(UpdateView):
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
-    creating = reverse_lazy('CreateMeasurementUnit')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'edit'
         context['success_url'] = self.success_url
-        context['creating'] = self.creating
         return context
 
     def dispatch(self, request, *args, **kwargs):

@@ -21,6 +21,6 @@ from apps.warehouse import views as warehouse_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', warehouse_views.test, name='test'),
+    path('home/', include('apps.home.urls')),
     path('warehouse/', include('apps.warehouse.urls')),
-    path('warehouse/', include('apps.home.urls')),
 ]
