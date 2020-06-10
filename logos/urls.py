@@ -20,7 +20,7 @@ from apps.warehouse import views as warehouse_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('dashboard/', warehouse_views.dashboard, name='dashboard'),
     path('test/', warehouse_views.test, name='test'),
     path('warehouse/', include('apps.warehouse.urls')),
+    path('warehouse/', include('apps.home.urls')),
 ]
