@@ -10,9 +10,15 @@
                     <div class="col-12">
                         <!-- Card-header -->
                         <div class="card">
-                            {% block buttons_create %}
+                            <div class="card-header">
+                                {% for key, value in create_forms.items %}
+                                <a href="{{ value.button_create }}" class="btn btn-outline-success btn-icon-split btn-lg">
 
-                            {% endblock %}
+                                    <span class="text">{{ value.text }}</span>
+
+                                </a>
+                                {% endfor %}
+                            </div>
                             <div class="card-body">
                                 <table id="FullTable1" class="table table-bordered table-hover">
                                 {% block table %}

@@ -1,6 +1,5 @@
 {% extends "create_edit_template.html" %}
 {% load static %}
-    <!-- Sweet Alert2 -->
 {% block content %}
 <section class="content">
     <div class="container-fluid">
@@ -12,6 +11,7 @@
           <div class="row">
             <form method="post">
               {% csrf_token %}
+              <input type="hidden" name="action" value="{{ action }}">
               {% include "form_error.html" %}
               <div class="row">
                 <div class="col-md-8 col-md-offset-2">

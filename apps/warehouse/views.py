@@ -57,6 +57,11 @@ class ListProduct(ListView):
         context = super().get_context_data(**kwargs)
         context['create_form'] = self.create_form
         context['headmodal'] = 'Nuevo Producto'
+        create_forms = {
+            'form1': {'button_create': reverse_lazy('CreateProduct'),
+                      'text': 'Crear Nuevo Producto'},
+        }
+        context['create_forms'] = create_forms
         return context
 
     def post(self, request, *args, **kwargs):
@@ -92,6 +97,25 @@ class CreateProduct(CreateView):
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
+    creating = reverse_lazy('CreateProduct')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        context['creating'] = self.creating
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
 
 class EditProduct(UpdateView):
@@ -99,6 +123,29 @@ class EditProduct(UpdateView):
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
+    creating = reverse_lazy('CreateProduct')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'edit'
+        context['success_url'] = self.success_url
+        context['creating'] = self.creating
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'edit':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
 
 class DeleteProduct(DeleteView):
@@ -124,6 +171,11 @@ class ListProductUnit(ListView):
         context = super().get_context_data(**kwargs)
         context['create_form'] = self.create_form
         context['headmodal'] = 'Nueva Unidad de Producto'
+        create_forms = {
+            'form1': {'button_create': reverse_lazy('CreateProductUnit'),
+                      'text': 'Crear Nueva Unidad'},
+        }
+        context['create_forms'] = create_forms
         return context
 
     def post(self, request, *args, **kwargs):
@@ -197,6 +249,11 @@ class ListStockLocation(ListView):
         context = super().get_context_data(**kwargs)
         context['create_form'] = self.create_form
         context['headmodal'] = 'Nueva Ubicación'
+        create_forms = {
+            'form1': {'button_create': reverse_lazy('CreateStockLocation'),
+                      'text': 'Crear Nueva Ubicación'},
+        }
+        context['create_forms'] = create_forms
         return context
 
     def post(self, request, *args, **kwargs):
@@ -232,13 +289,56 @@ class CreateStockLocation(CreateView):
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
+    creating = reverse_lazy('CreateStockLocation')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        context['creating'] = self.creating
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
 
 class EditStockLocation(UpdateView):
+
     model = StockLocation
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
+    creating = reverse_lazy('CreateStockLocation')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'edit'
+        context['success_url'] = self.success_url
+        context['creating'] = self.creating
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'edit':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
 
 class DeleteStockLocation(DeleteView):
@@ -262,6 +362,11 @@ class ListProductPackage(ListView):
         context = super().get_context_data(**kwargs)
         context['create_form'] = self.create_form
         context['headmodal'] = 'Nuevo Paquete'
+        create_forms = {
+            'form1': {'button_create': reverse_lazy('CreateProductPackage'),
+                      'text': 'Crear Nuevo Paquete'},
+        }
+        context['create_forms'] = create_forms
         return context
 
     def post(self, request, *args, **kwargs):
@@ -355,7 +460,11 @@ class ListMeasurementUnit(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['create_form'] = self.create_form
-        context['headmodal'] = 'Nueva Unidad de Medida'
+        create_forms = {
+            'form1': {'button_create': reverse_lazy('CreateMeasurementUnit'),
+                      'text': 'Crear nueva Medida'},
+        }
+        context['create_forms'] = create_forms
         return context
 
     def post(self, request, *args, **kwargs):
@@ -372,6 +481,25 @@ class CreateMeasurementUnit(CreateView):
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
+    creating = reverse_lazy('CreateMeasurementUnit')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        context['creating'] = self.creating
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
 
 class EditMeasurementUnit(UpdateView):
@@ -379,6 +507,29 @@ class EditMeasurementUnit(UpdateView):
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
+    creating = reverse_lazy('CreateMeasurementUnit')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'edit'
+        context['success_url'] = self.success_url
+        context['creating'] = self.creating
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'edit':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
 
 class DeleteMeasurementUnit(DeleteView):
@@ -395,6 +546,18 @@ class DeleteMeasurementUnit(DeleteView):
 class ListStockMove(ListView):
     model = StockMove
     template_name = 'stock_move/views/ListStockMove.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        create_forms = {
+            'form1': {'button_create': reverse_lazy('function_create_move_unit'),
+                      'text': 'Mover Unidad'},
+            'form2': {'button_create': reverse_lazy('function_create_move_package'),
+                      'text': 'Mover Paquete'}
+
+        }
+        context['create_forms'] = create_forms
+        return context
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
