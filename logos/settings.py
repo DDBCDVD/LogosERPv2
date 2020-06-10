@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #~ Librerías
+    # Librerías
     'widget_tweaks',
-    #'bootstrap_modal_forms',
-    #~ Apps
+    #  'bootstrap_modal_forms',
+    #  Apps
+    'apps.home',
     'apps.warehouse',
 ]
 

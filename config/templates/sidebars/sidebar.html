@@ -1,7 +1,7 @@
 {% load static %}
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="index3.html" class="brand-link">
+  <a href="{% url 'dashboard' %}" class="brand-link">
          <i class="fas fa-brain brand-image img-circle"></i>
     <span class="brand-text font-weight-light">Logos ERP</span>
   </a>
@@ -66,15 +66,15 @@
                     <i class="fas fa-archive"></i>
                     <p>Paquetes</p>
                   </a>
-                </li>                  
+                </li>
                 <li class="nav-item">
                   <a href="{% url 'ListMeasurementUnit' %}" class="nav-link">
                     <i class="fas fa-weight"></i>
                     <p>Unidades de Medida</p>
                   </a>
-                </li>                
+                </li>
               </ul>
-            </li>            
+            </li>
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="fas fa-sync-alt"></i>
@@ -101,7 +101,7 @@
                     <i class="fab fa-buromobelexperte"></i>
                     <p>Ubicaciones</p>
                   </a>
-                </li>                
+                </li>
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="fas fa-tools"></i>
