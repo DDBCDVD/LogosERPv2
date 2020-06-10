@@ -34,6 +34,10 @@ class MeasurementUnit(models.Model):
     def __str__(self):
         return self.name
 
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item
+
     class Meta:
         verbose_name = 'Unidad de Medida'
         verbose_name_plural = 'Unidades de Medida'
@@ -58,7 +62,8 @@ class Product(models.Model):
         max_length=100,
         unique=True)
     name = models.CharField(
-        max_length=30, verbose_name="Nombre")
+        max_length=30, verbose_name="Nombre",
+        unique=True)
     active = models.BooleanField(
         default=True, verbose_name="Activo")
     description = models.TextField(
@@ -121,7 +126,7 @@ class StockLocation(models.Model):
         verbose_name="Código",
         max_length=100, unique=True)
     name = models.CharField(
-        max_length=30,
+        max_length=30, unique=True,
         verbose_name="Nombre")
     active = models.BooleanField(
         default=True, verbose_name="Activo")

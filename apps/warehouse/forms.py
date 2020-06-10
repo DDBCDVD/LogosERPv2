@@ -38,6 +38,18 @@ class ProductForm(forms.ModelForm):
 
         }
 
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+
 
 class ProductUnitForm(forms.ModelForm):
 
@@ -98,6 +110,18 @@ class StockLocationForm(forms.ModelForm):
                        'placeholder': 'Añadir Descripción'}),
         }
 
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+
 
 class ProductPackageForm(forms.ModelForm):
 
@@ -155,6 +179,18 @@ class MeasurementUnitForm(forms.ModelForm):
             'description': forms.Textarea(
                 attrs={'placeholder': 'Añadir Descripción'}),
         }
+
+    def save(self, commit=True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return data
 
 
 class MovePackageForm(forms.ModelForm):

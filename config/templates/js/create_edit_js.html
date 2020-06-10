@@ -5,6 +5,8 @@
 <script src="{% static 'lib/plugins/jquery/jquery.min.js' %}"></script>
 <!-- Bootstrap 4 -->
 <script src="{% static 'lib/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- SweetAlert2 -->
+<script src="{% static 'lib/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
 <!-- bs-custom-file-input -->
 <script src="{% static 'lib/plugins/bs-custom-file-input/bs-custom-file-input.min.js' %}"></script>
 <!-- AdminLTE App -->
@@ -35,6 +37,9 @@ $(document).ready(function () {
 <script src="{% static 'lib/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 <!-- Bootstrap Switch -->
 <script src="{% static 'lib/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+<!-- Funciones Propias -->
+<script src="{% static 'logos_js/logos_js.js' %}"></script>
+
 <!-- Page script -->
 <script>
   $(function () {
@@ -161,4 +166,29 @@ $(document).ready(function () {
     }
   });
 });
+</script>
+
+<script>
+  $(function() {
+      $('form').on('submit', function(e) {
+          e.preventDefault();
+          var data_form = $(this).serializeArray();
+          $.ajax({
+              url: window.location.pathname,
+              type: 'POST',
+              data: data_form,
+              datatype: 'json'
+          }).done(function (data){
+            console.log(data);
+            if(!data.hasOwnProperty('error')){
+                location.href = '{{ success_url }}';
+                return false;
+            }
+            message_error(data.error);
+          }).fail(function (jqXHR, TextStatus, errorThrown){
+              alert(TextStatus + ' ' + errorThrown);
+          }).always(function (data){
+          });
+      });
+  });
 </script>
