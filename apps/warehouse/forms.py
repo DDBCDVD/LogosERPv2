@@ -92,6 +92,7 @@ class ProductUnitForm(forms.ModelForm):
             data['error'] = str(e)
         return data
 
+
 class StockLocationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -120,6 +121,13 @@ class StockLocationForm(forms.ModelForm):
                 attrs={'class': 'form-control',
                        'placeholder': 'Añadir Descripción'}),
         }
+
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned['location_type'] == 'Null':
+            raise forms.ValidationError(
+                'La ubicacion no puede ser Null')
+        return cleaned
 
     def save(self, commit=True):
         data = {}
@@ -173,6 +181,7 @@ class ProductPackageForm(forms.ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
+
 
 class MeasurementUnitForm(forms.ModelForm):
 
@@ -281,3 +290,71 @@ class MoveUnitForm(forms.ModelForm):
             'description': forms.Textarea(
                 attrs={'placeholder': 'Agregue una Descripción'}),
         }
+
+
+class MoveUnitFormulario(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['note'].widget.attrs['autofocus'] = True
+
+    unit_id = forms.ModelChoiceField(
+        ProductUnit.objects.exclude(
+            quantity__lte=0.000001,
+            first_move=True)
+        )
+
+    class Meta:
+        model = StockMove
+
+        fields = [
+            'note',
+            'quantity',
+            'unit_id',
+            'location_id',
+            'location_dest_id',
+            'description',
+        ]
+        widgets = {
+            'note': forms.TextInput(),
+            'quantity': forms.NumberInput(),
+            'unit_id': forms.Select(),
+            'location_id': forms.Select(),
+            'location_dest_id': forms.Select(),
+            'description': forms.Textarea(
+                attrs={'placeholder': 'Agregue una Descripción'}),
+        }
+
+
+# class MovePackageFormulario(forms.ModelForm):
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         for form in self.visible_fields():
+#             form.field.widget.attrs['class'] = 'form-control'
+#             form.field.widget.attrs['autocomplete'] = 'off '
+#         self.fields['note'].widget.attrs['autofocus'] = True
+
+#     class Meta:
+#         model = StockMove
+
+#         fields = [
+#             'note',
+#             'pieces',
+#             'package_id',
+#             'location_id',
+#             'location_dest_id',
+#             'description',
+#             ]
+#         widgets = {
+#             'note': forms.TextInput(),
+#             'pieces': forms.NumberInput(),
+#             'package_id': forms.Select(),
+#             'location_id': forms.Select(),
+#             'location_dest_id': forms.Select(),
+#             'description': forms.Textarea(
+#                 attrs={'placeholder': 'Agregue una Descripción'}),
+#         }

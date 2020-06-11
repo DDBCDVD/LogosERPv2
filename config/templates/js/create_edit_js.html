@@ -170,7 +170,7 @@ $(document).ready(function () {
 
 <script>
   $(function() {
-      $('form').on('submit', function(e) {
+      $('.validations').on('submit', function(e) {
           e.preventDefault();
           var data_form = $(this).serializeArray();
           $.ajax({
