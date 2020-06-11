@@ -72,6 +72,10 @@ urlpatterns = [
     #  -------------------------------------STOCK MOVE MODEL-----------------------------------------#
     path('ListStockMove/', warehouse_views.ListStockMove.as_view(
         extra_context={'heading': 'Movimientos de Stock', 'title': 'Movimientos de Stock'}, model=StockMove), name='ListStockMove'),
+    path('MoveUnit/', warehouse_views.MoveUnit.as_view(
+        extra_context={'heading': 'Moviendo Unidad de Producto', 'title': 'Nuevo Movimiento'}, model=StockMove), name='MoveUnit'),
+    path('MovePackage/', warehouse_views.MovePackage.as_view(
+        extra_context={'heading': 'Moviendo Paquete', 'title': 'Nuevo Movimiento'}, model=StockMove), name='MovePackage'),
     path('DetailStockMove/<pk>', warehouse_views.DetailStockMove.as_view(
         extra_context={'title': 'Detalle'}, model=StockMove), name='DetailStockMove'),
     path('function_create_move_package/', warehouse_views.function_create_move_package, name='function_create_move_package'),

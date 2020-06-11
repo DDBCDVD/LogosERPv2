@@ -236,6 +236,23 @@ class EditProductUnit(UpdateView):
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
 
 class DeleteProductUnit(DeleteView):
     model = ProductUnit
@@ -434,6 +451,23 @@ class EditProductPackage(UpdateView):
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.get_form()
+                data = form.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
 
 class DeleteProductPackage(DeleteView):
     model = ProductPackage
@@ -568,11 +602,10 @@ class ListStockMove(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         create_forms = {
-            'form1': {'button_create': reverse_lazy('function_create_move_unit'),
+            'form1': {'button_create': reverse_lazy('MoveUnit'),
                       'text': 'Mover Unidad'},
-            'form2': {'button_create': reverse_lazy('function_create_move_package'),
-                      'text': 'Mover Paquete'}
-
+            'form2': {'button_create': reverse_lazy('MovePackage'),
+                      'text': 'Mover Paquete'},
         }
         context['create_forms'] = create_forms
         return context
@@ -603,6 +636,76 @@ class DetailStockMove(DetailView):
 
 
 # ----------------------------------------FUNCTIONS----------------------------------------#
+
+
+class MoveUnit(CreateView):
+    model = StockMove
+    form_class = MoveUnitForm
+    template_name = 'stock_move/functions/MoveUnit.html'
+    success_url = reverse_lazy('ListStockMove')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                    move = form.save(commit=False)
+                    errors = validations.validate_moves(request, move)
+                    if errors:
+                        data['error'] = errors
+                    errors = validations.validate_stock_control(request, move)
+                    if errors:
+                        data['error'] = errors
+                    errors = validations.create_stock_move(request, move)
+                    if errors:
+                        data['error'] = errors
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+
+class MovePackage(CreateView):
+    model = StockMove
+    form_class = MovePackageForm
+    template_name = 'stock_move/functions/MovePackage.html'
+    success_url = reverse_lazy('ListStockMove')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        return context
+
+    def post(self, request, *args, **kwargs):
+        errors = []
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                    move = form.save(commit=False)
+                    errors = validations.validate_moves(request, move)
+                    if errors:
+                        data['error'] = errors
+                    errors = validations.validate_stock_control(request, move)
+                    if errors:
+                        data['error'] = errors
+                    errors = validations.create_stock_move(request, move)
+                    if errors:
+                        data['error'] = errors
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
 
 def function_create_move_unit(request):
     heading = 'Moviendo Unidad de Producto'
