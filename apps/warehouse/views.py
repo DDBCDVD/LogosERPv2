@@ -664,9 +664,7 @@ class MoveUnit(CreateView):
                     errors = validations.validate_stock_control(request, move)
                     if errors:
                         data['error'] = errors
-                    errors = validations.create_stock_move(request, move)
-                    if errors:
-                        data['error'] = errors
+                    functions.create_stock_move(request, move)
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -699,9 +697,7 @@ class MovePackage(CreateView):
                     errors = validations.validate_stock_control(request, move)
                     if errors:
                         data['error'] = errors
-                    errors = validations.create_stock_move(request, move)
-                    if errors:
-                        data['error'] = errors
+                    functions.create_stock_move(request, move)
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
