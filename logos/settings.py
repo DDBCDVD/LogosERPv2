@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     #  'bootstrap_modal_forms',
     #  Apps
-    'apps.home',
+    'core',
     'apps.warehouse',
 ]
 
@@ -62,6 +62,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'config/templates'),
+            os.path.join(BASE_DIR, 'core/templates'),
             os.path.join(BASE_DIR, 'apps/warehouse/templates'),
         ],
         'APP_DIRS': True,
@@ -118,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-ve'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -134,3 +135,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "config/static")
 ]
+
+LOGIN_REDIRECT_URL = '/core/dashboard/'
+LOGIN_URL = '/core/login/'
+LOGOUT_REDIRECT_URL = '/core/login/'

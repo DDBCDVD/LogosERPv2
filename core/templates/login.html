@@ -1,0 +1,81 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% include "headers/create_edit_header.html" %}
+    <!-- Sweetalert2 -->
+    <script src="{% static 'lib/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
+    <link href="{% static 'css/logos.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="logos-login-container">
+        <div class="row justify-content-center">
+          <div class="col-xl-50 col-lg-4 col-md-50">
+              <div class="login-logo">
+                  <a href="#"><b>Logos</b>ERP</a>
+                </div>
+                 <div>
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Bienvenido</h1>
+                  </div>
+                  <form method="post" class="validations">
+                    <input type="hidden" name="next" value="{{ next }}">
+                      {% csrf_token %}
+                    <div class="form-group">
+                      {{form.username|add_class:'form-control'|attr:'placeholder: Usuario'}}
+                    </div>
+                    <div class="form-group">
+                      {{form.password|add_class:'form-control'|attr:'placeholder: Contraseña'}}
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-checkbox small">
+                        <input type="checkbox" class="custom-control-input" id="customCheck">
+                        <label class="custom-control-label" for="customCheck">Recordarme</label>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-outline-primary">Ingresar</button>
+                    <hr>
+                    <a href="#" class="btn btn-google btn-user btn-block">
+                      <i class="fab fa-google fa-fw"></i> Entrar con Google
+                    </a>
+                    <a href="#" class="btn btn-facebook btn-user btn-block">
+                      <i class="fa fa-user-plus"></i> Registrar Empresa
+                    </a>
+                  </form>
+                  <hr>
+                  <div class="text-center">
+                    <a class="small" href="#">Restablecer Contraseña</a>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    <script type="application/javascript">
+        {% if form.errors %}
+            var errors = '';
+            {% for field in form %}
+                {% for error in field.errors %}
+                    errors += '{{ error }}\n';
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                errors += '{{ error }}\n';
+            {% endfor %}
+            Swal.fire({
+                title: 'Error!',
+                text: errors,
+                icon: 'error'
+            });
+        {% endif %}
+    </script>
+</div>
+<!-- jQuery -->
+<script src="{% static 'lib/adminlte-3.0.4/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'lib/adminlte-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
+</body>
+</html>
+
