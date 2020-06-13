@@ -49,6 +49,10 @@ class ListProduct(ListView):
     template_name = 'products/views/ListProduct.html'
     success_url = reverse_lazy('ListProduct')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['create_form'] = self.create_form
@@ -70,6 +74,10 @@ class ListProduct(ListView):
 class DetailProduct(DetailView):
     model = ProductUnit
     template_name = 'products/views/DetailProduct.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,6 +102,10 @@ class CreateProduct(CreateView):
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'
@@ -117,6 +129,10 @@ class EditProduct(UpdateView):
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -146,6 +162,10 @@ class DeleteProduct(DeleteView):
     template_name = 'products/functions/DeleteProduct.html'
     success_url = reverse_lazy('ListProduct')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 # --------------------PRODUCT UNIT MODEL----------------------------#
 
@@ -158,6 +178,10 @@ class ListProductUnit(ListView):
     create_form = ProductUnitForm
     template_name = 'product_units/views/ListProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -181,6 +205,10 @@ class DetailProductUnit(DetailView):
     model = ProductUnit
     template_name = 'product_units/views/DetailProductUnit.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         unit_id = self.model.objects.get(pk=self.kwargs.get('pk'))
@@ -198,8 +226,6 @@ class DetailProductUnit(DetailView):
             if move_pckg_ids:
                 context['move_pckg_ids'] = move_pckg_ids
                 context['pckg_moves'] = 'Movimientos del Paquete'
-        else:
-            print('No hay paquete asociado')
         return context
 
 
@@ -211,6 +237,10 @@ class CreateProductUnit(CreateView):
     form_class = ProductUnitForm
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -236,6 +266,10 @@ class EditProductUnit(UpdateView):
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'
@@ -260,6 +294,10 @@ class DeleteProductUnit(DeleteView):
     template_name = 'product_units/functions/DeleteProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 # --------------------STOCK LOCATION MODEL--------------------------#
 
@@ -270,6 +308,10 @@ class ListStockLocation(ListView):
     template_name = 'stock_location/views/ListStockLocation.html'
     create_form = StockLocationForm
     success_url = reverse_lazy('ListStockLocation')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -293,6 +335,10 @@ class DetailStockLocation(DetailView):
     model = StockLocation
     template_name = 'stock_location/views/DetailStockLocation.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         location_id = self.model.objects.get(pk=self.kwargs.get('pk'))
@@ -315,6 +361,10 @@ class CreateStockLocation(CreateView):
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -340,6 +390,10 @@ class EditStockLocation(UpdateView):
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -369,6 +423,10 @@ class DeleteStockLocation(DeleteView):
     template_name = 'stock_location/functions/DeleteStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 # -----------------------PRODUCT PACKAGE MODEL-----------------------#
 
@@ -379,6 +437,10 @@ class ListProductPackage(ListView):
     template_name = 'products_package/views/ListProductPackage.html'
     create_form = ProductPackageForm
     success_url = reverse_lazy('ListProductPackage')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -401,6 +463,10 @@ class ListProductPackage(ListView):
 class DetailProductPackage(DetailView):
     model = ProductPackage
     template_name = 'products_package/views/DetailProductPackage.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -427,6 +493,10 @@ class CreateProductPackage(CreateView):
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'
@@ -450,6 +520,10 @@ class EditProductPackage(UpdateView):
     form_class = ProductPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -475,10 +549,14 @@ class DeleteProductPackage(DeleteView):
     template_name = 'products_package/functions/DeleteProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 def create_unit_package(request, pk):
     '''
-    Create multiple product_unit from this package
+    Crea las unidaddes de productos del paquete
 
     '''
     package = ProductPackage.objects.filter(id=pk)
@@ -495,11 +573,7 @@ def create_unit_package(request, pk):
                     return redirect('ListProductPackage')
                 else:
                     messages.error(
-                        request, 'Error in the creation of the Stock Control')
-            else:
-                messages.success(
-                    request, 'There are no units to create')
-                return redirect('ListProductPackage')
+                        request, 'Error en la creación del Control de Stock')
     return redirect('ListProductPackage')
 
 
@@ -512,6 +586,10 @@ class ListMeasurementUnit(ListView):
     template_name = 'measurement_units/views/ListMeasurementUnit.html'
     create_form = MeasurementUnitForm
     success_url = reverse_lazy('ListMeasurementUnit')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -538,6 +616,10 @@ class CreateMeasurementUnit(CreateView):
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'
@@ -561,6 +643,10 @@ class EditMeasurementUnit(UpdateView):
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -590,6 +676,10 @@ class DeleteMeasurementUnit(DeleteView):
     template_name = 'measurement_units/functions/DeleteMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 # ----------------------STOCK MOVE MODEL----------------------------#
 # --------------------------VIEWS-----------------------------------#
@@ -598,6 +688,10 @@ class DeleteMeasurementUnit(DeleteView):
 class ListStockMove(ListView):
     model = StockMove
     template_name = 'stock_move/views/ListStockMove.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -627,6 +721,10 @@ class DetailStockMove(DetailView):
     model = StockMove
     template_name = 'stock_move/views/DetailStockMove.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         move_id = self.model.objects.get(pk=self.kwargs.get('pk'))
@@ -644,11 +742,19 @@ class MoveUnit(CreateView):
     template_name = 'stock_move/functions/MoveUnit.html'
     success_url = reverse_lazy('ListStockMove')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'
         context['success_url'] = self.success_url
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
@@ -759,3 +865,7 @@ class ListStockControl(ListView):
     model = StockControl
     paginate_by = 20
     template_name = 'stock_control/views/ListStockControl.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)

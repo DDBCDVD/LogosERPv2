@@ -16,11 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from apps.warehouse import views as warehouse_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', warehouse_views.test, name='test'),
-    path('home/', include('apps.home.urls')),
+    path('core/', include('core.urls')),
     path('warehouse/', include('apps.warehouse.urls')),
 ]
