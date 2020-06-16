@@ -1,7 +1,4 @@
 from django.contrib import admin
-
-# Register your models here.
-from django.contrib import admin
 from apps.warehouse.models import StockMove
 from apps.warehouse.models import StockControl
 from apps.warehouse.models import Product

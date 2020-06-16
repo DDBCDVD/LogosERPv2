@@ -78,6 +78,9 @@ class Product(models.Model):
         verbose_name="Fecha de Creación")
     date_modify = models.DateTimeField(
         auto_now_add=True)
+    product_image = models.ImageField(
+        upload_to='product/%Y/%m', blank=True,
+        null=True, verbose_name="Imagen de Producto")
 
     def __str__(self):
         return str(self.code + ' ' + self.name)
@@ -93,13 +96,6 @@ class Product(models.Model):
         if kwargs.get('created'):
             code = sender.objects.filter(id=instance.id).update(
                 code=instance.__AUTOCODE__ + str(instance.id))
-
-    # def save(self, instance, **kwargs):
-    #     while kwargs.get('created') == False:
-    #         code_str = str(self.__AUTOCODE__)
-    #     code_str = str(self.__AUTOCODE__ + str(instance.id))
-    #     self.code = code_str
-    #     super().save(*kwargs)
 
 
 class StockLocation(models.Model):
