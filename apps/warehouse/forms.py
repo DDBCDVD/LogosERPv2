@@ -24,19 +24,8 @@ class ProductForm(forms.ModelForm):
             'active',
             'measure_id',
             'description',
+            'product_image',
             ]
-        widgets = {
-            'name': forms.TextInput(
-                attrs={'class': 'form-control',
-                       'placeholder': "Nombre Producto"}),
-            'active': forms.CheckboxInput(),
-            'measure_id': forms.Select(
-                attrs={'class': 'form-control select2'}),
-            'description': forms.Textarea(
-                attrs={'class': 'form-control',
-                       'placeholder': "Añadir Descripción"}),
-
-        }
 
     def save(self, commit=True):
         data = {}
@@ -290,71 +279,3 @@ class MoveUnitForm(forms.ModelForm):
             'description': forms.Textarea(
                 attrs={'placeholder': 'Agregue una Descripción'}),
         }
-
-
-class MoveUnitFormulario(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for form in self.visible_fields():
-            form.field.widget.attrs['class'] = 'form-control'
-            form.field.widget.attrs['autocomplete'] = 'off '
-        self.fields['note'].widget.attrs['autofocus'] = True
-
-    unit_id = forms.ModelChoiceField(
-        ProductUnit.objects.exclude(
-            quantity__lte=0.000001,
-            first_move=True)
-        )
-
-    class Meta:
-        model = StockMove
-
-        fields = [
-            'note',
-            'quantity',
-            'unit_id',
-            'location_id',
-            'location_dest_id',
-            'description',
-        ]
-        widgets = {
-            'note': forms.TextInput(),
-            'quantity': forms.NumberInput(),
-            'unit_id': forms.Select(),
-            'location_id': forms.Select(),
-            'location_dest_id': forms.Select(),
-            'description': forms.Textarea(
-                attrs={'placeholder': 'Agregue una Descripción'}),
-        }
-
-
-# class MovePackageFormulario(forms.ModelForm):
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         for form in self.visible_fields():
-#             form.field.widget.attrs['class'] = 'form-control'
-#             form.field.widget.attrs['autocomplete'] = 'off '
-#         self.fields['note'].widget.attrs['autofocus'] = True
-
-#     class Meta:
-#         model = StockMove
-
-#         fields = [
-#             'note',
-#             'pieces',
-#             'package_id',
-#             'location_id',
-#             'location_dest_id',
-#             'description',
-#             ]
-#         widgets = {
-#             'note': forms.TextInput(),
-#             'pieces': forms.NumberInput(),
-#             'package_id': forms.Select(),
-#             'location_id': forms.Select(),
-#             'location_dest_id': forms.Select(),
-#             'description': forms.Textarea(
-#                 attrs={'placeholder': 'Agregue una Descripción'}),
-#         }

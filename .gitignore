@@ -43,3 +43,5 @@ apps/warehouse/migrations
 .vscode/
 .idea/
 config/templates/tests/
+core/migrations
+media/users/

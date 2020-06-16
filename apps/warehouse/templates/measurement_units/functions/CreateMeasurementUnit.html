@@ -12,7 +12,6 @@
             <form method="post" class="validations">
               {% csrf_token %}
               <input type="hidden" name="action" value="{{ action }}">
-              {% include "form_error.html" %}
               <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                   <div class="form-group">

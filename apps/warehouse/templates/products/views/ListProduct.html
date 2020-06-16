@@ -6,19 +6,20 @@
         <td>Nombre</td>
         <td>Unidad de Medida</td>
         <td>Active</td>
+        <td>Imagen de Producto</td>
         <td>Descripción</td>
         <td>Fecha Creación</td>
         <td>Acciones</td>
     </tr>
 </thead>
 <tbody>
-    {% if object_list %}
     {% for product in object_list %}
     <tr>
         <td>{{product.code}}</td>
         <td>{{product.name}}</td>
         <td>{{product.measure_id.name}}</td>
         <td>{{product.active}}</td>
+        <td>{{product.product_image}}</td>
         <td>{{product.description}}</td>
         <td>{{product.date_created}}</td>
         <td>
@@ -34,8 +35,5 @@
         </td>
     </tr>
     {% endfor %}
-    {% else %}
-    <h3 class="card-title">No hay Registros</h3>
-    {% endif %}
 </tbody>
 {% endblock %}
