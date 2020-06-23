@@ -79,8 +79,9 @@ class Product(models.Model):
     date_modify = models.DateTimeField(
         auto_now_add=True)
     product_image = models.ImageField(
-        upload_to='product/%Y/%m', blank=True,
-        null=True, verbose_name="Imagen de Producto")
+        upload_to='product', blank=True,
+        null=True, verbose_name="Imagen de Producto",
+        default='default/product_default.png')
 
     def __str__(self):
         return str(self.code + ' ' + self.name)
@@ -313,9 +314,11 @@ class StockMove(models.Model):
         ProductPackage, null=True, blank=True,
         verbose_name="Paquetes", on_delete=models.CASCADE)
     location_id = models.ForeignKey(
-        StockLocation, on_delete=models.CASCADE)
+        StockLocation, on_delete=models.CASCADE,
+        verbose_name="Origen")
     location_dest_id = models.ForeignKey(
-        StockLocation, on_delete=models.CASCADE, related_name='+')
+        StockLocation, on_delete=models.CASCADE,
+        related_name='+', verbose_name="Destino")
     date = models.DateTimeField(
         verbose_name="Fecha", default=datetime.now)
     move_type = models.CharField(
