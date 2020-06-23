@@ -44,4 +44,4 @@ apps/warehouse/migrations
 .idea/
 config/templates/tests/
 core/migrations
-media/users/
+media/img/*

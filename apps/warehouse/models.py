@@ -81,7 +81,7 @@ class Product(models.Model):
     product_image = models.ImageField(
         upload_to='product', blank=True,
         null=True, verbose_name="Imagen de Producto",
-        default='product/default/product_default.png')
+        default='default/product_default.png')
 
     def __str__(self):
         return str(self.code + ' ' + self.name)
