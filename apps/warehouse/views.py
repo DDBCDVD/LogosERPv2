@@ -140,10 +140,6 @@ class EditProduct(UpdateView):
         context['success_url'] = self.success_url
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -272,7 +268,7 @@ class EditProductUnit(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['action'] = 'create'
+        context['action'] = 'edit'
         context['success_url'] = self.success_url
         return context
 
@@ -280,7 +276,7 @@ class EditProductUnit(UpdateView):
         data = {}
         try:
             action = request.POST['action']
-            if action == 'create':
+            if action == 'edit':
                 form = self.get_form()
                 data = form.save()
         except Exception as e:
@@ -527,7 +523,7 @@ class EditProductPackage(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['action'] = 'create'
+        context['action'] = 'edit'
         context['success_url'] = self.success_url
         return context
 
@@ -535,7 +531,7 @@ class EditProductPackage(UpdateView):
         data = {}
         try:
             action = request.POST['action']
-            if action == 'create':
+            if action == 'edit':
                 form = self.get_form()
                 data = form.save()
         except Exception as e:
@@ -751,10 +747,6 @@ class MoveUnit(CreateView):
         context['action'] = 'create'
         context['success_url'] = self.success_url
         return context
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}

@@ -256,8 +256,7 @@ class MoveUnitForm(forms.ModelForm):
     unit_id = forms.ModelChoiceField(
         ProductUnit.objects.exclude(
             quantity__lte=0.000001,
-            first_move=True)
-        )
+            first_move=True))
 
     class Meta:
         model = StockMove
