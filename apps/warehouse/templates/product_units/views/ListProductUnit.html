@@ -9,8 +9,6 @@
     <td>Producto</td>
     <td>Paquete</td>
     <td>Fijar Cantidad</td>
-    <td>Descripción</td>
-    <td>Fecha Creación</td>
     <td>Acciones</td>
   </tr>
 </thead>
@@ -26,8 +24,6 @@
     </td>
     <td>{{product_unit.package_id.code}}</td>
     <td>{{product_unit.fixed_ammount}}</td>
-    <td>{{product_unit.description}}</td>
-    <td>{{product_unit.date_created}}</td>
     <td>
       {% if not product_unit.quantity %}
         <a href="{% url 'EditProductUnit' product_unit.id %}" class="btn btn-info btn-circle btn-lg">

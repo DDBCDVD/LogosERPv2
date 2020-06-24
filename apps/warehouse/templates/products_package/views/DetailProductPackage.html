@@ -10,26 +10,34 @@
 {% endblock %} {% block table %}
 <thead>
   <tr>
-    <td>Producto</td>
     <td>Cantidad</td>
     <td>Unidad de Medida</td>
     <td>Piezas</td>
     <td>Cantidad por Unidad</td>
     <td>Cantidad Fija</td>
-    <td>Fecha Creación</td>
     <td>Descripcion</td>
+    {% if user.is_staff %}
+    <td>Usuario creador</td>
+    <td>Fecha Creación</td>
+    <td>Ultimo usuario en modificar</td>
+    <td>Fecha Modificación</td>
+{% endif %}
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td>{{object.product_id.name}}</td>
     <td>{{object.unit_qty}}</td>
     <td>{{object.product_id.measure_id.abbreviation}}</td>
     <td>{{object.pieces}}</td>
     <td>{{object.unit_qty}}</td>
     <td>{{object.fixed_ammount}}</td>
-    <td>{{object.date_created}}</td>
     <td>{{object.description}}</td>
+    {% if user.is_staff %}
+      <td>{{object.user_creator.first_name}} {{object.user_creator.last_name}}</td>
+      <td>{{object.date_created}}</td>
+      <td>{{object.user_updater.first_name}} {{object.user_updater.last_name}}</td>
+      <td>{{object.date_updated}}</td>
+    {% endif %}
   </tr>
 </tbody>
 {% endblock %}

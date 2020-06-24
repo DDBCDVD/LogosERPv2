@@ -2,12 +2,9 @@
   <div class="card-header py-3">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">{{move_heading}}</h1>
-      <a
-        href="#"
-        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-      >
-        <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a
-      >
+      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+      </a>
     </div>
   </div>
   <div class="card-body">
@@ -31,6 +28,7 @@
           <td>Nota</td>
           <td>Descripción</td>
           <td>Fecha</td>
+          <td>Usuario</td>
         </tr>
       </thead>
       <tbody>
@@ -53,6 +51,7 @@
           <td>{{move.note}}</td>
           <td>{{move.description}}</td>
           <td>{{move.date}}</td>
+          <td>{{object.user_creator.first_name}} {{object.user_creator.last_name}}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -87,6 +86,7 @@
           <td>Unidad de Medida</td>
           <td>Tipo de Movimiento</td>
           <td>Fecha</td>
+          <td>Usuario</td>
         </tr>
       </thead>
       <tbody>
@@ -102,6 +102,7 @@
           <td>{{object.product_id.measure_id.abbreviation}}</td>
           <td>{{move.move_type}}</td>
           <td>{{move.date}}</td>
+          <td>{{object.user_creator.first_name}} {{object.user_creator.last_name}}</td>
         </tr>
         {% endfor %}
       </tbody>

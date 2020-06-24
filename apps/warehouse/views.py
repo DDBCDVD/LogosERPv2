@@ -84,7 +84,7 @@ class DetailProduct(DetailView):
         product_id = self.model.objects.get(pk=self.kwargs.get('pk'))
         unit_ids = ProductUnit.objects.filter(product_id=product_id)
         package_ids = ProductPackage.objects.filter(product_id=product_id)
-        heading = 'Detalle %s' % product_id.code
+        heading = 'Detalle %s %s' % (product_id.code, product_id.name)
         context['heading'] = heading
         context['unit_lines'] = 'Unidades Asociadas'
         context['pckg_lines'] = 'Paquetes Asociados'
@@ -132,6 +132,7 @@ class EditProduct(UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -209,7 +210,7 @@ class DetailProductUnit(DetailView):
         context = super().get_context_data(**kwargs)
         unit_id = self.model.objects.get(pk=self.kwargs.get('pk'))
         move_ids = StockMove.objects.filter(unit_id=unit_id)
-        heading = 'Detalle %s' % unit_id.code
+        heading = 'Detalle %s %s' % (unit_id.code, unit_id.name)
         context['heading'] = heading
         context['move_heading'] = 'Movimientos'
         context['item_type'] = 'Unit'
@@ -264,6 +265,7 @@ class EditProductUnit(UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -338,16 +340,20 @@ class DetailStockLocation(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         location_id = self.model.objects.get(pk=self.kwargs.get('pk'))
-        stkctrl_ids = stock_control.objects.filter(location_id=location_id)
+        stkctrl_ids = StockControl.objects.filter(location_id=location_id)
         pckg_ids = ProductPackage.objects.filter(location_id=location_id)
-        heading = 'Detalle %s' % location_id.code
+        move_ids = StockMove.objects.filter(location_dest_id=location_id)
+        heading = 'Detalle %s %s' % (location_id.name, location_id.code)
         context['heading'] = heading
         context['controls_lines'] = 'Stock en esta ubicación'
         context['pckg_lines'] = 'Paquetes en esta ubicación'
+        context['move_heading'] = 'Movimientos'
         if stkctrl_ids:
             context['stkctrl_ids'] = stkctrl_ids
         if pckg_ids:
             context['pckg_ids'] = pckg_ids
+        if move_ids:
+            context['move_ids'] = move_ids
         return context
 # ------------------------FUNCTIONS------------------------------#
 
@@ -389,6 +395,7 @@ class EditStockLocation(UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -396,10 +403,6 @@ class EditStockLocation(UpdateView):
         context['action'] = 'edit'
         context['success_url'] = self.success_url
         return context
-
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
@@ -470,7 +473,8 @@ class DetailProductPackage(DetailView):
         move_ids = StockMove.objects.filter(package_id=package_id.id)
         unit_ids = ProductUnit.objects.filter(package_id=package_id.id)
 
-        heading = 'Detalle %s' % package_id.code
+        heading = 'Detalle %s %s' % \
+            (package_id.code, package_id.product_id.name)
         context['heading'] = heading
         context['move_heading'] = 'Movimientos'
         context['lines_heading'] = 'Unidades del Paquete'
@@ -519,6 +523,7 @@ class EditProductPackage(UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -603,6 +608,28 @@ class ListMeasurementUnit(ListView):
             create_form.save()
             return HttpResponseRedirect(self.success_url)
 
+
+class DetailMeasurementUnit(DetailView):
+    model = MeasurementUnit
+    template_name = 'measurement_units/views/DetailMeasurementUnit.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        measure_id = self.model.objects.get(pk=self.kwargs.get('pk'))
+        product_ids = Product.objects.filter(measure_id=measure_id)
+        heading = 'Detalle %s' % measure_id.name
+        context['heading'] = heading
+        context['product_lines'] = 'Productos Asociados'
+        if product_ids:
+            context['product_ids'] = product_ids
+        return context
+
+        return context
+
 # ----------------------------FUNCTIONS------------------------------#
 
 
@@ -642,6 +669,7 @@ class EditMeasurementUnit(UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -649,10 +677,6 @@ class EditMeasurementUnit(UpdateView):
         context['action'] = 'edit'
         context['success_url'] = self.success_url
         return context
-
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
@@ -722,9 +746,12 @@ class DetailStockMove(DetailView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        # locale.setlocale(locale.LC_ALL, 'es-ES')
         context = super().get_context_data(**kwargs)
         move_id = self.model.objects.get(pk=self.kwargs.get('pk'))
-        heading = '%s Detail' % move_id.code
+        heading = 'Detalle %s %s -> %s' \
+            % (move_id.code, move_id.location_id,
+               move_id.location_dest_id)
         context['heading'] = heading
         return context
 

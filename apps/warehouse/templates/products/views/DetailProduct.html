@@ -10,24 +10,34 @@
 {% block table %}
 <thead>
     <tr>
-        <td>Nombre</td>
-        <td>Factor de Cantidad</td>
         <td>Unidad de Medida</td>
-        <td>Fecha Creación</td>
+        <td>Imagen de Producto</td>
         <td>Descripción</td>
+        {% if user.is_staff %}
+            <td>Usuario creador</td>
+            <td>Fecha Creación</td>
+            <td>Ultimo usuario en modificar</td>
+            <td>Fecha Modificación</td>
+        {% endif %}
     </tr>
 </thead>
 <tbody>
     <tr>
-        <td>{{object.name}}</td>
-        <td>{{object.measure_qty}}</td>
         <td>{{object.measure_id.abbreviation}}</td>
-        <td>{{object.date_created}}</td>
+        <td>
+            <img src="/media/{{object.product_image}}" class="img-circle elevation-2" style="width: 50px; height: 50px;" >
+        </td>
         <td>{{object.description}}</td>
+        {% if user.is_staff %}
+            <td>{{object.user_creator.first_name}} {{object.user_creator.last_name}}</td>
+            <td>{{object.date_created}}</td>
+            <td>{{object.user_updater.first_name}} {{object.user_updater.last_name}}</td>
+            <td>{{object.date_updated}}</td>
+        {% endif %}
     </tr>
 </tbody>
 {% endblock %}
 
 {% block lines %}
-    {% include "lines/products_lines.html" %}              
+    {% include "lines/products_lines.html" %}
 {% endblock %}
