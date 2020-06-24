@@ -28,9 +28,5 @@ class Crum(models.Model):
         auto_now=True, null=True, blank=True,
         verbose_name='Fecha Modificación')
 
-    def __str__(self):
-        return str(
-            self.user_creator.first_name + self.user_creator.last_name)
-
     class Meta:
         abstract = True

@@ -25,7 +25,9 @@
                 </td>
                 <td>{{unit_id.name}}</td>
                 <td>{{unit_id.quantity}}</td>
-                <td>{{object.measure_id.abbreviation}}</td>
+                <td>
+                    <a href="{% url 'DetailMeasurementUnit' object.measure_id.id %}" >{{object.measure_id.name}}</a>
+                </td>
                 <td>{{unit_id.fixed_ammount}}</td>
             </tr>
             {% endfor %}
@@ -59,7 +61,9 @@
                     <a href="{% url 'DetailProductPackage' pckg_id.id %}"> {{pckg_id.code}}</a>
                 </td>
                 <td>{{pckg_id.unit_qty}}</td>
-                <td>{{object.measure_id.abbreviation}}</td>
+                <td>
+                    <a href="{% url 'DetailMeasurementUnit' object.measure_id.id %}" >{{object.measure_id.name}}</a>
+                </td>
                 <td>{{pckg_id.fixed_ammount}}</td>
             </tr>
             {% endfor %}

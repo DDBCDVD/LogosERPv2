@@ -17,12 +17,15 @@
   <tr>
     <td>{{product_unit.code}}</td>
     <td>{{product_unit.name}}</td>
-    <td>{{product_unit.product_id.measure_id.abbreviation}}</td>
+    <td>
+      <a href="{% url 'DetailMeasurementUnit' product_unit.product_id.measure_id.id %}">{{product_unit.product_id.measure_id.name}}</a>
+    </td>
     <td>{{product_unit.quantity}}</td>
     <td>
       <a href="{% url 'DetailProduct' product_unit.product_id.id %}">{{product_unit.product_id.name}}</a>
     </td>
     <td>{{product_unit.package_id.code}}</td>
+
     <td>{{product_unit.fixed_ammount}}</td>
     <td>
       {% if not product_unit.quantity %}

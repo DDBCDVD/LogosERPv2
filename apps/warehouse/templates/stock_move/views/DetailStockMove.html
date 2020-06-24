@@ -10,8 +10,9 @@
 {% block table %}
 <thead>
     <tr>
-        <td>Cantidad</td>
+
         {% if object.unit_id %}
+            <td>Cantidad</td>
             <td>Cantidad Origen</td>
             <td>Saldo nuevo Origen</td>
             <td>Cantidad previa Destino</td>
@@ -22,6 +23,7 @@
             <td>Código Unidad</td>
         {% endif %}
         {% if object.package_id %}
+            <td>Piezas</td>
             <td>Paquete</td>
         {% endif %}
         <td>Medida</td>
@@ -34,25 +36,37 @@
 </thead>
 <tbody>
     <tr>
-        <td>{{object.quantity}}</td>
+
         {% if object.unit_id %}
+            <td>{{object.quantity}}</td>
             <td>{{object.prev_qty_origin}}</td>
             <td>{{object.balance_origin}}</td>
             <td>{{object.prev_qty_dest}}</td>
             <td>{{object.balance_dest}}</td>
             <td>{{object.prev_qty}}</td>
             <td>{{object.balance}}</td>
-            <td>{{object.unit_id.name}}</td>
-            <td>{{object.unit_id.code}}</td>
+            <td>
+                <a href="{% url 'DetailProductUnit' object.unit_id.id %}">{{object.unit_id.name}}</a>
+            </td>
+            <td>
+                <a href="{% url 'DetailProductUnit' object.unit_id.id %}">{{object.unit_id.code}}</a>
+            </td>
         {% endif %}
         {% if object.package_id %}
-            <td>{{object.package_id.code}}</td>
+            <td>{{object.pieces}}</td>
+            <td>
+                <a href="{% url 'DetailProductPackage' object.package_id.id %}">{{object.package_id.code}}</a>
+            </td>
         {% endif %}
         {% if object.unit_id %}
-            <td>{{object.unit_id.product_id.measure_id.abbreviation}}</td>
+            <td>
+                <a href="{% url 'DetailMeasurementUnit' object.unit_id.product_id.measure_id.id %}">{{object.unit_id.product_id.measure_id.name}}</a>
+            </td>
         {% endif %}
         {% if object.package_id %}
-            <td>{{move.package_id.product_id.measure_id.abbreviation}}</td>
+            <td>
+                <a href="{% url 'DetailMeasurementUnit' object.package_id.product_id.measure_id.id %}">{{object.package_id.product_id.measure_id.name}}</a>
+            </td>
         {% endif %}
         <td>{{object.move_type}}</td>
         <td>{{object.note}}</td>

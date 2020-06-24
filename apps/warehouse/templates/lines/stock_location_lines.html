@@ -18,15 +18,19 @@
             </tr>
         </thead>
         <tbody>
-            {% for control in stkctrl_ids %}
+            {% for stkctrl_id in stkctrl_ids %}
             <tr>
-                <td>{{control.unit_id.name}}</td>
                 <td>
-                    <a href="{% url 'DetailProductUnit' control.unit_id.id %}"> {{control.unit_id.code}}</a>
+                    <a href="{% url 'DetailProductUnit' stkctrl_id.unit_id.id %}"> {{stkctrl_id.unit_id.name}}</a>
                 </td>
-                <td>{{control.quantity}}</td>
-                <td>{{control.unit_id.product_id.measure_id.abbreviation}}</td>
-                <td>{{control.unit_id.fixed_ammount}}</td>
+                <td>
+                    <a href="{% url 'DetailProductUnit' stkctrl_id.unit_id.id %}"> {{stkctrl_id.unit_id.code}}</a>
+                </td>
+                <td>{{stkctrl_id.quantity}}</td>
+                <td>
+                    <a href="{% url 'DetailMeasurementUnit' stkctrl_id.unit_id.product_id.measure_id.id %}">{{stkctrl_id.unit_id.product_id.measure_id.name}}</a>
+                </td>
+                <td>{{stkctrl_id.unit_id.fixed_ammount}}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -47,8 +51,9 @@
         <thead>
             <tr>
                 <td>Código</td>
-                <td>Cantidad</td>
-                <td>Unidad de Medidas</td>
+                <td>Piezas</td>
+                <td>Cantidad por unidad</td>
+                <td>Unidad de Medida</td>
                 <td>Cantidad Fija</td>
             </tr>
         </thead>
@@ -58,8 +63,11 @@
                 <td>
                     <a href="{% url 'DetailProductPackage' pckg_id.id %}"> {{pckg_id.code}}</a>
                 </td>
+                <td>{{pckg_id.pieces}}</td>
                 <td>{{pckg_id.unit_qty}}</td>
-                <td>{{pckg_id.product_id.measure_id.abbreviation}}</td>
+                <td>
+                    <a href="{% url 'DetailMeasurementUnit' pckg_id.product_id.measure_id.id %}">{{pckg_id.product_id.measure_id.name}}</a>
+                </td>
                 <td>{{pckg_id.fixed_ammount}}</td>
             </tr>
             {% endfor %}
