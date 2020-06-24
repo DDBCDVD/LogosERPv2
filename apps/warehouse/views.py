@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -42,14 +42,13 @@ def test(request):
 
 
 # @method_decorator(login_required, name='dispatch')
-class ListProduct(ListView):
+class ListProduct(LoginRequiredMixin, ListView):
 
     model = Product
     create_form = ProductForm
     template_name = 'products/views/ListProduct.html'
     success_url = reverse_lazy('ListProduct')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -71,11 +70,10 @@ class ListProduct(ListView):
             return HttpResponseRedirect(self.success_url)
 
 
-class DetailProduct(DetailView):
+class DetailProduct(LoginRequiredMixin, DetailView):
     model = ProductUnit
     template_name = 'products/views/DetailProduct.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -96,13 +94,12 @@ class DetailProduct(DetailView):
 # ------------------------FUNCTIONS------------------------------#
 
 
-class CreateProduct(CreateView):
+class CreateProduct(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -124,13 +121,12 @@ class CreateProduct(CreateView):
         return JsonResponse(data)
 
 
-class EditProduct(UpdateView):
+class EditProduct(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'products/functions/CreateProduct.html'
     success_url = reverse_lazy('ListProduct')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -153,13 +149,12 @@ class EditProduct(UpdateView):
         return JsonResponse(data)
 
 
-class DeleteProduct(DeleteView):
+class DeleteProduct(LoginRequiredMixin, DeleteView):
     model = Product
     form_class = ProductForm
     template_name = 'products/functions/DeleteProduct.html'
     success_url = reverse_lazy('ListProduct')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -169,14 +164,13 @@ class DeleteProduct(DeleteView):
 # ------------------------VIEWS------------------------------#
 
 
-class ListProductUnit(ListView):
+class ListProductUnit(LoginRequiredMixin, ListView):
 
     model = ProductUnit
     create_form = ProductUnitForm
     template_name = 'product_units/views/ListProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -198,11 +192,10 @@ class ListProductUnit(ListView):
             return HttpResponseRedirect(self.success_url)
 
 
-class DetailProductUnit(DetailView):
+class DetailProductUnit(LoginRequiredMixin, DetailView):
     model = ProductUnit
     template_name = 'product_units/views/DetailProductUnit.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -227,14 +220,13 @@ class DetailProductUnit(DetailView):
 
 # ------------------------FUNCTIONS------------------------------#
 
-class CreateProductUnit(CreateView):
+class CreateProductUnit(LoginRequiredMixin, CreateView):
     model = ProductUnit
     addform = ProductForm
     form_class = ProductUnitForm
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -256,13 +248,12 @@ class CreateProductUnit(CreateView):
         return JsonResponse(data)
 
 
-class EditProductUnit(UpdateView):
+class EditProductUnit(LoginRequiredMixin, UpdateView):
     model = ProductUnit
     form_class = ProductUnitForm
     template_name = 'product_units/functions/CreateProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -285,13 +276,12 @@ class EditProductUnit(UpdateView):
         return JsonResponse(data)
 
 
-class DeleteProductUnit(DeleteView):
+class DeleteProductUnit(LoginRequiredMixin, DeleteView):
     model = ProductUnit
     form_class = ProductUnitForm
     template_name = 'product_units/functions/DeleteProductUnit.html'
     success_url = reverse_lazy('ListProductUnit')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -299,14 +289,13 @@ class DeleteProductUnit(DeleteView):
 # --------------------STOCK LOCATION MODEL--------------------------#
 
 # ------------------------VIEWS------------------------------#
-class ListStockLocation(ListView):
+class ListStockLocation(LoginRequiredMixin, ListView):
 
     model = StockLocation
     template_name = 'stock_location/views/ListStockLocation.html'
     create_form = StockLocationForm
     success_url = reverse_lazy('ListStockLocation')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -328,11 +317,10 @@ class ListStockLocation(ListView):
             return HttpResponseRedirect(self.success_url)
 
 
-class DetailStockLocation(DetailView):
+class DetailStockLocation(LoginRequiredMixin, DetailView):
     model = StockLocation
     template_name = 'stock_location/views/DetailStockLocation.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -357,13 +345,12 @@ class DetailStockLocation(DetailView):
 # ------------------------FUNCTIONS------------------------------#
 
 
-class CreateStockLocation(CreateView):
+class CreateStockLocation(LoginRequiredMixin, CreateView):
     model = StockLocation
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -385,14 +372,13 @@ class CreateStockLocation(CreateView):
         return JsonResponse(data)
 
 
-class EditStockLocation(UpdateView):
+class EditStockLocation(LoginRequiredMixin, UpdateView):
 
     model = StockLocation
     form_class = StockLocationForm
     template_name = 'stock_location/functions/CreateStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -415,13 +401,12 @@ class EditStockLocation(UpdateView):
         return JsonResponse(data)
 
 
-class DeleteStockLocation(DeleteView):
+class DeleteStockLocation(LoginRequiredMixin, DeleteView):
     model = StockLocation
     form_class = StockLocationForm
     template_name = 'stock_location/functions/DeleteStockLocation.html'
     success_url = reverse_lazy('ListStockLocation')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -429,14 +414,13 @@ class DeleteStockLocation(DeleteView):
 # -----------------------PRODUCT PACKAGE MODEL-----------------------#
 
 # ------------------------VIEWS------------------------------#
-class ListProductPackage(ListView):
+class ListProductPackage(LoginRequiredMixin, ListView):
 
     model = ProductPackage
     template_name = 'products_package/views/ListProductPackage.html'
     create_form = ProductPackageForm
     success_url = reverse_lazy('ListProductPackage')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -458,11 +442,10 @@ class ListProductPackage(ListView):
             return HttpResponseRedirect(self.success_url)
 
 
-class DetailProductPackage(DetailView):
+class DetailProductPackage(LoginRequiredMixin, DetailView):
     model = ProductPackage
     template_name = 'products_package/views/DetailProductPackage.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -486,13 +469,12 @@ class DetailProductPackage(DetailView):
 
 # ------------------------FUNCTIONS------------------------------#
 
-class CreateProductPackage(CreateView):
+class CreateProductPackage(LoginRequiredMixin, CreateView):
     model = ProductPackage
     form_class = ProductPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -514,13 +496,12 @@ class CreateProductPackage(CreateView):
         return JsonResponse(data)
 
 
-class EditProductPackage(UpdateView):
+class EditProductPackage(LoginRequiredMixin, UpdateView):
     model = ProductPackage
     form_class = ProductPackageForm
     template_name = 'products_package/functions/CreateProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -543,13 +524,12 @@ class EditProductPackage(UpdateView):
         return JsonResponse(data)
 
 
-class DeleteProductPackage(DeleteView):
+class DeleteProductPackage(LoginRequiredMixin, DeleteView):
     model = ProductPackage
     form_class = ProductPackageForm
     template_name = 'products_package/functions/DeleteProductPackage.html'
     success_url = reverse_lazy('ListProductPackage')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -573,14 +553,13 @@ def create_unit_package(request, pk):
 # ------------------MEASUREMENTS UNITS-----------------------------#
 
 # ------------------------VIEWS------------------------------#
-class ListMeasurementUnit(ListView):
+class ListMeasurementUnit(LoginRequiredMixin, ListView):
 
     model = MeasurementUnit
     template_name = 'measurement_units/views/ListMeasurementUnit.html'
     create_form = MeasurementUnitForm
     success_url = reverse_lazy('ListMeasurementUnit')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -605,7 +584,6 @@ class DetailMeasurementUnit(DetailView):
     model = MeasurementUnit
     template_name = 'measurement_units/views/DetailMeasurementUnit.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -625,13 +603,12 @@ class DetailMeasurementUnit(DetailView):
 # ----------------------------FUNCTIONS------------------------------#
 
 
-class CreateMeasurementUnit(CreateView):
+class CreateMeasurementUnit(LoginRequiredMixin, CreateView):
     model = MeasurementUnit
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -653,13 +630,12 @@ class CreateMeasurementUnit(CreateView):
         return JsonResponse(data)
 
 
-class EditMeasurementUnit(UpdateView):
+class EditMeasurementUnit(LoginRequiredMixin, UpdateView):
     model = MeasurementUnit
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/CreateMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -682,13 +658,12 @@ class EditMeasurementUnit(UpdateView):
         return JsonResponse(data)
 
 
-class DeleteMeasurementUnit(DeleteView):
+class DeleteMeasurementUnit(LoginRequiredMixin, DeleteView):
     model = MeasurementUnit
     form_class = MeasurementUnitForm
     template_name = 'measurement_units/functions/DeleteMeasurementUnit.html'
     success_url = reverse_lazy('ListMeasurementUnit')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -697,11 +672,10 @@ class DeleteMeasurementUnit(DeleteView):
 # --------------------------VIEWS-----------------------------------#
 
 
-class ListStockMove(ListView):
+class ListStockMove(LoginRequiredMixin, ListView):
     model = StockMove
     template_name = 'stock_move/views/ListStockMove.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -729,11 +703,10 @@ class ListStockMove(ListView):
         return JsonResponse(data)
 
 
-class DetailStockMove(DetailView):
+class DetailStockMove(LoginRequiredMixin, DetailView):
     model = StockMove
     template_name = 'stock_move/views/DetailStockMove.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -751,13 +724,12 @@ class DetailStockMove(DetailView):
 # ----------------------------------------FUNCTIONS----------------------------------------#
 
 
-class MoveUnit(CreateView):
+class MoveUnit(LoginRequiredMixin, CreateView):
     model = StockMove
     form_class = MoveUnitForm
     template_name = 'stock_move/functions/MoveUnit.html'
     success_url = reverse_lazy('ListStockMove')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -787,11 +759,14 @@ class MoveUnit(CreateView):
         return JsonResponse(data)
 
 
-class MovePackage(CreateView):
+class MovePackage(LoginRequiredMixin, CreateView):
     model = StockMove
     form_class = MovePackageForm
     template_name = 'stock_move/functions/MovePackage.html'
     success_url = reverse_lazy('ListStockMove')
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -872,11 +847,10 @@ def function_create_move_package(request):
 # -----------------------------VIEWS--------------------------------#
 
 
-class ListStockControl(ListView):
+class ListStockControl(LoginRequiredMixin, ListView):
     model = StockControl
     paginate_by = 20
     template_name = 'stock_control/views/ListStockControl.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
