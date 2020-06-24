@@ -1,8 +1,8 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
@@ -13,11 +13,10 @@ from core.forms import UserForm
 #  --------------------------HOME-----------------------------#
 
 
-class dashboard(TemplateView):
+class dashboard(LoginRequiredMixin, TemplateView):
 
     template_name = 'dashboard.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -36,12 +35,11 @@ class Login(LoginView):
 #  ---------------------------USER MODEL---------------------------#
 # ------------------------VIEWS------------------------------#
 
-class ListUser(ListView):
+class ListUser(LoginRequiredMixin, ListView):
 
     model = User
     template_name = 'users/views/ListUser.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -57,13 +55,12 @@ class ListUser(ListView):
 
 # ------------------------FUNCTIONS------------------------------#
 
-class CreateUser(CreateView):
+class CreateUser(LoginRequiredMixin, CreateView):
     model = User
     form_class = UserForm
     template_name = 'users/functions/CreateUser.html'
     success_url = reverse_lazy('ListUser')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -87,13 +84,12 @@ class CreateUser(CreateView):
 # ------------------------FUNCTIONS------------------------------#
 
 
-class EditUser(UpdateView):
+class EditUser(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserForm
     template_name = 'users/functions/CreateUser.html'
     success_url = reverse_lazy('ListUser')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -119,11 +115,10 @@ class EditUser(UpdateView):
         return JsonResponse(data)
 
 
-class DeleteUser(DeleteView):
+class DeleteUser(LoginRequiredMixin, DeleteView):
     model = User
     template_name = 'users/functions/DeleteUser.html'
     success_url = reverse_lazy('ListUser')
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
