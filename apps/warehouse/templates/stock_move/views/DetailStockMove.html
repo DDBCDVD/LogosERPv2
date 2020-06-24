@@ -10,12 +10,8 @@
 {% block table %}
 <thead>
     <tr>
-        <td>Código</td>
-        <td>Origen</td>
-        <td>Destino</td>
         <td>Cantidad</td>
         {% if object.unit_id %}
-
             <td>Cantidad Origen</td>
             <td>Saldo nuevo Origen</td>
             <td>Cantidad previa Destino</td>
@@ -31,15 +27,13 @@
         <td>Medida</td>
         <td>Tipo</td>
         <td>Notas</td>
-        <td>Descripción</td>                    
+        <td>Descripción</td>
         <td>Fecha</td>
+        <td>Usuario</td>
     </tr>
 </thead>
 <tbody>
     <tr>
-        <td>{{object.code}}</td>
-        <td>{{object.location_id.name}}</td>
-        <td>{{object.location_dest_id.name}}</td>                    
         <td>{{object.quantity}}</td>
         {% if object.unit_id %}
             <td>{{object.prev_qty_origin}}</td>
@@ -56,14 +50,15 @@
         {% endif %}
         {% if object.unit_id %}
             <td>{{object.unit_id.product_id.measure_id.abbreviation}}</td>
-        {% endif %}                     
+        {% endif %}
         {% if object.package_id %}
             <td>{{move.package_id.product_id.measure_id.abbreviation}}</td>
-        {% endif %} 
+        {% endif %}
         <td>{{object.move_type}}</td>
         <td>{{object.note}}</td>
-        <td>{{object.description}}</td>                    
+        <td>{{object.description}}</td>
         <td>{{object.date}}</td>
+        <td>{{object.user_creator.first_name}} {{object.user_creator.last_name}}</td>
     </tr>
 </tbody>
 {% endblock %}

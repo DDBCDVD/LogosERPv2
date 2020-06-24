@@ -1,12 +1,14 @@
 from datetime import datetime
 from django.db import models
+from crum import get_current_user
+from core.models import Crum
 from django.db.models.signals import post_save
 from django.db.models.constraints import UniqueConstraint
 from django.dispatch import receiver
 from django.forms import model_to_dict
 
 
-class MeasurementUnit(models.Model):
+class MeasurementUnit(Crum):
 
     __AUTOCODE__ = 'MSRE'
 
@@ -25,18 +27,6 @@ class MeasurementUnit(models.Model):
     abbreviation = models.CharField(
         verbose_name="Abbreviación",
         max_length=5, unique=True)
-    date_created = models.DateTimeField(
-        auto_now=True,
-        verbose_name="Fecha de Creación")
-    date_modify = models.DateTimeField(
-        auto_now_add=True)
-
-    def __str__(self):
-        return self.name
-
-    def toJSON(self):
-        item = model_to_dict(self)  # Se pueden excluir parámetros
-        return item
 
     class Meta:
         verbose_name = 'Unidad de Medida'
@@ -46,14 +36,31 @@ class MeasurementUnit(models.Model):
         UniqueConstraint(
             fields=['code', 'abbreviation'], name='unique_measure')
 
+    def save(self, force_insert=False, force_update=False,
+             using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_creator = user
+            else:
+                self.user_updater = user
+        super(MeasurementUnit, self).save()
+
     @receiver(post_save, sender='warehouse.MeasurementUnit')
     def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
             code = sender.objects.filter(id=instance.id).update(
                 code=instance.__AUTOCODE__ + str(instance.id))
 
+    def __str__(self):
+        return self.name
 
-class Product(models.Model):
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item
+
+
+class Product(Crum):
 
     __AUTOCODE__ = 'PRD'
 
@@ -73,18 +80,10 @@ class Product(models.Model):
         MeasurementUnit,
         verbose_name="Unidad de Medida",
         on_delete=models.CASCADE)
-    date_created = models.DateTimeField(
-        auto_now=True,
-        verbose_name="Fecha de Creación")
-    date_modify = models.DateTimeField(
-        auto_now_add=True)
     product_image = models.ImageField(
         upload_to='product', blank=True,
         null=True, verbose_name="Imagen de Producto",
-        default='default/product_default.png')
-
-    def __str__(self):
-        return str(self.code + ' ' + self.name)
+        default='default/default_product.png')
 
     class Meta:
         verbose_name = 'Producto'
@@ -92,14 +91,31 @@ class Product(models.Model):
         db_table = 'product'
         ordering = ['code']
 
+    def save(self, force_insert=False, force_update=False,
+             using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_creator = user
+            else:
+                self.user_updater = user
+        super(Product, self).save()
+
     @receiver(post_save, sender='warehouse.Product')
     def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
             code = sender.objects.filter(id=instance.id).update(
                 code=instance.__AUTOCODE__ + str(instance.id))
 
+    def __str__(self):
+        return str(self.code + ' ' + self.name)
 
-class StockLocation(models.Model):
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item
+
+
+class StockLocation(Crum):
 
     __AUTOCODE__ = 'STCKLO'
 
@@ -136,14 +152,21 @@ class StockLocation(models.Model):
     date_modify = models.DateTimeField(
         auto_now_add=True)
 
-    def __str__(self):
-        return str(self.name)
-
     class Meta:
         verbose_name = 'Ubicación'
         verbose_name_plural = 'Ubicaciones'
         db_table = 'stock_location'
         ordering = ['name']
+
+    def save(self, force_insert=False, force_update=False,
+             using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_creator = user
+            else:
+                self.user_updater = user
+        super(StockLocation, self).save()
 
     @receiver(post_save, sender='warehouse.StockLocation')
     def set_auto_code(sender, instance, **kwargs):
@@ -151,8 +174,15 @@ class StockLocation(models.Model):
             code = sender.objects.filter(id=instance.id).update(
                 code=instance.__AUTOCODE__ + str(instance.id))
 
+    def __str__(self):
+        return str(self.name)
 
-class ProductPackage(models.Model):
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item
+
+
+class ProductPackage(Crum):
 
     __AUTOCODE__ = 'PCKG'
 
@@ -182,10 +212,28 @@ class ProductPackage(models.Model):
     first_move = models.BooleanField(
         verbose_name="Primer Movimiento",
         default=False)
-    date_created = models.DateTimeField(
-        auto_now=True, verbose_name="Fecha de Creación")
-    date_modify = models.DateTimeField(
-        auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Paquete de Productos'
+        verbose_name_plural = 'Paquetes de Productos'
+        db_table = 'product_package'
+        ordering = ['code']
+
+    def save(self, force_insert=False, force_update=False,
+             using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_creator = user
+            else:
+                self.user_updater = user
+        super(ProductPackage, self).save()
+
+    @receiver(post_save, sender='warehouse.ProductPackage')
+    def set_auto_code(sender, instance, **kwargs):
+        if kwargs.get('created'):
+            code = sender.objects.filter(id=instance.id).update(
+                code=instance.__AUTOCODE__ + str(instance.id))
 
     def __str__(self):
         if self.location_id:
@@ -194,20 +242,12 @@ class ProductPackage(models.Model):
             name_location = ''
         return str(self.code + ' ' + name_location)
 
-    class Meta:
-        verbose_name = 'Paquete de Productos'
-        verbose_name_plural = 'Paquetes de Productos'
-        db_table = 'product_package'
-        ordering = ['code']
-
-    @receiver(post_save, sender='warehouse.ProductPackage')
-    def set_auto_code(sender, instance, **kwargs):
-        if kwargs.get('created'):
-            code = sender.objects.filter(id=instance.id).update(
-                code=instance.__AUTOCODE__ + str(instance.id))
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item
 
 
-class ProductUnit(models.Model):
+class ProductUnit(Crum):
 
     __AUTOCODE__ = 'PRDUNT'
 
@@ -243,16 +283,6 @@ class ProductUnit(models.Model):
         verbose_name="Fijar Cantidad", default=False)
     first_move = models.BooleanField(
         verbose_name="Primer Movimiento", default=False)
-    date_created = models.DateTimeField(
-        auto_now=True, verbose_name="Fecha de Creación")
-    date_modify = models.DateTimeField(
-        auto_now_add=True)
-
-    def __str__(self):
-        return str(
-            self.name
-            + ' ' + self.code + ' ' + str(self.quantity) + ' '
-            + self.product_id.measure_id.abbreviation)
 
     class Meta:
         verbose_name = 'Unidad de Producto'
@@ -260,14 +290,34 @@ class ProductUnit(models.Model):
         db_table = 'product_unit'
         ordering = ['code']
 
+    def save(self, force_insert=False, force_update=False,
+             using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_creator = user
+            else:
+                self.user_updater = user
+        super(ProductUnit, self).save()
+
     @receiver(post_save, sender='warehouse.ProductUnit')
     def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
             autocode = sender.objects.filter(id=instance.id).update(
                 code=instance.__AUTOCODE__ + str(instance.id))
 
+    def __str__(self):
+        return str(
+            self.name
+            + ' ' + self.code + ' ' + str(self.quantity) + ' '
+            + self.product_id.measure_id.abbreviation)
 
-class StockMove(models.Model):
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item
+
+
+class StockMove(Crum):
 
     __AUTOCODE__ = 'MOVE'
 
@@ -324,18 +374,21 @@ class StockMove(models.Model):
     move_type = models.CharField(
         verbose_name="Tipo de Movimiento", max_length=100)
 
-    def __str__(self):
-        return self.code
-
-    def toJSON(self):
-        item = model_to_dict(self)  # Se pueden excluir parámetros
-        return item
-
     class Meta:
         verbose_name = 'Movimiento de Stock'
         verbose_name_plural = 'Movimientos de Stock'
         db_table = 'stock_move'
         ordering = ['code']
+
+    def save(self, force_insert=False, force_update=False,
+             using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_creator = user
+            else:
+                self.user_updater = user
+        super(StockMove, self).save()
 
     @receiver(post_save, sender='warehouse.StockMove')
     def set_auto_code(sender, instance, **kwargs):
@@ -343,8 +396,15 @@ class StockMove(models.Model):
             code = sender.objects.filter(id=instance.id).update(
                 code=instance.__AUTOCODE__ + str(instance.id))
 
+    def __str__(self):
+        return self.code
 
-class StockControl(models.Model):
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item
+
+
+class StockControl(Crum):
 
     __AUTOCODE__ = 'STKCTRL'
 
@@ -369,17 +429,31 @@ class StockControl(models.Model):
     date = models.DateField(
         verbose_name="Fecha", auto_now_add=True)
 
-    def __str__(self):
-        return self.code
-
     class Meta:
         verbose_name = 'Control de Stock'
         verbose_name_plural = 'Controles de Stock'
         db_table = 'stock_control'
         ordering = ['code']
 
+    def save(self, force_insert=False, force_update=False,
+             using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_creator = user
+            else:
+                self.user_updater = user
+        super(StockControl, self).save()
+
     @receiver(post_save, sender='warehouse.StockControl')
     def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
             code = sender.objects.filter(id=instance.id).update(
                 code=instance.__AUTOCODE__ + str(instance.id))
+
+    def __str__(self):
+        return self.code
+
+    def toJSON(self):
+        item = model_to_dict(self)  # Se pueden excluir parámetros
+        return item

@@ -86,10 +86,11 @@ def validate_moves(request, move):
                 'con la cantidad fija de %s %s'
                 % (move.unit_id.quantity,
                    item_move.product_id.measure_id.abbreviation))
-        if move.quantity > move.unit_id.quantity:
+        if move.quantity > move.unit_id.quantity \
+                and move.location_id.location_type != 'Ingress':
             errors.append(
                 'No hay %s %s disponible. '
-                'La cantidad disponibile de %s es de %s %s'
+                'La cantidad disponible de %s es de %s %s'
                 % (move.quantity, item_move.product_id.measure_id.abbreviation,
                    item_move.code, move.quantity,
                    item_move.product_id.measure_id.abbreviation))
@@ -132,7 +133,7 @@ def validate_stock_control(request, move):
                 if not stck_ctrl_origin:
                     errors.append(
                         'No puede mover la unidad desde la ubicación '
-                        '%s porque la unidad no tienen Stock disponible '
+                        '%s porque la unidad no tiene Stock disponible '
                         'en esa ubicación. '
                         'Revise el Stock disponible y corrija. '
                         % (move.location_id))

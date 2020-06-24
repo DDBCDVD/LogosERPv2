@@ -63,6 +63,8 @@ urlpatterns = [
     #  -------------------------------------MEASUREMENT UNITS MODEL-----------------------------------------#
     path('ListMeasurementUnit/', warehouse_views.ListMeasurementUnit.as_view(
         extra_context={'heading': 'Unidades de Medida', 'title': 'Unidades de Medida'}, model=MeasurementUnit), name='ListMeasurementUnit'),
+    path('DetailMeasurementUnit/<pk>/', warehouse_views.DetailMeasurementUnit.as_view(
+        extra_context={'heading': 'Detalle de la Unidad de Medida', 'title': 'Detalle de la Unidad de Medida'}, model=MeasurementUnit), name='DetailMeasurementUnit'),
     path('CreateMeasurementUnit/', warehouse_views.CreateMeasurementUnit.as_view(
         extra_context={'heading': 'Creando Unidad de Medida', 'title': 'Crear Unidad de Medida'}, model=MeasurementUnit), name='CreateMeasurementUnit'),
     path('EditMeasurementUnit/<int:pk>/', warehouse_views.EditMeasurementUnit.as_view(
@@ -77,7 +79,7 @@ urlpatterns = [
     path('MovePackage/', warehouse_views.MovePackage.as_view(
         extra_context={'heading': 'Moviendo Paquete', 'title': 'Nuevo Movimiento'}, model=StockMove), name='MovePackage'),
     path('DetailStockMove/<pk>', warehouse_views.DetailStockMove.as_view(
-        extra_context={'title': 'Detalle'}, model=StockMove), name='DetailStockMove'),
+        extra_context={'title': 'Detalle Movimiento'}, model=StockMove), name='DetailStockMove'),
     path('function_create_move_package/', warehouse_views.function_create_move_package, name='function_create_move_package'),
     path('function_create_move_unit/', warehouse_views.function_create_move_unit, name='function_create_move_unit'),
     #  -------------------------------------STOCK CONTROL MODEL-----------------------------------------#

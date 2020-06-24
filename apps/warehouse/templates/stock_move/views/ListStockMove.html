@@ -23,6 +23,7 @@
         <td>Tipo</td>
         <td>Notas</td>
         <td>Fecha</td>
+        <td>Usuario</td>
         <td>Acciones</td>
     </tr>
 </thead>
@@ -55,6 +56,7 @@
         <td>{{move.move_type}}</td>
         <td>{{move.note}}</td>
         <td>{{move.date}}</td>
+        <td>{{move.user_creator.first_name}} {{move.user_creator.last_name}}</td>
         <td>
             <a href="{% url 'DetailStockMove' move.id %}" class="btn btn-info btn-circle btn-lg" >
                 <i class="fas fa-info-circle"></i>

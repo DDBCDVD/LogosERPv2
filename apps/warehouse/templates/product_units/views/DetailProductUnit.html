@@ -5,9 +5,8 @@
     <a href="{% url 'ListProductUnit' %}" class="btn btn-outline-primary btn-lg">
     <span class="text">Volver</span>
     </a>
-    <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
-</div>  
-{% endblock %}  
+</div>
+{% endblock %}
 {% block table %}
 <thead>
     <tr>
@@ -19,7 +18,12 @@
         {% endif %}
         <td>Cantidad Fija</td>
         <td>Descripcion</td>
-        <td>Fecha Creación</td>
+        {% if user.is_staff %}
+            <td>Usuario creador</td>
+            <td>Fecha Creación</td>
+            <td>Ultimo usuario en modificar</td>
+            <td>Fecha Modificación</td>
+        {% endif %}
     </tr>
 </thead>
 <tbody>
@@ -32,14 +36,19 @@
         {% endif %}
         <td>{{object.fixed_ammount}}</td>
         <td>{{object.description}}</td>
-        <td>{{object.date_created}}</td>
+        {% if user.is_staff %}
+            <td>{{object.user_creator.first_name}} {{object.user_creator.last_name}}</td>
+            <td>{{object.date_created}}</td>
+            <td>{{object.user_updater.first_name}} {{object.user_updater.last_name}}</td>
+            <td>{{object.date_updated}}</td>
+         {% endif %}
     </tr>
 </tbody>
 
 {% endblock %}
 {% block lines %}
 
-    {% include "lines/move_lines.html" %} 
-         
+    {% include "lines/move_lines.html" %}
+
 {% endblock %}
 
