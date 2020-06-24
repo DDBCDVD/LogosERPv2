@@ -15,7 +15,9 @@
     <tr>
         <td>{{product.code}}</td>
         <td>{{product.name}}</td>
-        <td>{{product.measure_id.name}}</td>
+        <td>
+            <a href="{% url 'DetailMeasurementUnit' product.measure_id.id %}" >{{product.measure_id.name}}</a>
+        </td>
         <td>{{product.active}}</td>
         <td>
             <img src="/media/{{product.product_image}}" class="img-circle elevation-2" style="width: 50px; height: 50px;" >

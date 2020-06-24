@@ -28,11 +28,17 @@
 </thead>
 <tbody>
     <tr>
-        <td>{{object.product_id.name}}</td>
+        <td>
+            <a href="{% url 'DetailProduct' object.product_id.id %}">{{object.product_id.name}}</a>
+        </td>
         <td>{{object.quantity}}</td>
-        <td>{{object.product_id.measure_id.abbreviation}}</td>
+        <td>
+            <a href="{% url 'DetailMeasurementUnit' object.product_id.measure_id.id %}">{{object.product_id.measure_id.name}}</a>
+        </td>
         {% if object.package_id %}
-            <td>{{object.package_id.code}}</td>
+            <td>
+                <a href="{% url 'DetailProductPackage' object.package_id.id %}">{{object.package_id.code}}</a>
+            </td>
         {% endif %}
         <td>{{object.fixed_ammount}}</td>
         <td>{{object.description}}</td>

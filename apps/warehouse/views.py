@@ -217,7 +217,6 @@ class DetailProductUnit(DetailView):
         if move_ids:
             context['move_ids'] = move_ids
         if unit_id.package_id:
-            print(unit_id.package_id.code)
             move_pckg_ids = StockMove.objects.filter(
                 package_id=unit_id.package_id.id)
             if move_pckg_ids:
@@ -560,21 +559,14 @@ def create_unit_package(request, pk):
     Crea las unidaddes de productos del paquete
 
     '''
-    package = ProductPackage.objects.filter(id=pk)
-    for pckg in package:
-        if pckg.units_created:
-            messages.info(
-                request, 'The units of this package were already created')
-        else:
-            if pckg.unit_qty:
-                # Pasar esto a functions
-                if not functions.create_unit_package(request, pckg):
-                    return redirect('ListProductPackage')
-                if functions.create_pckg_stock_control(request, pckg):
-                    return redirect('ListProductPackage')
-                else:
-                    messages.error(
-                        request, 'Error en la creación del Control de Stock')
+    pckg = ProductPackage.objects.get(id=pk)
+    if not functions.create_unit_package(request, pckg):
+        return redirect('ListProductPackage')
+    if functions.create_pckg_stock_control(request, pckg):
+        return redirect('ListProductPackage')
+    else:
+        messages.error(
+            request, 'Error en la creación del Control de Stock')
     return redirect('ListProductPackage')
 
 

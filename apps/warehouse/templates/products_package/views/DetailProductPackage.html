@@ -27,7 +27,9 @@
 <tbody>
   <tr>
     <td>{{object.unit_qty}}</td>
-    <td>{{object.product_id.measure_id.abbreviation}}</td>
+    <td>
+      <a href="{% url 'DetailMeasurementUnit' object.product_id.measure_id.id %}">{{object.product_id.measure_id.name}}</a>
+    </td>
     <td>{{object.pieces}}</td>
     <td>{{object.unit_qty}}</td>
     <td>{{object.fixed_ammount}}</td>

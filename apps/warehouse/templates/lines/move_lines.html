@@ -34,9 +34,16 @@
       <tbody>
         {% for move in move_ids %}
         <tr>
-          <td>{{move.code}}</td>
-          <td>{{move.location_id.name}}</td>
-          <td>{{move.location_dest_id.name}}</td>
+          <td>
+            <a href="{% url 'DetailStockMove' move.id %}">{{move.code}}</a>
+          </td>
+          <td>
+            <a href="{% url 'DetailStockLocation' move.location_id.id %}">{{move.location_id.name}}</a>
+          </td>
+          <td>
+            <a href="{% url 'DetailStockLocation' move.location_dest_id.id %}">{{move.location_dest_id.name}}</a>
+          </td>
+
           <td>{{move.quantity}}</td>
           {% if item_type == 'Unit' %}
           <td>{{move.prev_qty_origin}}</td>
@@ -64,12 +71,8 @@
   <div class="card-header py-3">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">{{pckg_moves}}</h1>
-      <a
-        href="#"
-        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-      >
-        <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a
-      >
+      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
   </div>
   <div class="card-body">
@@ -92,14 +95,24 @@
       <tbody>
         {% for move in move_pckg_ids %}
         <tr>
-          <td>{{move.code}}</td>
-          <td>{{move.package_id.code}}</td>
+          <td>
+            <a href="{% url 'DetailStockMove' move.id %}">{{move.code}}</a>
+          </td>
+          <td>
+            <a href="{% url 'DetailProductPackage' move.package_id.id %}">{{move.package_id.code}}</a>
+          </td>
           <td>{{move.note}}</td>
           <td>{{move.description}}</td>
           <td>{{move.pieces}}</td>
-          <td>{{move.location_id.name}}</td>
-          <td>{{move.location_dest_id.name}}</td>
-          <td>{{object.product_id.measure_id.abbreviation}}</td>
+          <td>
+            <a href="{% url 'DetailStockLocation' move.location_id.id %}">{{move.location_id.name}}</a>
+          </td>
+          <td>
+            <a href="{% url 'DetailStockLocation' move.location_dest_id.id %}">{{move.location_dest_id.name}}</a>
+          </td>
+          <td>
+            <a href="{% url 'DetailMeasurementUnit' object.product_id.measure_id.id %}">{{object.product_id.measure_id.name}}</a>
+          </td>
           <td>{{move.move_type}}</td>
           <td>{{move.date}}</td>
           <td>{{object.user_creator.first_name}} {{object.user_creator.last_name}}</td>

@@ -18,15 +18,19 @@
                 </tr>
             </thead>
             <tbody>
-                {% for unit in unit_ids %}
+                {% for unit_id in unit_ids %}
                 <tr>
-                    <td>{{unit.name}}</td>
-                    <td>{{unit.code}}</td>
-                    <td>{{unit.quantity}}</td>
+                    <td>
+                        <a href="{% url 'DetailProductUnit' unit_id.id %}">{{unit_id.name}}</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'DetailProductUnit' unit_id.id %}">{{unit_id.code}}</a>
+                    </td>
+                    <td>{{unit_id.quantity}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
       </div>
     </div>
-</div>    
+</div>

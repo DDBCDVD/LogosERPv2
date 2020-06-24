@@ -255,7 +255,7 @@ class ProductUnit(Crum):
         verbose_name="Código", max_length=100,
         unique=True)
     name = models.CharField(
-        max_length=30, verbose_name="Nombre")
+        max_length=100, verbose_name="Nombre")
     description = models.TextField(
         null=True, blank=True,
         verbose_name="Descripción")
@@ -304,7 +304,8 @@ class ProductUnit(Crum):
     def set_auto_code(sender, instance, **kwargs):
         if kwargs.get('created'):
             autocode = sender.objects.filter(id=instance.id).update(
-                code=instance.__AUTOCODE__ + str(instance.id))
+                code=instance.__AUTOCODE__ + str(instance.id),
+                )
 
     def __str__(self):
         return str(

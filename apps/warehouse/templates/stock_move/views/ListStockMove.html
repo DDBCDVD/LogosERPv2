@@ -21,7 +21,6 @@
 
         <td>Medida</td>
         <td>Tipo</td>
-        <td>Notas</td>
         <td>Fecha</td>
         <td>Usuario</td>
         <td>Acciones</td>
@@ -31,17 +30,23 @@
     {% for move in object_list %}
     <tr>
         <td>{{move.code}}</td>
-        <td>{{move.location_id.name}}</td>
-        <td>{{move.location_dest_id.name}}</td>
+        <td>
+            <a href="{% url 'DetailStockLocation' move.location_id.id %}">{{move.location_id.name}}</a>
+          </td>
+          <td>
+            <a href="{% url 'DetailStockLocation' move.location_dest_id.id %}">{{move.location_dest_id.name}}</a>
+          </td>
 
         {% if move.unit_id %}
             <td>
-                <ul>{{move.unit_id.name}}</ul>
-                <ul>{{move.unit_id.code}}</ul>
+                <a href="{% url 'DetailProductUnit' move.unit_id.id %}">{{move.unit_id.name}}</a>
+                <a href="{% url 'DetailProductUnit' move.unit_id.id %}">{{move.unit_id.code}}</a>
             </td>
         {% endif %}
         {% if move.package_id %}
-            <td>{{move.package_id.code}}</td>
+        <td>
+            <a href="{% url 'DetailProductPackage' move.package_id.id %}">{{move.package_id.code}}</a>
+        </td>
         {% endif %}
         {% if move.package_id %}
             <td>{{move.pieces}}</td>
@@ -49,12 +54,13 @@
             <td>{{move.quantity}}</td>
         {% endif %}
         {% if move.unit_id %}
-            <td>{{move.unit_id.product_id.measure_id.abbreviation}}</td>
+            <td>
+                <a href="{% url 'DetailMeasurementUnit' move.unit_id.product_id.measure_id.id %}">{{move.unit_id.product_id.measure_id.name}}</a>
+              </td>
         {% elif move.package_id %}
             <td>Piezas</td>
         {% endif %}
         <td>{{move.move_type}}</td>
-        <td>{{move.note}}</td>
         <td>{{move.date}}</td>
         <td>{{move.user_creator.first_name}} {{move.user_creator.last_name}}</td>
         <td>

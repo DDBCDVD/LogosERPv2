@@ -17,11 +17,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for product in product_ids %}
+            {% for product_id in product_ids %}
             <tr>
-                <td>{{product.code}}</td>
-                <td>{{product.name}}</td>
-                <td>{{product.active}}</td>
+                <td>
+                    <a href="{% url 'DetailProduct' product_id.id %}">{{product_id.code}}</a>
+                </td>
+                <td>
+                    <a href="{% url 'DetailProduct' product_id.id %}">{{product_id.name}}</a>
+                </td>
+                <td>{{product_id.active}}</td>
                 <td>
                     <img src="/media/{{product.product_image}}" class="img-circle elevation-2" style="width: 50px; height: 50px;" >
                 </td>

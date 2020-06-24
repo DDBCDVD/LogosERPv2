@@ -1,3 +1,4 @@
+from crum import get_current_user
 from django.contrib import messages
 from apps.warehouse.models import StockControl
 from apps.warehouse.models import ProductUnit
@@ -6,14 +7,15 @@ from apps.warehouse.models import ProductPackage
 
 def create_unit_package(request, pckg):
     units_create = False
-    for qty in range(int(pckg.pieces)):
+    for unit in range(int(pckg.pieces)):
         ProductUnit.objects.create(
             name=str(pckg.product_id.name + ' ' + pckg.code),
-            measure=str(pckg.product_id.measure_id.name),
+            measure=str(pckg.product_id.measure_id.id),
             product_id=pckg.product_id,
             location_id_id=pckg.location_id.id,
             package_id=pckg,
-            fixed_ammount=pckg.fixed_ammount)
+            fixed_ammount=pckg.fixed_ammount,
+            )
     pckg.units_created = True
     pckg.save()
     msg = '%s Unidades Creadas' % pckg.pieces

@@ -15,10 +15,14 @@
   {% for package in object_list %}
   <tr>
     <td>{{package.code}}</td>
-    <td>{{package.product_id.name}}</td>
+    <td>
+      <a href="{% url 'DetailProduct' package.product_id.id %}">{{package.product_id.name}}</a>
+    </td>
     <td>{{package.pieces}}</td>
     <td>{{package.unit_qty}}</td>
-    <td>{{package.product_id.measure_id.abbreviation}}</td>
+    <td>
+      <a href="{% url 'DetailMeasurementUnit' package.product_id.measure_id.id %}">{{package.product_id.measure_id.name}}</a>
+    </td>
     <td>{{package.units_created}}</td>
     <td>
       {% if not package.units_created %}
