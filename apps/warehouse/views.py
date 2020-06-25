@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib import messages
+import sweetify
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView
@@ -34,7 +34,12 @@ from apps.warehouse.forms import MoveUnitForm
 #     return JsonResponse(data)
 
 def test(request):
-    return render(request, "tests/test_modal.html")
+    sweetify.success(request,
+    'You did it',
+    text='Good job! You successfully showed a SweetAlert message',
+    persistent='Hell yeah')
+    # return units_create
+    return redirect('ListStockMove')
 
 # -------------------------------PRODUCTS MODEL-----------------------#
 
@@ -545,8 +550,7 @@ def create_unit_package(request, pk):
     if functions.create_pckg_stock_control(request, pckg):
         return redirect('ListProductPackage')
     else:
-        messages.error(
-            request, 'Error en la creación del Control de Stock')
+        sweetify.eror(request, 'Error en la creación del Control de Stock')
     return redirect('ListProductPackage')
 
 

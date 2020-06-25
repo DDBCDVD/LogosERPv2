@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+  {% load static %}
   {% block header %}
 
   {% endblock %}
+  <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
   <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- Navbar -->
@@ -14,13 +16,13 @@
               <!-- Content Header (Page header) -->
               {% include "headers/page_header.html" %}
                 <!-- Django Messages -->
-                {% if messages %}
+                <!-- {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h5>{{ message }}</h5></li>
                     {% endfor %}
                 </ul>
-                {% endif %}
+                {% endif %} -->
 
               {% block content %}
 
@@ -45,6 +47,8 @@
   {% block javascript %}
 
   {% endblock %}
+  {% load sweetify %}
+  {% sweetify %}
   </body>
 </html>
 
