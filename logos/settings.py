@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #  Librerías
     'widget_tweaks',
+    'sweetify',
     #  'bootstrap_modal_forms',
     #  Apps
     'core',
@@ -146,3 +147,4 @@ AUTH_USER_MODEL = 'core.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MEDIA_URL = '/media/'
+SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'

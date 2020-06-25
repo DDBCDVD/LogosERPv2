@@ -1,15 +1,4 @@
 {% extends "list_template.html" %}
-{% block buttons_create %}
-<div class="card-header">
-    <a href="{% url 'function_create_move_unit' %}" class="btn btn-outline-success btn-icon-split btn-lg">
-    <span class="text">Mover Unidad</span>
-    </a>
-    <a href="{% url 'function_create_move_package' %}" class="btn btn-outline-success btn-icon-split btn-lg">
-    <span class="text">Mover Paquetes</span>
-    </a>
-    <button class="btn btn-outline-success btn-icon-split btn-lg btnTest" >Ajax    </button>
-</div>
-{% endblock %}
 {% block table %}
 <thead>
     <tr>

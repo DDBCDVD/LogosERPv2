@@ -15,6 +15,7 @@ urlpatterns = [
     #  -----------------------------PRODUCTS MODEL--------------------#
     path('ListProduct/', warehouse_views.ListProduct.as_view(
         extra_context={'heading': 'Productos', 'title': 'Productos'}, model=Product), name='ListProduct'),
+    path('test/', warehouse_views.test, name='test'),
     path('DetailProduct/<int:pk>/', warehouse_views.DetailProduct.as_view(
         extra_context={'title': 'Detalle Producto'}, model=Product), name='DetailProduct'),
     path('CreateProduct/', warehouse_views.CreateProduct.as_view(

@@ -1,5 +1,5 @@
 from crum import get_current_user
-from django.contrib import messages
+import sweetify
 from apps.warehouse.models import StockControl
 from apps.warehouse.models import ProductUnit
 from apps.warehouse.models import ProductPackage
@@ -19,9 +19,11 @@ def create_unit_package(request, pckg):
     pckg.units_created = True
     pckg.save()
     msg = '%s Unidades Creadas' % pckg.pieces
-    messages.success(request, msg)
+    sweetify.success(request, msg)
     units_create = True
+
     return units_create
+    return redirect('ListStockMove')
 
 
 def create_pckg_stock_control(request, pckg):
@@ -40,7 +42,7 @@ def create_pckg_stock_control(request, pckg):
             unit_id.save()
         stock_control_created = True
         msg = 'Controles de Stock creados para %s unidades' % len(unit_ids)
-        messages.success(request, msg)
+        sweetify.success(request, msg)
     return stock_control_created
 
 
@@ -69,7 +71,7 @@ def create_stock_move(request, move):
         move.save()
         msg = '%s Piezas Movidas con Éxito!' % (
             move.pieces)
-        messages.success(request, msg)
+        sweetify.success(request, msg)
         moved = True
 
     if move.unit_id:
@@ -82,8 +84,8 @@ def create_stock_move(request, move):
         msg = '%s %s Movido con Éxito!' % (
             move.quantity,
             move.unit_id.product_id.measure_id.abbreviation)
-        messages.success(request, msg)
         moved = True
+        sweetify.success(request, msg)
     return moved
 
 
@@ -132,7 +134,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
             unit_id.first_move = True
             unit_id.save()
             msg = 'Control de Stock creado para la unidad %s' % unit_id.code
-            messages.success(request, msg)
+            sweetify.success(request, msg)
             stock_control_created = True
 
     elif origin_data:
@@ -185,7 +187,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                         location_id=move.location_dest_id)
                     msg = 'Movimiento  interno creado para %s unidad' \
                           % unit_id.code
-                    messages.success(request, msg)
+                    sweetify.success(request, msg)
                     stock_control_created = True
 
             elif dest_data:
@@ -214,7 +216,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                     origin_data.delete()
                 msg = 'Movimiento  interno creado para %s unidad' \
                       % unit_id.code
-                messages.success(request, msg)
+                sweetify.success(request, msg)
                 stock_control_created = True
 
         elif move.location_dest_id.location_type == 'Egress':
