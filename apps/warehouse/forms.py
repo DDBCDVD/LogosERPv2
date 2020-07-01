@@ -8,6 +8,14 @@ from apps.warehouse.models import MeasurementUnit
 from apps.warehouse.models import StockMove
 
 
+class ReportForm(forms.Form):
+
+    date_range = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+    }))
+
+
 class ProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):

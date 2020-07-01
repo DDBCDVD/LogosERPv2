@@ -1,0 +1,139 @@
+{% load static %}
+
+<!--        General Scripts  Forms      -->
+<!-- jQuery -->
+<script src="{% static 'lib/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'lib/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- DataTables -->
+<script src="{% static 'lib/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'lib/dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'lib/dist/js/demo.js' %}"></script>
+
+<!-- Moment -->
+<script src="{% static 'lib/plugins/moment/moment.min.js' %}"></script>
+<!-- date-range-picker -->
+<script src="{% static 'lib/plugins/daterangepicker/spanish.js' %}"></script>
+<script src="{% static 'lib/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<!-- Page script -->
+<script>
+
+$(function generate_report () {
+
+  //Date range picker
+  var report_data = {
+
+      'action': 'report',
+      'start_date': new moment().format('YYYY-MM-DD'),
+      'end_date': new moment().format('YYYY-MM-DD'),
+      'report_type': '',
+
+  }
+
+  $('#id_date_range').daterangepicker().on(
+    'apply.daterangepicker', function(ev, picker) {
+      report_data['start_date'] = picker.startDate.format('YYYY-MM-DD')
+      report_data['end_date'] = picker.endDate.format('YYYY-MM-DD')
+  });
+
+  // Reporte Movimientos
+  $('#by_move').on('click', function(){
+
+    report_data['report_type'] = 'by_move'
+
+    $("#ByMoveTable").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "deferRender": true,
+      "destroy": true,
+      ajax: {
+        url: window.location.pathname,
+        type: 'POST',
+        data: report_data,
+        datatype: 'json',
+        dataSrc: ''
+        },
+    });
+
+    $('#ByMove').modal('show');
+
+  });
+
+  // Reporte Movimientos por Producto
+  $('#by_product').on('click', function(){
+
+    report_data['report_type'] = 'by_product'
+
+    $("#ByProductTable").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "deferRender": true,
+      "destroy": true,
+      ajax: {
+        url: window.location.pathname,
+        type: 'POST',
+        data: report_data,
+        datatype: 'json',
+        dataSrc: ''
+        },
+    });
+
+    $('#ByProduct').modal('show');
+
+  });
+
+  // Reporte Movimientos por Ubicación
+  $('#by_location').on('click', function(){
+
+    report_data['report_type'] = 'by_location'
+
+    $("#ByLocationTable").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "deferRender": true,
+      "destroy": true,
+      ajax: {
+        url: window.location.pathname,
+        type: 'POST',
+        data: report_data,
+        datatype: 'json',
+        dataSrc: ''
+        },
+    });
+
+    $('#ByLocation').modal('show');
+
+  });
+
+  // Reporte Movimientos por Usuario
+  $('#by_user').on('click', function(){
+
+    report_data['report_type'] = 'by_user'
+
+    $("#ByUserTable").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "deferRender": true,
+      "destroy": true,
+      ajax: {
+        url: window.location.pathname,
+        type: 'POST',
+        data: report_data,
+        datatype: 'json',
+        dataSrc: ''
+        },
+    });
+
+    $('#ByUser').modal('show');
+
+  });
+
+
+});
+
+</script>

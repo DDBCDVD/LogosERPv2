@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   {% load static %}
+  <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
   {% block header %}
 
   {% endblock %}
-  <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+
   <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- Navbar -->
@@ -15,14 +16,6 @@
         <div class="content-wrapper">
               <!-- Content Header (Page header) -->
               {% include "headers/page_header.html" %}
-                <!-- Django Messages -->
-                <!-- {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h5>{{ message }}</h5></li>
-                    {% endfor %}
-                </ul>
-                {% endif %} -->
 
               {% block content %}
 
@@ -40,15 +33,16 @@
     <!-- ./wrapper -->
     <!-- Scripts -->
 
-  {% block modals %}
-
-  {% endblock %}
-
   {% block javascript %}
 
   {% endblock %}
+
+  {% include "js/scroll_top.html" %}
+
   {% load sweetify %}
   {% sweetify %}
+
+
   </body>
 </html>
 

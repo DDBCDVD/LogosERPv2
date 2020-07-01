@@ -65,15 +65,15 @@
             this.drops = 'up';
 
         this.buttonClasses = 'btn btn-sm';
-        this.applyButtonClasses = 'btn-primary';
-        this.cancelButtonClasses = 'btn-default';
+        this.applyButtonClasses = 'btn btn-outline-success btn-icon-split';
+        this.cancelButtonClasses = 'btn btn-outline-danger btn-icon-split';
 
         this.locale = {
             direction: 'ltr',
-            format: moment.localeData().longDateFormat('L'),
+            format: 'DD-MM-Y',
             separator: ' - ',
-            applyLabel: 'Apply',
-            cancelLabel: 'Cancel',
+            applyLabel: 'Aplicar',
+            cancelLabel: 'Cancelar',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),

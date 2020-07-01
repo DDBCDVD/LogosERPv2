@@ -458,3 +458,4 @@ class StockControl(Crum):
     def toJSON(self):
         item = model_to_dict(self)  # Se pueden excluir parámetros
         return item
+
