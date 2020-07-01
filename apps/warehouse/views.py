@@ -2,14 +2,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import sweetify
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView
-from django.views.generic import DeleteView, DetailView
+from django.views.generic import DeleteView, DetailView, TemplateView
 #  from bootstrap_modal_forms.generic import BSModalCreateView
 from django.urls import reverse_lazy
-import apps.warehouse.validations as validations
-import apps.warehouse.functions as functions
+from apps.warehouse import validations
+from apps.warehouse import functions
+from apps.warehouse import reports
+from apps.warehouse.admin import StockMoveModel
 from apps.warehouse.models import Product
 from apps.warehouse.models import StockLocation
 from apps.warehouse.models import ProductUnit
@@ -24,29 +26,47 @@ from apps.warehouse.forms import ProductPackageForm
 from apps.warehouse.forms import MeasurementUnitForm
 from apps.warehouse.forms import MovePackageForm
 from apps.warehouse.forms import MoveUnitForm
+from apps.warehouse.forms import ReportForm
 
-
-# def test(request):
-#     data = {
-#         'nombre': 'daniel'
-#     }
-
-#     return JsonResponse(data)
 
 def test(request):
-    sweetify.success(request,
-    'You did it',
-    text='Good job! You successfully showed a SweetAlert message',
-    persistent='Hell yeah')
-    # return units_create
-    return redirect('ListStockMove')
+    return redirect('/')
+
+
+# ---------------------------------REPORTS----------------------------#
+class ViewReport(LoginRequiredMixin, TemplateView):
+
+    template_name = 'report/views/ViewReport.html'
+    form_class = ReportForm
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.form_class
+        context['by_move'] = 'Reporte por Movimientos'
+        context['by_product'] = 'Reporte Movimientos por Producto'
+        context['by_location'] = 'Reporte Movimientos por Ubicación'
+        context['by_user'] = 'Reporte Movimientos por Usuario'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'report':
+                data = reports.report_move(request)
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
 
 # -------------------------------PRODUCTS MODEL-----------------------#
 
 # ------------------------VIEWS------------------------------#
 
 
-# @method_decorator(login_required, name='dispatch')
 class ListProduct(LoginRequiredMixin, ListView):
 
     model = Product
@@ -797,54 +817,6 @@ class MovePackage(LoginRequiredMixin, CreateView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
-
-def function_create_move_unit(request):
-    heading = 'Moviendo Unidad de Producto'
-    title = 'Nuevo Movimiento'
-    form = MoveUnitForm()
-    if request.method == "POST":
-        form = MoveUnitForm(request.POST)
-    if form.is_valid():
-        move = form.save(commit=False)
-        if validations.validate_moves(request, move):
-            return redirect('function_create_move_unit')
-        if validations.validate_stock_control(request, move):
-            return redirect('function_create_move_unit')
-        if functions.create_stock_move(request, move):
-            return redirect('ListStockMove')
-    else:
-        form = MoveUnitForm()
-    return render(
-        request,
-        'stock_move/functions/function_create_move_unit.html',
-        {"form": form,
-         "heading": heading,
-         "title": title})
-
-
-def function_create_move_package(request):
-    heading = 'Moviendo Paquete de Productos'
-    title = 'Nuevo Movimiento'
-    form = MovePackageForm()
-    if request.method == "POST":
-        form = MovePackageForm(request.POST)
-    if form.is_valid():
-        move = form.save(commit=False)
-        if validations.validate_moves(request, move):
-            return redirect('function_create_move_package')
-        if validations.validate_stock_control(request, move):
-            return redirect('function_create_move_package')
-        if functions.create_stock_move(request, move):
-            return redirect('ListStockMove')
-    else:
-        form = MovePackageForm()
-    return render(
-        request,
-        'stock_move/functions/function_create_move_package.html',
-        {"form": form,
-         "heading": heading,
-         "title": title})
 
 
 # ---------------------------STOCK CONTROL-------------------------#

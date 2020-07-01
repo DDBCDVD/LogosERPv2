@@ -12,6 +12,11 @@ from apps.warehouse.models import StockControl
 
 urlpatterns = [
 
+    #  -----------------------------REPORTS--------------------#
+
+    path('ViewReport/', warehouse_views.ViewReport.as_view(
+        extra_context={'heading': 'Reportes de Movimientos', 'title': 'Reportes'}), name='ViewReport'),
+
     #  -----------------------------PRODUCTS MODEL--------------------#
     path('ListProduct/', warehouse_views.ListProduct.as_view(
         extra_context={'heading': 'Productos', 'title': 'Productos'}, model=Product), name='ListProduct'),
@@ -81,8 +86,7 @@ urlpatterns = [
         extra_context={'heading': 'Moviendo Paquete', 'title': 'Nuevo Movimiento'}, model=StockMove), name='MovePackage'),
     path('DetailStockMove/<pk>', warehouse_views.DetailStockMove.as_view(
         extra_context={'title': 'Detalle Movimiento'}, model=StockMove), name='DetailStockMove'),
-    path('function_create_move_package/', warehouse_views.function_create_move_package, name='function_create_move_package'),
-    path('function_create_move_unit/', warehouse_views.function_create_move_unit, name='function_create_move_unit'),
+
     #  -------------------------------------STOCK CONTROL MODEL-----------------------------------------#
     path('ListStockControl/', warehouse_views.ListStockControl.as_view(
         extra_context={'heading': 'Controles de Stock', 'title': 'Control de Stock'}, model=StockControl), name='ListStockControl'),
