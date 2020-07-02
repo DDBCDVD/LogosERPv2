@@ -9,6 +9,8 @@
 <script src="{% static 'lib/plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'lib/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
 <script src="{% static 'lib/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+
 <!-- AdminLTE App -->
 <script src="{% static 'lib/dist/js/adminlte.min.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
@@ -19,6 +21,15 @@
 <!-- date-range-picker -->
 <script src="{% static 'lib/plugins/daterangepicker/spanish.js' %}"></script>
 <script src="{% static 'lib/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script type="text/javascript" language="javascript" src="{% static 'lib/plugins/datatables_buttons/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" language="javascript" src="{% static 'lib/plugins/datatables_buttons/buttons.flash.min.js' %}"></script>
+<script type="text/javascript" language="javascript" src="{% static 'lib/plugins/datatables_buttons/jszip.min.js' %}"></script>
+
+
+<script type="text/javascript" language="javascript" src="{% static 'lib/plugins/datatables_buttons/vfs_fonts.js' %}"></script>
+<script type="text/javascript" language="javascript" src="{% static 'lib/plugins/datatables_buttons/buttons.html5.min.js' %}"></script>
+<script type="text/javascript" language="javascript" src="{% static 'lib/plugins/datatables_buttons/buttons.print.min.js' %}"></script>
 
 <!-- Page script -->
 <script>
@@ -58,6 +69,28 @@ $(function generate_report () {
         datatype: 'json',
         dataSrc: ''
         },
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          text: 'Descargar Informe en EXCEL <i class="fas fa-file-excel"></i>',
+          titleAttr: 'Excel',
+          title: 'Reporte de Movimientos',
+          className: 'btn btn-outline-success btn-flat btn-xs'
+        },
+
+        {
+          extend: 'pdfHtml5',
+          text: 'Descargar Informe en PDF <i class="fas fa-file-pdf"></i>',
+          titleAttr: 'PDF',
+          title: 'Reporte de Movimientos',
+          className: 'btn btn-outline-danger btn-flat btn-xs',
+          download: 'open',
+          orientation: 'landscape',
+          pageSize: 'LETTER',
+        },
+
+      ]
     });
 
     $('#ByMove').modal('show');
@@ -81,6 +114,28 @@ $(function generate_report () {
         datatype: 'json',
         dataSrc: ''
         },
+        dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          text: 'Descargar Informe en EXCEL <i class="fas fa-file-excel"></i>',
+          titleAttr: 'Excel',
+          title: 'Reporte de Movimientos',
+          className: 'btn btn-outline-success btn-flat btn-xs'
+        },
+
+        {
+          extend: 'pdfHtml5',
+          text: 'Descargar Informe en PDF <i class="fas fa-file-pdf"></i>',
+          titleAttr: 'PDF',
+          title: 'Reporte de Movimientos',
+          className: 'btn btn-outline-danger btn-flat btn-xs',
+          download: 'open',
+          orientation: 'landscape',
+          pageSize: 'LETTER',
+        },
+
+      ]
     });
 
     $('#ByProduct').modal('show');
@@ -104,6 +159,28 @@ $(function generate_report () {
         datatype: 'json',
         dataSrc: ''
         },
+        dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          text: 'Descargar Informe en EXCEL <i class="fas fa-file-excel"></i>',
+          titleAttr: 'Excel',
+          title: 'Reporte de Movimientos',
+          className: 'btn btn-outline-success btn-flat btn-xs'
+        },
+
+        {
+          extend: 'pdfHtml5',
+          text: 'Descargar Informe en PDF <i class="fas fa-file-pdf"></i>',
+          titleAttr: 'PDF',
+          title: 'Reporte de Movimientos',
+          className: 'btn btn-outline-danger btn-flat btn-xs',
+          download: 'open',
+          orientation: 'landscape',
+          pageSize: 'LETTER',
+        },
+
+      ]
     });
 
     $('#ByLocation').modal('show');
@@ -127,6 +204,28 @@ $(function generate_report () {
         datatype: 'json',
         dataSrc: ''
         },
+        dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          text: 'Descargar Informe en EXCEL <i class="fas fa-file-excel"></i>',
+          titleAttr: 'Excel',
+          title: 'Reporte de Movimientos',
+          className: 'btn btn-outline-success btn-flat btn-xs'
+        },
+
+        {
+          extend: 'pdfHtml5',
+          text: 'Descargar Informe en PDF <i class="fas fa-file-pdf"></i>',
+          titleAttr: 'PDF',
+          title: 'Reporte de Movimientos',
+          className: 'btn btn-outline-danger btn-flat btn-xs',
+          download: 'open',
+          orientation: 'landscape',
+          pageSize: 'LETTER',
+        },
+
+      ]
     });
 
     $('#ByUser').modal('show');
