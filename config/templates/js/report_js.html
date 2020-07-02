@@ -1,5 +1,4 @@
 {% load static %}
-
 <!--        General Scripts  Forms      -->
 <!-- jQuery -->
 <script src="{% static 'lib/plugins/jquery/jquery.min.js' %}"></script>
@@ -31,9 +30,15 @@
 <script type="text/javascript" language="javascript" src="{% static 'lib/plugins/datatables_buttons/buttons.html5.min.js' %}"></script>
 <script type="text/javascript" language="javascript" src="{% static 'lib/plugins/datatables_buttons/buttons.print.min.js' %}"></script>
 
+<!-- HighCharts -->
+<script src="{% static 'lib/plugins/highcharts/highcharts.js' %}"></script>
+<script src="{% static 'lib/plugins/highcharts/modules/exporting.js' %}"></script>
+<script src="{% static 'lib/plugins/highcharts/modules/export-data.js' %}"></script>
+<script src="{% static 'lib/plugins/highcharts/modules/accessibility.js' %}"></script>
+
+
 <!-- Page script -->
 <script>
-
 $(function generate_report () {
 
   //Date range picker
@@ -120,7 +125,7 @@ $(function generate_report () {
           extend: 'excelHtml5',
           text: 'Descargar Informe en EXCEL <i class="fas fa-file-excel"></i>',
           titleAttr: 'Excel',
-          title: 'Reporte de Movimientos',
+          title: 'Reporte de Movimientos por Producto',
           className: 'btn btn-outline-success btn-flat btn-xs'
         },
 
@@ -128,7 +133,7 @@ $(function generate_report () {
           extend: 'pdfHtml5',
           text: 'Descargar Informe en PDF <i class="fas fa-file-pdf"></i>',
           titleAttr: 'PDF',
-          title: 'Reporte de Movimientos',
+          title: 'Reporte de Movimientos por Producto',
           className: 'btn btn-outline-danger btn-flat btn-xs',
           download: 'open',
           orientation: 'landscape',
@@ -165,7 +170,7 @@ $(function generate_report () {
           extend: 'excelHtml5',
           text: 'Descargar Informe en EXCEL <i class="fas fa-file-excel"></i>',
           titleAttr: 'Excel',
-          title: 'Reporte de Movimientos',
+          title: 'Reporte de Movimientos por Ubicación',
           className: 'btn btn-outline-success btn-flat btn-xs'
         },
 
@@ -173,7 +178,7 @@ $(function generate_report () {
           extend: 'pdfHtml5',
           text: 'Descargar Informe en PDF <i class="fas fa-file-pdf"></i>',
           titleAttr: 'PDF',
-          title: 'Reporte de Movimientos',
+          title: 'Reporte de Movimientos por Ubicación',
           className: 'btn btn-outline-danger btn-flat btn-xs',
           download: 'open',
           orientation: 'landscape',
@@ -210,7 +215,7 @@ $(function generate_report () {
           extend: 'excelHtml5',
           text: 'Descargar Informe en EXCEL <i class="fas fa-file-excel"></i>',
           titleAttr: 'Excel',
-          title: 'Reporte de Movimientos',
+          title: 'Reporte de Movimientos por Usuario',
           className: 'btn btn-outline-success btn-flat btn-xs'
         },
 
@@ -218,7 +223,7 @@ $(function generate_report () {
           extend: 'pdfHtml5',
           text: 'Descargar Informe en PDF <i class="fas fa-file-pdf"></i>',
           titleAttr: 'PDF',
-          title: 'Reporte de Movimientos',
+          title: 'Reporte de Movimientos por Usuario',
           className: 'btn btn-outline-danger btn-flat btn-xs',
           download: 'open',
           orientation: 'landscape',
@@ -236,3 +241,43 @@ $(function generate_report () {
 });
 
 </script>
+
+<script>
+  Highcharts.chart('container', {
+      chart: {
+          type: 'line'
+      },
+      title: {
+          text: 'Movimientos Mensuales'
+      },
+      subtitle: {
+          text: 'Por Cantidad de Movimientos'
+      },
+      xAxis: {
+          categories: [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+      },
+      yAxis: {
+          title: {
+              text: 'Cantidad de Movimientos'
+          }
+      },
+      plotOptions: {
+          line: {
+              dataLabels: {
+                  enabled: true
+              },
+              enableMouseTracking: false
+          }
+      },
+      series: [
+        {
+          name: 'TOTAL Movimientos',
+          // data: [35, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+          data: {{ moves_year_month }}
+        },
+
+      ]
+  });
+  </script>

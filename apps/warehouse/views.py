@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import sweetify
+from datetime import datetime
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView
@@ -36,20 +37,35 @@ def test(request):
 # ---------------------------------REPORTS----------------------------#
 class ViewReport(LoginRequiredMixin, TemplateView):
 
-    template_name = 'report/views/ViewReport.html'
+    template_name = 'reports/views/ViewReport.html'
     form_class = ReportForm
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    def get_moves_year_month(self):
+        moves_qty = []
+        try:
+            year = datetime.now().year
+            for month in range(1, 13):
+                moves = StockMove.objects.filter(
+                    date__year=year, date__month=month)
+                moves_qty.append(len(moves))
+            print(moves_qty)
+        except:
+            pass
+        return moves_qty
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class
-        context['by_move'] = 'Reporte por Movimientos'
+        context['by_move'] = 'Reporte de Movimientos'
         context['by_product'] = 'Reporte Movimientos por Producto'
         context['by_location'] = 'Reporte Movimientos por Ubicación'
         context['by_user'] = 'Reporte Movimientos por Usuario'
+        context['moves_year_month'] = self.get_moves_year_month()
+
         return context
 
     def post(self, request, *args, **kwargs):
