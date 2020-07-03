@@ -52,7 +52,6 @@ class ViewReport(LoginRequiredMixin, TemplateView):
                 moves = StockMove.objects.filter(
                     date__year=year, date__month=month)
                 moves_qty.append(len(moves))
-            print(moves_qty)
         except:
             pass
         return moves_qty
@@ -64,6 +63,7 @@ class ViewReport(LoginRequiredMixin, TemplateView):
         context['by_product'] = 'Reporte Movimientos por Producto'
         context['by_location'] = 'Reporte Movimientos por Ubicación'
         context['by_user'] = 'Reporte Movimientos por Usuario'
+        context['year'] = datetime.now().year
         context['moves_year_month'] = self.get_moves_year_month()
 
         return context
