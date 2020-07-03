@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
-from core.models import User
+from core.models import User, CoreCompanies
 from core import views as core_views
 
 urlpatterns = [
@@ -25,4 +25,13 @@ urlpatterns = [
         extra_context={'heading': 'Editando Usuario', 'title': 'Editar Usuario'}, model=User), name='EditUser'),
     path('DeleteUser/<int:pk>/', core_views.DeleteUser.as_view(
         extra_context={'heading': 'Eliminando Usuario', 'title': 'Eliminar Usuario'}, model=User), name='DeleteUser'),
+
+    #  -------------------------CORE COMPANY MODEL------------------------#
+
+    path('CreateCompany/', core_views.CreateCompany.as_view(
+        extra_context={'heading': 'Registrar Compañia', 'title': 'Registrar Compañia'}, model=CoreCompanies), name='CreateCompany'),
+    path('ListCompany/', core_views.ListCompany.as_view(
+        extra_context={'heading': 'Compañia', 'title': 'Compañia'}, model=CoreCompanies), name='ListCompany'),
+     path('DetailCompany/<int:pk>/', core_views.DetailCompany.as_view(
+        extra_context={'heading': 'Detalles de Compañia', 'title': 'Detalles de Compañia'}, model=CoreCompanies), name='DetailCompany'),
 ]

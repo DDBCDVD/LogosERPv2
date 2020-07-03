@@ -7,8 +7,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from core.models import User
-from core.forms import UserForm
+from django.views.generic import DetailView
+from core.models import User, CoreCompanies
+from core.forms import UserForm, CoreCompanyForm
 
 #  --------------------------HOME-----------------------------#
 
@@ -26,10 +27,24 @@ class dashboard(LoginRequiredMixin, TemplateView):
 class Login(LoginView):
     template_name = 'login/views/login.html'
 
+    def get_company(self):
+        company = False
+        if len(CoreCompanies.objects.all()) > 0:
+            company = True
+
+        return company
+
     def dispatch(self, request, *args, **kwargs):
+        for item in request:
+            print(item)
         if request.user.is_authenticated:
             return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['company'] = self.get_company()
+        return context
 
 
 #  ---------------------------USER MODEL---------------------------#
@@ -122,3 +137,68 @@ class DeleteUser(LoginRequiredMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+#  ---------------------------CORE COMPANY MODEL---------------------------#
+# ------------------------FUNCTIONS------------------------------#
+
+
+class CreateCompany(CreateView):
+    model = CoreCompanies
+    form_class = CoreCompanyForm
+    template_name = 'company/functions/CreateCompany.html'
+    success_url = reverse_lazy('dashboard')
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        context['success_url'] = self.success_url
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'create':
+                form = self.get_form()
+                if form.is_valid():
+                    company_form = form.save(commit=False)
+                    fields = {
+                        'user_image': company_form.company_image,
+                        'first_name': company_form.name,
+                        # 'last_name': company_form.short,
+                    }
+                    User.objects.create_superuser(
+                        company_form.name, company_form.email,
+                        password=company_form.rif, **fields)
+                    form.save()
+                else:
+                    data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+# ------------------------VIEWS------------------------------#
+
+
+class ListCompany(LoginRequiredMixin, ListView):
+
+    model = CoreCompanies
+    template_name = 'company/views/ListCompany.html'
+
+
+class DetailCompany(LoginRequiredMixin, DetailView):
+    model = CoreCompanies
+    template_name = 'company/views/DetailCompany.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        company_id = self.model.objects.get(pk=self.kwargs.get('pk'))
+        heading = 'Detalle %s ' % (company_id.name)
+        context['heading'] = heading
+        return context
