@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from core.models import User
+from core.models import User, CoreCompanies
 
 
 class UserForm(UserCreationForm):
@@ -38,3 +38,28 @@ class UserForm(UserCreationForm):
         except Exception as e:
             data['error'] = str(e)
         return data
+
+
+class CoreCompanyForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['autocomplete'] = 'off '
+        self.fields['name'].widget.attrs['autofocus'] = True
+
+    class Meta:
+        model = CoreCompanies
+
+        fields = [
+            'name',
+            'rif_type',
+            'rif',
+            'company_image',
+            'email',
+            'web_site',
+            'phone1',
+            'phone2',
+            'address',
+            'description',
+            ]

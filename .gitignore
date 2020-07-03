@@ -46,3 +46,4 @@ config/templates/tests/
 core/migrations
 media/img
 media/users
+media/company

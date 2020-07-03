@@ -39,9 +39,11 @@
                     <a href="#" class="btn btn-google btn-user btn-block">
                       <i class="fab fa-google fa-fw"></i> Entrar con Google
                     </a>
-                    <a href="#" class="btn btn-facebook btn-user btn-block">
-                      <i class="fa fa-user-plus"></i> Registrar Empresa
-                    </a>
+                    {% if not company %}
+                      <a href="{% url 'CreateCompany' %}" class="btn btn-facebook btn-user btn-block">
+                        <i class="fas fa-industry"></i> Registrar Empresa
+                      </a>
+                    {% endif %}
                   </form>
                   <hr>
                   <div class="text-center">
@@ -70,12 +72,6 @@
         {% endif %}
     </script>
 </div>
-<!-- jQuery -->
-<script src="{% static 'lib/adminlte-3.0.4/plugins/jquery/jquery.min.js' %}"></script>
-<!-- Bootstrap 4 -->
-<script src="{% static 'lib/adminlte-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
 </body>
 </html>
 
