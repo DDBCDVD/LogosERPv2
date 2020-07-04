@@ -143,6 +143,7 @@ LOGIN_URL = '/core/login/'
 LOGOUT_REDIRECT_URL = '/core/login/'
 
 AUTH_USER_MODEL = 'core.User'
+COMPANY_MODEL = 'core.CoreCompanies'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 

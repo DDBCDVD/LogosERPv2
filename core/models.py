@@ -6,11 +6,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-class User(AbstractUser):
-    user_image = models.ImageField(
-        upload_to='users', blank=True,
-        null=True, verbose_name="Imagen de Perfil",
-        default='default/default_avatar.png')
 
 
 class Crum(models.Model):
@@ -30,13 +25,25 @@ class Crum(models.Model):
     date_updated = models.DateTimeField(
         auto_now=True, null=True, blank=True,
         verbose_name='Fecha Modificación')
+    company_id = models.ForeignKey(
+        settings.COMPANY_MODEL,
+        on_delete=models.CASCADE, default=1,
+        verbose_name='Compañía')
 
     class Meta:
         abstract = True
 
 
+class User(AbstractUser, Crum):
+    user_image = models.ImageField(
+        upload_to='users', blank=True,
+        null=True, verbose_name="Imagen de Perfil",
+        default='default/default_avatar.png')
+
+
 class CoreCompanies(models.Model):
 
+    # RIF_TYPE
     j = 'J'
     v = 'V'
     e = 'E'
@@ -47,6 +54,22 @@ class CoreCompanies(models.Model):
         (e, 'E'),
 
     ]
+
+    # SOCIETY
+    ca = 'C.A'
+    sa = 'S.A'
+
+    SOCIEDAD = [
+        (ca, 'C.A'),
+        (sa, 'S.A'),
+
+    ]
+
+    society = models.CharField(
+        max_length=3,
+        choices=SOCIEDAD,
+        default=ca,
+    )
     rif_type = models.CharField(
         max_length=1,
         choices=RIF_TYPE,
