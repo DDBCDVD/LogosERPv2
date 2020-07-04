@@ -56,6 +56,7 @@ class CoreCompanyForm(forms.ModelForm):
             'rif_type',
             'rif',
             'company_image',
+            'society',
             'email',
             'web_site',
             'phone1',

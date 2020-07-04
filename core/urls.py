@@ -34,4 +34,6 @@ urlpatterns = [
         extra_context={'heading': 'Compañia', 'title': 'Compañia'}, model=CoreCompanies), name='ListCompany'),
      path('DetailCompany/<int:pk>/', core_views.DetailCompany.as_view(
         extra_context={'heading': 'Detalles de Compañia', 'title': 'Detalles de Compañia'}, model=CoreCompanies), name='DetailCompany'),
+    path('EditCompany/<int:pk>/', core_views.EditCompany.as_view(
+        extra_context={'heading': 'Editar Compañia', 'title': 'Editar Compañia'}, model=CoreCompanies), name='EditCompany'),
 ]
