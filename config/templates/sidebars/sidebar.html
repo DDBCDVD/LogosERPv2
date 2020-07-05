@@ -15,7 +15,7 @@
         {% endif %}
       </div>
       <div class="info brand-text">
-        <a href="#" class="d-block"><H5>{{ request.user.first_name }} {{ request.user.last_name }}</H5></a>
+        <a href="{% url 'DetailUser' request.user.id %}" class="d-block"><H5>{{ request.user.first_name }} {{ request.user.last_name }}</H5></a>
       </div>
     </div>
     <!-- Sidebar Menu -->
