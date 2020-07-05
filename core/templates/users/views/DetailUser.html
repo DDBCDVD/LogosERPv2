@@ -2,10 +2,10 @@
 
 {% block button_back %}
   <div class="card-header">
-    {% request.user.is_staff %}
-    <a href="{% url 'ListUser' %}" class="btn btn-outline-primary btn-lg">
-    <span class="text">Volver</span>
-    </a>
+    {% if request.user.is_staff %}
+        <a href="{% url 'ListUser' %}" class="btn btn-outline-primary btn-lg">
+        <span class="text">Volver</span>
+        </a>
     {% endif %}
 </div>
 {% endblock %}

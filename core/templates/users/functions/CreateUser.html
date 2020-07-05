@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <div class="card card-default">
         <div class="card-header">
-          {% request.user.is_staff %}
+          {% if request.user.is_staff %}
             <a class="btn btn-outline-primary btn-lg" href="{% url 'ListUser' %}"> Volver</a>
           {% endif %}
         </div>
@@ -67,7 +67,7 @@
                   </div>
                 </div>
                 <div class="col-md-5 col-md-offset-2">
-                  {% if user.staff %}
+                  {% if request.user.is_staff %}
                   <div class="form-group">
                     <label for="{{form.is_staff.name}}">{{form.is_staff.label}}</label>
                     {{form.is_staff|add_class:'form-check'}}
