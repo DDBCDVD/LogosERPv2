@@ -14,6 +14,8 @@ urlpatterns = [
         extra_context={'title': 'Login'}), name='login'),
     path('logout/', core_views.LogoutView.as_view(
         extra_context={'title': 'Logout'}), name='logout'),
+    path('RestorePassword/', core_views.RestorePassword.as_view(
+        extra_context={'heading': 'Restaurar Contraseña', 'title': 'Restaurar Contraseña'}), name='RestorePassword'),
 
     #  -------------------------USER MODEL------------------------#
 

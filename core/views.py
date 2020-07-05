@@ -9,7 +9,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView
 from core.models import User, CoreCompanies
-from core.forms import UserForm, CoreCompanyForm
+from core.forms import UserForm, CoreCompanyForm, RestorePasswordForm
+from core import functions
 
 #  --------------------------HOME-----------------------------#
 
@@ -43,6 +44,31 @@ class Login(LoginView):
         context = super().get_context_data(**kwargs)
         context['company'] = self.get_company()
         return context
+
+
+class RestorePassword(TemplateView):
+
+    template_name = 'login/views/RestorePassword.html'
+    form_class = RestorePasswordForm
+    success_url = reverse_lazy('login')
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'restore_password'
+        context['form'] = self.form_class
+        context['success_url'] = self.success_url
+        return context
+
+    def post(self, request, *args, **kwargs):
+        action = request.POST['action']
+        if action == 'restore_password':
+            user = functions.restore_password(request)
+            if not user:
+                return redirect('RestorePassword')
+            else:
+                return redirect(self.success_url)
+
 
 
 #  ---------------------------USER MODEL---------------------------#
