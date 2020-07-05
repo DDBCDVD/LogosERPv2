@@ -48,6 +48,7 @@ class Login(LoginView):
 #  ---------------------------USER MODEL---------------------------#
 # ------------------------VIEWS------------------------------#
 
+
 class ListUser(LoginRequiredMixin, ListView):
 
     model = User
@@ -66,7 +67,21 @@ class ListUser(LoginRequiredMixin, ListView):
         return context
 
 
+class DetailUser(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'users/views/DetailUser.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.model.objects.get(pk=self.kwargs.get('pk'))
+        heading = 'Detalle %s %s' % (user_id.first_name, user_id.last_name)
+        context['heading'] = heading
+        return context
 # ------------------------FUNCTIONS------------------------------#
+
 
 class CreateUser(LoginRequiredMixin, CreateView):
     model = User

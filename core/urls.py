@@ -23,6 +23,8 @@ urlpatterns = [
         extra_context={'heading': 'Creando Usuario', 'title': 'Crear Usuario'}), name='CreateUser'),
     path('EditUser/<int:pk>/', core_views.EditUser.as_view(
         extra_context={'heading': 'Editando Usuario', 'title': 'Editar Usuario'}, model=User), name='EditUser'),
+    path('DetailUser/<int:pk>/', core_views.DetailUser.as_view(
+        extra_context={'heading': 'Detalle Usuario', 'title': 'Detalle Usuario'}, model=User), name='DetailUser'),
     path('DeleteUser/<int:pk>/', core_views.DeleteUser.as_view(
         extra_context={'heading': 'Eliminando Usuario', 'title': 'Eliminar Usuario'}, model=User), name='DeleteUser'),
 
