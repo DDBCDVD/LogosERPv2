@@ -106,6 +106,17 @@ def validate_stock_control(request, move):
     Finalmente la función devuelve la lista 'errors'
     '''
     errors = []
+    '''
+    stock_control_data diccionario que almacena
+    datos del origen y destino del control de stock
+    de la unidad. Si la unidad tiene un control de stock
+    creado en la ubicacion origen del movimiento,
+    esto se almacena en origin_data.
+    Si tiene un control de stock creado
+    en la ubicacion destino del movimiento,
+    esto se almacena en dest_data
+    '''
+
     stock_control_data = {
         'origin_data': False,
         'dest_data': False,
@@ -128,6 +139,7 @@ def validate_stock_control(request, move):
     for unit_id in unit_list:
         if unit_id.stock_ctrl:
             if move.location_id.location_type != 'Ingress':
+                # stck_ctrl_origin Es la ubicacion origen
                 stck_ctrl_origin = StockControl.objects.filter(
                     unit_id=unit_id.id, location_id=move.location_id)
                 if not stck_ctrl_origin:

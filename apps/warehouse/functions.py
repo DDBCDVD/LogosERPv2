@@ -23,7 +23,6 @@ def create_unit_package(request, pckg):
     units_create = True
 
     return units_create
-    return redirect('ListStockMove')
 
 
 def create_pckg_stock_control(request, pckg):
@@ -60,7 +59,8 @@ def create_stock_move(request, move):
         package_id = move.package_id.id
         product_package = ProductPackage.objects.get(id=package_id)
         product_package.location_id_id = location_dest_id
-        product_package.pieces = move.pieces
+        if move.location_dest_id.location_type != 'Egress':
+            product_package.pieces = move.pieces
         product_package.first_move = True
         product_package.save()
         unit_ids = ProductUnit.objects.filter(package_id=package_id)
@@ -92,7 +92,7 @@ def create_stock_move(request, move):
 def create_stock_control(request, stock_control_data, unit_id, move):
     '''
     Esta funcion crea los controles de Stock individual a cada unidad.
-    La variable stock_control_data es un dicconario que
+    La variable stock_control_data es un diccionario que
     contiene la informacion de stock de las unidades: Ubicacion y Cantidades.
     Con esta informacion se crean los Controles de Stock dependiendo
     de la información que contenga o no el stock_control_data.
@@ -144,7 +144,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
         en la ubicacion Destino, dependiendo del caso.
         Esto aplica para los movimientos de tipo Interno:
         Si no hay Control de Stock destino para la unidad
-        (if not dest_data:), este se crea, de lo contrario
+        (if not dest_data:), este crea uno nuevo, de lo contrario
         (elif dest_data:), sólo se actualiza.
         Se suma al stock control destino la cantidad
         definida en el movimiento y a su vez esta cantidad se resta
@@ -154,7 +154,8 @@ def create_stock_control(request, stock_control_data, unit_id, move):
         Si el movimiento es EGRESO:
             Se resta la catidad del movimiento a la cantidad total de la unidad
         En ambos casos se actualiza el control de Stock Origen,
-        Si el control de Stock origen queda en 0, entonces es borrado.
+        Si el control de Stock origen queda en 0,
+        entonces el control de stock es borrado.
         Calcula tambien los saldos respectivos.
         '''
 
@@ -163,12 +164,24 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                 '''
                 Si no hay Control de Stock destino para la unidad
                 '''
-
+                quantity = None
                 if move.package_id:
-                    origin_data.quantity = \
-                        origin_data.quantity - origin_data.quantity
-                elif move.unit_id:
+                    '''
+                    Cuando se mueven paquetes, si estos tienen unidades
+                    asociadas.
+                    Los controles de stock de esas unidades se borran,
+                    De manera que se crean nuevos en la ubicación destino del
+                    Paquete
+                    '''
+                    quantity = unit_id.quantity
+                    for stk_ctrl_id in StockControl.objects.filter(
+                            unit_id=unit_id):
+                        stk_ctrl_id.delete()
+
+                elif move.unit_id:  # Si se mueve una unidad
                     # Calcula el saldo de la unidad en el almacén
+                    quantity = unit_id.quantity
+                    quantity = move.quantity
                     move.prev_qty = unit_id.quantity
                     move.balance = move.unit_id.quantity
                     move.prev_qty_origin = origin_data.quantity
@@ -181,23 +194,38 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                     origin_data.save()
                     if origin_data.quantity == 0.0:
                         origin_data.delete()
-                    StockControl.objects.create(
-                        quantity=move.quantity,
-                        unit_id=unit_id,
-                        location_id=move.location_dest_id)
-                    msg = 'Movimiento  interno creado para %s unidad' \
-                          % unit_id.code
-                    sweetify.success(request, msg)
-                    stock_control_created = True
+                StockControl.objects.create(
+                    quantity=quantity,
+                    unit_id=unit_id,
+                    location_id=move.location_dest_id)
+                msg = 'Movimiento  interno creado para %s unidad' \
+                      % unit_id.code
+                sweetify.success(request, msg)
+                stock_control_created = True
 
             elif dest_data:
+                quantity = None
                 '''
                 Si hay Control de Stock destino para la unidad
                 '''
                 if move.package_id:
+                    '''
+                    Cuando se mueven paquetes, si estos tienen unidades
+                    asociadas.
+                    Los controles de stock de esas unidades se borran,
+                    De manera que se crean nuevos en la ubicación destino del
+                    Paquete
+                    '''
+
+                    quantity = unit_id.quantity
                     dest_data.quantity = origin_data.quantity
-                    origin_data.quantity = \
-                        origin_data.quantity - origin_data.quantity
+                    for stk_ctrl_id in StockControl.objects.filter(
+                            unit_id=unit_id):
+                        stk_ctrl_id.delete()
+                    StockControl.objects.create(
+                        quantity=quantity,
+                        unit_id=unit_id,
+                        location_id=move.location_dest_id)
                 elif move.unit_id:
                     # Calcula el saldo de la unidad en el almacén
                     move.prev_qty = unit_id.quantity
@@ -210,10 +238,10 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                     dest_data.quantity = dest_data.quantity + move.quantity
                     origin_data.quantity = origin_data.quantity - move.quantity
 
-                origin_data.save()
-                dest_data.save()
-                if origin_data.quantity == 0.0:
-                    origin_data.delete()
+                    origin_data.save()
+                    dest_data.save()
+                    if origin_data.quantity == 0.0:
+                        origin_data.delete()
                 msg = 'Movimiento  interno creado para %s unidad' \
                       % unit_id.code
                 sweetify.success(request, msg)
@@ -221,6 +249,7 @@ def create_stock_control(request, stock_control_data, unit_id, move):
 
         elif move.location_dest_id.location_type == 'Egress':
             if move.unit_id:
+                quantity = None
                 # Calcula el saldo de la unidad en el almacén
                 move.prev_qty = unit_id.quantity
                 move.balance = move.unit_id.quantity - move.quantity
@@ -228,22 +257,25 @@ def create_stock_control(request, stock_control_data, unit_id, move):
                 move.balance_origin = origin_data.quantity - move.quantity
                 move.prev_qty_dest = None
                 move.balance_dest = None
-
-            if move.package_id:
-                quantity = origin_data.quantity
-                origin_data.quantity = origin_data.quantity - quantity
-            elif move.unit_id:
+                # Stock Control
                 quantity = origin_data.quantity - move.quantity
                 origin_data.quantity = origin_data.quantity - move.quantity
-            origin_data.save()
-            unit_id.quantity = unit_id.quantity - move.quantity
+                unit_id.quantity = unit_id.quantity - move.quantity
+                origin_data.save()
+                if origin_data.quantity == 0.0:
+                    origin_data.delete()
+
+            if move.package_id:
+                for stk_ctrl_id in StockControl.objects.filter(
+                        unit_id=unit_id):
+                    stk_ctrl_id.delete()
+                # La unidad queda en 0 restandose su cantidad total
+                unit_id.quantity = unit_id.quantity - unit_id.quantity
             unit_id.save()
-            if origin_data.quantity == 0.0:
-                origin_data.delete()
-                if unit_id.package_id:
-                    package_id = ProductPackage.objects.get(
-                        id=unit_id.package_id.id)
-                    package_id.unit_qty = package_id.unit_qty - 1
-                    package_id.save()
+            if unit_id.package_id:
+                package_id = ProductPackage.objects.get(
+                    id=unit_id.package_id.id)
+                package_id.pieces = package_id.pieces - 1
+                package_id.save()
             stock_control_created = True
     return stock_control_created
