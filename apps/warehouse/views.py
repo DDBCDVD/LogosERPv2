@@ -57,6 +57,9 @@ class ViewReport(LoginRequiredMixin, TemplateView):
         return moves_qty
 
     def get_context_data(self, **kwargs):
+        total_year_moves = 0
+        for item in self.get_moves_year_month():
+            total_year_moves += item
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class
         context['by_move'] = 'Reporte de Movimientos'
@@ -65,6 +68,7 @@ class ViewReport(LoginRequiredMixin, TemplateView):
         context['by_user'] = 'Reporte Movimientos por Usuario'
         context['year'] = datetime.now().year
         context['moves_year_month'] = self.get_moves_year_month()
+        context['total_year_moves'] = total_year_moves
 
         return context
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -11,6 +12,7 @@ from django.views.generic import DetailView
 from core.models import User, CoreCompanies
 from core.forms import UserForm, CoreCompanyForm, RestorePasswordForm
 from core import functions
+from apps.warehouse.models import StockMove
 
 #  --------------------------HOME-----------------------------#
 
@@ -21,6 +23,29 @@ class dashboard(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+    def get_moves_year_month(self):
+        moves_qty = []
+        try:
+            year = datetime.now().year
+            for month in range(1, 13):
+                moves = StockMove.objects.filter(
+                    date__year=year, date__month=month)
+                moves_qty.append(len(moves))
+        except:
+            pass
+        return moves_qty
+
+    def get_context_data(self, **kwargs):
+        total_year_moves = 0
+        for item in self.get_moves_year_month():
+            total_year_moves += item
+        context = super().get_context_data(**kwargs)
+        context['year'] = datetime.now().year
+        context['moves_year_month'] = self.get_moves_year_month()
+        context['total_year_moves'] = total_year_moves
+
+        return context
 
 #  ---------------------------LOGIN---------------------------#
 

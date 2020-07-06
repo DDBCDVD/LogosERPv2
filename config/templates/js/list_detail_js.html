@@ -20,14 +20,23 @@
     $("#MovesTable").DataTable({
       "responsive": true,
       "autoWidth": false,
-    });    
+      "language": {
+        url :'{% static 'lib/plugins/datatables/spanish.txt' %}'
+      }
+    });
     $("#FullTable1").DataTable({
       "responsive": true,
       "autoWidth": false,
+      "language": {
+        url :'{% static 'lib/plugins/datatables/spanish.txt' %}'
+      }
     });
     $("#FullTable2").DataTable({
       "responsive": true,
       "autoWidth": false,
+      "language": {
+        url :'{% static 'lib/plugins/datatables/spanish.txt' %}'
+      }
     });
     $('#MinimalTable').DataTable({
       "paging": true,
@@ -37,6 +46,9 @@
       "info": true,
       "autoWidth": false,
       "responsive": true,
+      "language": {
+        url :'{% static 'lib/plugins/datatables/spanish.txt' %}'
+      }
     });
   });
 </script>

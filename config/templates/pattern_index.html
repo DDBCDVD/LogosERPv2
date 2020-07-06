@@ -1,5 +1,6 @@
 {% load static %}
 {% include "headers/dashboard_header.html" %}
+{% include "headers/report_header.html" %}
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -24,29 +25,38 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          {% include "dashboards/card_new_orders.html" %}
-          {% include "dashboards/card_bounce_rate.html" %}
-          {% include "dashboards/card_user_registration.html" %}
-          {% include "dashboards/card_unique_visitor.html" %}
+          {% include "dashboards/card_productos.html" %}
+          {% include "dashboards/card_movimientos.html" %}
+          {% include "dashboards/card_control_stock.html" %}
+          {% include "dashboards/card_reportes.html" %}
+        </div>
+        <div id="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <figure class="highcharts-figure">
+                <div id="container">
+
+                </div>
+                <p class="highcharts-description">
+                  {{ total_year_moves }} Movimientos durante el Año {{ year }}
+                </p>
+            </figure>
+            </div>
+          </div>
         </div>
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
           <section class="col-lg-7 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
-            {% include "dashboards/charts_tabs.html" %}
             <!-- TO DO List -->
-            {% include "dashboards/to_do_list.html" %}
           </section>
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable">
             <!-- Map card -->
-            {% include "dashboards/card_map.html" %}
             <!-- Solid sales graph -->
-            {% include "dashboards/sales_graph.html" %}
             <!-- Calendar -->
-            {% include "dashboards/card_calendar.html" %}
           </section>
           <!-- right col -->
         </div>
@@ -70,4 +80,5 @@
 <!-- Scripts -->
 {% include "js/load_js.html" %}
 {% include "js/scroll_top.html" %}
+{% include "js/report_js.html" %}
 </body>
