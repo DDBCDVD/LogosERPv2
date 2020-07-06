@@ -67,6 +67,9 @@ $(function generate_report () {
       "autoWidth": false,
       "deferRender": true,
       "destroy": true,
+      "language": {
+        url :'{% static 'lib/plugins/datatables/spanish.txt' %}'
+      },
       ajax: {
         url: window.location.pathname,
         type: 'POST',
@@ -112,6 +115,9 @@ $(function generate_report () {
       "autoWidth": false,
       "deferRender": true,
       "destroy": true,
+      "language": {
+        url :'{% static 'lib/plugins/datatables/spanish.txt' %}'
+      },
       ajax: {
         url: window.location.pathname,
         type: 'POST',
@@ -157,6 +163,9 @@ $(function generate_report () {
       "autoWidth": false,
       "deferRender": true,
       "destroy": true,
+      "language": {
+        url :'{% static 'lib/plugins/datatables/spanish.txt' %}'
+      },
       ajax: {
         url: window.location.pathname,
         type: 'POST',
@@ -202,6 +211,9 @@ $(function generate_report () {
       "autoWidth": false,
       "deferRender": true,
       "destroy": true,
+      "language": {
+        url :'{% static 'lib/plugins/datatables/spanish.txt' %}'
+      },
       ajax: {
         url: window.location.pathname,
         type: 'POST',
@@ -246,6 +258,17 @@ $(function generate_report () {
   Highcharts.chart('container', {
       chart: {
           type: 'line'
+      },
+      lang: {
+        downloadCSV:"Descarga CSV",
+        viewFullscreen:"Ver en pantalla completa",
+        printChart:"Imprimir Gráfico",
+        downloadPNG:"Descargar PNG",
+        downloadJPEG:"Descargar JPEG",
+        downloadPDF:"Descargar PDF",
+        downloadSVG:"Descargar SVG",
+        downloadXLS:"Descargar XLS",
+        viewData:"Ver en Tabla",
       },
       title: {
           text: 'Movimientos Mensuales'
