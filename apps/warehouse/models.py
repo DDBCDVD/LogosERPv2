@@ -272,7 +272,7 @@ class ProductUnit(Crum):
     package_id = models.ForeignKey(
         ProductPackage,
         null=True, blank=True, verbose_name="Paquete",
-        on_delete=models.SET_NULL)
+        on_delete=models.CASCADE)
     location_id = models.ForeignKey(
         StockLocation,
         verbose_name="Ubicación", null=True,

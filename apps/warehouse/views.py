@@ -793,7 +793,8 @@ class MoveUnit(LoginRequiredMixin, CreateView):
                     errors = validations.validate_stock_control(request, move)
                     if errors:
                         data['error'] = errors
-                    functions.create_stock_move(request, move)
+                    else:
+                        functions.create_stock_move(request, move)
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -829,7 +830,8 @@ class MovePackage(LoginRequiredMixin, CreateView):
                     errors = validations.validate_stock_control(request, move)
                     if errors:
                         data['error'] = errors
-                    functions.create_stock_move(request, move)
+                    else:
+                        functions.create_stock_move(request, move)
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
