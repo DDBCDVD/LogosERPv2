@@ -25,7 +25,7 @@ SECRET_KEY = 'q(5&y3+xgx_e=@2d60ln9sjw-mn54ocpjw0(d0t9bc4icjr9&_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -157,7 +157,3 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "logos.softech@gmail.com"
 EMAIL_HOST_PASSWORD = "united117*"
-
-# from django.core.mail import send_mail
-
-# send_mail("prueba_asunto", "Mensaje", "logos.softech@gmail.com", ["ddbcdvd@gmail.com"], fail_silently=False)
